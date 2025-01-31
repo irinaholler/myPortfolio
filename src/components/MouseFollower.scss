@@ -1,0 +1,10 @@
+.follower {
+  position: fixed;
+  width: 20px; // Adjust size as needed
+  height: 20px; // Adjust size as needed
+  background-color: #278164; // Circle color
+  border-radius: 50%; // Make it a circle
+  pointer-events: none; // Prevent it from interfering with mouse events
+  transition: transform 0.1s ease; // Smooth transition
+  z-index: 9999; // Ensure it appears above other elements
+} 

@@ -1,0 +1,131 @@
+@import "../../styles/contants.scss";
+
+.wrapper {
+  overflow: hidden;
+  background-color: $primary;
+
+  .container {
+    position: relative;
+    z-index: 1;
+    color: antiquewhite;
+
+    .upperElements {
+      @media (max-width: $sm) {
+        justify-content: center;
+        text-align: center;
+        gap: 2rem;
+      }
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding-top: 0.5rem;
+    }
+
+    .centeredText {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: #ffa500;
+      padding: 0.4rem 0;
+    }
+
+    .verticalText {
+      display: inline-block;
+      transform: rotate(270deg);
+      font-size: 1.1rem;
+      white-space: nowrap;
+      margin-left: -1rem;
+      color: antiquewhite;
+    }
+
+    .secondaryText {
+      font-size: 1rem;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .contactButton {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      color: antiquewhite;
+      background: linear-gradient(90deg, #0d2f3f, #0d2f3f);
+      border: none;
+      border-radius: 20px;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 15px rgba(255, 138, 0, 0.3);
+      margin-top: 1.5rem;
+      
+      &:hover {
+        background: linear-gradient(120deg, #0d2f3f, #0d2f3f);
+        box-shadow: 0 6px 20px rgba(218, 27, 96, 0.4);
+        transform: translateY(-2px);
+      }
+    
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+    
+
+    .lowerElements {
+      @media (max-width: $sm), (max-width: $md) {
+        margin-top: 4rem;
+        gap: 2rem;
+        justify-content: center;
+      }
+      margin-top: 12rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .experience {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        > :nth-child(2) {
+          line-height: 25px;
+        }
+      }
+
+      .certificate {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        img {
+          margin-bottom: 1rem;
+          width: 3.5rem;
+        }
+      }
+    }
+
+    .person {
+      @media (max-width: $sm), (max-width: $md) {
+        position: relative;
+        left: 0;
+        background-size: 20rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-position: bottom;
+      }
+      position: absolute;
+      bottom: -2rem;
+      margin: auto;
+      background-image: url("../binary-code.png");
+      background-repeat: no-repeat;
+      background-size: 38rem;
+      left: 33%;
+
+      img {
+        @media (max-width: $sm) {
+          width: 23rem;
+        }
+        margin-bottom: -5px;
+      }
+    }
+  }
+}
