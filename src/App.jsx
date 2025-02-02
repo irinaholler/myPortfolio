@@ -14,7 +14,7 @@ import css from './styles/App.module.scss';
 const App = () => {
   return (
     <div className={`bg-primary ${css.container}`}>
-      <Router>
+      <Router basename="/myPortfolio">
         <MouseFollower />
         <StarterPage />
         <Header />
@@ -25,7 +25,7 @@ const App = () => {
         <Footer />
       </Router>
     </div>
-  )
-}
+  );
+};
 
 export default App
