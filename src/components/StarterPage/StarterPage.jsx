@@ -21,7 +21,7 @@ const StarterPage = () => {
 
     return (
         <div className={`starter-page ${zoomed ? 'zoom-in' : ''}`}>
-            <img className="full-screen-image" src="/music.png" alt="Music" />
+            <img className="full-screen-image" src="./music.png" alt="Music" />
             <div className="title">
                 <h1>GLAD TO HAVE YOU HERE!</h1>
                 <h1>IRINA HOLLER | DESIGN. DEVELOP. INSPIRE.</h1>
