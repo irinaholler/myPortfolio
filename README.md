@@ -26,33 +26,11 @@ Responsive and mobile-friendly design
 
 Light and Dark Mode support (optional feature)
 
-📸 Preview
-
- (Replace with an actual screenshot of your portfolio)
-
 🌍 Live Demo
 
-🔗 View My Portfolio (Replace with your actual link)
+🔗 View My Portfolio https://irinaholler.github.io/myPortfolio/
 
-📂 Installation & Setup
 
-If you want to run this portfolio locally:
-
-Clone the repository:
-
-git clone https://github.com/your-username/your-portfolio.git
-
-Navigate to the project folder:
-
-cd your-portfolio
-
-Install dependencies:
-
-npm install
-
-Start the development server:
-
-npm run dev
 
 🎯 About Me
 
@@ -60,4 +38,4 @@ I am Irina Holler, a passionate Web Designer & Web Developer dedicated to creati
 
 📬 Contact
 
-📧 Email: your-email@example.com💼 LinkedIn: Your LinkedIn Profile📂 GitHub: Your GitHub Profile
+📧 Email: irina@mygrin.de
