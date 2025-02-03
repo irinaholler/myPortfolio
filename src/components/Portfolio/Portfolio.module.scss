@@ -127,14 +127,14 @@ a {
 
 .overlayText {
       @media (min-width: $sm) {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
 
       }
   font-size: 2rem;
   font-weight: 900;
   color: #0d2f3f;
   position: absolute;
-  margin-left: 45%;
+  margin-left: 43%;
   top: 84%;
   transform: translateY(-50%);
   padding: 0 10px;

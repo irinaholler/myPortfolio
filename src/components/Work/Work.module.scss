@@ -2,9 +2,6 @@
 
 .wrapper {
     .container {
-        @media (max-width: $sm) {
-            padding-top: 1rem;
-        }
         flex-direction: column;
         gap: 2rem;
 
@@ -93,6 +90,10 @@
 }
 
 .overlayText {
+    @media (min-width: $sm) {
+        font-size: 1.2rem;
+
+      }
   font-size: 2rem;
   font-weight: 900;
   color: #0d2f3f;

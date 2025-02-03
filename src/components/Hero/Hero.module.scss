@@ -3,6 +3,7 @@
 .wrapper {
   overflow: hidden;
   background-color: $primary;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
   .container {
     position: relative;
