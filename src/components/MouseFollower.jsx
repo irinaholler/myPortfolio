@@ -5,15 +5,18 @@ const MouseFollower = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
-        const handleMouseMove = (event) => {
-            setPosition({ x: event.clientX, y: event.clientY });
-        };
+        // Check if the window width is greater than 768px
+        if (window.innerWidth > 768) {
+            const handleMouseMove = (event) => {
+                setPosition({ x: event.clientX, y: event.clientY });
+            };
 
-        window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mousemove', handleMouseMove);
 
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
+            return () => {
+                window.removeEventListener('mousemove', handleMouseMove);
+            };
+        }
     }, []);
 
     return (

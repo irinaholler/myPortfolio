@@ -44,10 +44,10 @@ const Skills = () => {
               </h1>
             </div>
             <p>
-              Highlighting the tools and technologies that fuel my creative process.
+              Showcasing the tools and tech behind my creativity.
             </p>
             <div className={css.skillsGrid}>
-              {["html", "css", "javascript", "react", "nodejs", "express", "photoshop", "illustrator", "wordpress", "elementor"].map((skill, index) => (
+              {["html", "css", "javascript", "react", "nodejs", "express", "wordpress", "elementor", "photoshop", "illustrator"].map((skill, index) => (
                 <motion.div
                   key={skill}
                   className={`${css.skillCard} ${css[skill]}`}
