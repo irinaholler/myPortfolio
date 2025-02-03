@@ -3,7 +3,7 @@
 .starter-page {
     @media (max-width: 768px) {
         justify-content: right;
-        height: 60vh;
+        height: 65vh;
         }
     display: flex;
     flex-direction: column;
@@ -22,11 +22,12 @@
             margin-top: 23rem;
             }        
             @media (max-width: 768px) {
-                margin-top: 22rem;
+                margin-top: 20rem;
+                margin-left: 12rem;
                 }
-                @media (max-width: 640px) {
-                    margin-top: 18rem;
-                    margin-left: 38rem;
+                @media (max-width: 414px) {
+                    margin-top: 23rem;
+                    margin-left: 5rem;
                     }
         margin-left: 40rem;
     }

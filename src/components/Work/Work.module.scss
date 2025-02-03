@@ -6,6 +6,9 @@
         gap: 2rem;
 
         .experiences {
+            @media (max-width: $md) {
+                padding-top: 1rem;
+              }
             padding-top: 4rem;
             width: 100%;
             flex-direction: column;
@@ -80,7 +83,11 @@
 
 .outlineText {
     @media (min-width: $sm) {
-        font-size: 3.5rem;
+        font-size: 3.7rem;
+      }
+      @media (min-width: $ss) {
+        padding: 0 15px;
+        font-size: 3.6rem;
       }
     font-size: 5rem;
     font-weight: 700;
@@ -93,6 +100,10 @@
     @media (max-width: $md) {
         left: 250px;
         top: 90%;
+      }
+      @media (max-width: $sm) {
+        left: 180px;
+        top: 94%;
       }
   font-size: 2rem;
   font-weight: 900;
