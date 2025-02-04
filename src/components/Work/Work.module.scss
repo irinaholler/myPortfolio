@@ -12,6 +12,10 @@
             gap: 1.4rem;
             position: relative;
 
+            @media (max-width: 768px) {
+                display: none;
+            }
+
             .exp {
                 margin-top: 1rem;
                 width: 100%;
