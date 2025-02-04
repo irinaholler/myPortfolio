@@ -2,8 +2,7 @@
 
 .starter-page {
     @media (max-width: 768px) {
-        justify-content: right;
-        height: 80vh;
+        height: 70vh;
         }
     display: flex;
     flex-direction: column;
@@ -18,7 +17,7 @@
 
     .title {
         margin-left: 35%;
-        margin-top: 18vh;
+        margin-top: 25vh;
     }
 
     h1 {
