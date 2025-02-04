@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { footerVariants, staggerChildren } from '../../utils/motion.js'
 import css from "./Footer.module.scss";
 import { motion } from 'framer-motion';
 
 const Footer = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentRadio, setCurrentRadio] = useState('');
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
+
+  const handleRadioChange = (radioSrc) => {
+    const audio = document.getElementById('radioPlayer');
+    audio.pause();
+    audio.src = radioSrc;
+    audio.play();
+  };
+
   return (
     <motion.section
       variants={staggerChildren}
@@ -28,14 +46,48 @@ const Footer = () => {
 
         <div className={css.right}>
           <div className={css.info}>
-            <span className="secondaryText">Welcome to my world.</span>
+            <span className={`${css.secondaryText}`}>console.log("🚀 Welcome to my world!")</span>
+            <span className={`${css.secondaryText} ${css.currentTime}`}>{currentTime.toLocaleString()}</span>
+            <span className={`${css.secondaryText}`}>Made with ❤️ in February 2025</span>
           </div>
-          <ul className={css.menu}>
-            <li>Services</li>
-            <li>Works</li>
-            <li>Notes</li>
-            <li>Experience</li>
-          </ul>
+          <div className={css.menu}>
+            <h2 className={css.title}>Shall We Enjoy the Music</h2>
+            <label className={css.radioLabel} style={{ display: 'flex', alignItems: 'center' }}>
+              <input
+                type="radio"
+                name="menu"
+                value="80s80s"
+                onChange={() => handleRadioChange('https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/')}
+                className={css.radioInput}
+              />
+              Radio 80s80s
+              <div className={css.controls} style={{ marginLeft: '10px' }}>
+                <button
+                  onClick={() => {
+                    const audio = document.getElementById('radioPlayer');
+                    audio.play();
+                  }}
+                  className={css.playButton}
+                >
+                  🎵 {/* Play icon */}
+                </button>
+                <button
+                  onClick={() => {
+                    const audio = document.getElementById('radioPlayer');
+                    audio.pause();
+                  }}
+                  className={css.stopButton}
+                  style={{ fontSize: '0.8em' }}
+                >
+                  ⬛ {/* Stop icon */}
+                </button>
+              </div>
+            </label>
+            <audio id="radioPlayer" controls style={{ display: 'none' }}>
+              <source src="https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
         </div>
       </motion.div>
     </motion.section >

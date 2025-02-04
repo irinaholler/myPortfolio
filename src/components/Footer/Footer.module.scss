@@ -1,58 +1,115 @@
 @import '../../styles/contants.scss';
 
-.wrapper{
+.wrapper {
+  .container {
+    gap: 2rem;
 
-    .container{
-        gap: 2rem;
-        @media (max-width: $sm) {
-            flex-direction: column;
-            gap: 2rem;
-            align-items: flex-start;
-            padding-top: 1rem;
-        }
-        .left{
-            flex: 3;
-            >*{
-                display: block;
-            }
-            >:nth-child(2)
-            {
-                margin-top: 3rem;
-                @media (max-width: $ss) {
-                    font-size: 2rem;
-                }
-                a{
-                    text-decoration: underline;
-                    color: #278164;
-                }
-            }
-        }
-
-
-        .right{
-            flex: 1;
-            .info{
-                margin-bottom: 1rem;
-                >*{
-                    display: block;
-                }
-            }
-            .menu{
-                @media (max-width: $sm) {
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                }
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                list-style: none;
-                li{
-                    cursor: pointer;
-                    &:hover{
-                        color: $secondary
-                    }
-                }
-            }
-        }
+    @media (max-width: $sm) {
+      flex-direction: column;
+      gap: 2rem;
+      align-items: flex-start;
+      padding-top: 1rem;
     }
+
+    .left {
+      flex: 3;
+
+      > * {
+        display: block;
+      }
+
+      > :nth-child(2) {
+        margin-top: 3rem;
+
+        @media (max-width: $ss) {
+          font-size: 2rem;
+        }
+
+        a {
+          text-decoration: underline;
+          color: #278164;
+        }
+      }
+    }
+
+    .right {
+      flex: 1;
+
+      .info {
+        margin-bottom: 1rem;
+
+        > * {
+          display: block;
+        }
+
+        .currentTime {
+          font-weight: bold;
+          color: #278164;
+          font-size: 1.2rem;
+          margin-top: 0.5rem;
+          padding: 0.5rem;
+          border-radius: 5px;
+          background-color: rgba(39, 129, 100, 0.1);
+          display: inline-block;
+        }
+      }
+
+      .menu {
+        @media (max-width: $sm) {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        list-style: none;
+
+        .radioLabel {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          margin: 10px 0;
+          transition: background-color 0.3s;
+
+          .radioInput {
+            margin-right: 10px;
+            accent-color: #45a049;
+          }
+
+          &:hover {
+            background-color: rgba(0, 123, 255, 0.1); 
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Button styles
+.playButton,
+.stopButton {
+  background-color: #278164;
+  color: #f6bc40; 
+  border: none;
+  border-radius: 5px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  margin-left: .5rem;
+}
+
+.playButton:hover {
+  background-color: #45a049;
+}
+
+.stopButton {
+    border: 2px solid #278164;
+    background-color: transparent; 
+}
+
+.stopButton:hover {
+  background-color: #e53935;
 }
