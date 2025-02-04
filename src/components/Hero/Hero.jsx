@@ -19,7 +19,7 @@ const Hero = () => {
 
         <div className={css.upperElements}>
           <motion.span className="primaryText" variants={fadeIn("right", "tween", 0.2, 1)}>
-            <div>
+            <div className={`${css.mobileAlign}`}>
               WELCOME
               <div className={css.centeredText}>
                 <span className={css.verticalText}>to my</span>
@@ -43,11 +43,9 @@ const Hero = () => {
             <div className={css.secondaryText}>
               Hello World!
               <br />
-              I’m Irina, a web developer, who thrives
+              I'm Irina, a web developer, who thrives
               <br />
               on crafting ideas into vibrant digital realities.
-              <br />
-              Let’s create something extraordinary together!
             </div>
           </motion.span>
         </div>

@@ -37,7 +37,7 @@ const Footer = () => {
         className={`innerWidth yPaddings flexCenter ${css.container}`}>
         <div className={css.left}>
           <span className="primaryText">
-            Let's make something <br />
+            Let's create something <br />
             amazing together.
           </span>
           <span className="primaryText">
