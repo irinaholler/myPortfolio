@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 const Footer = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentRadio, setCurrentRadio] = useState('');
+  const [playCount, setPlayCount] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -68,6 +69,7 @@ const Footer = () => {
                   onClick={() => {
                     const audio = document.getElementById('radioPlayer');
                     audio.play();
+                    setPlayCount(playCount + 1);
                   }}
                   className={css.playButton}
                 >
@@ -85,6 +87,7 @@ const Footer = () => {
                 </button>
               </div>
             </label>
+            <span className={`${css.secondaryText} ${css.playCount}`}>Play Count: {playCount} ;)</span>
             <audio id="radioPlayer" controls style={{ display: 'none' }}>
               <source src="https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/" type="audio/mpeg" />
               Your browser does not support the audio element.
