@@ -47,7 +47,9 @@ const Footer = () => {
         <div className={css.right}>
           <div className={css.info}>
             <span className={`${css.secondaryText}`}>console.log("🚀 Welcome to my world!")</span>
-            <span className={`${css.secondaryText} ${css.currentTime}`}>{currentTime.toLocaleString()}</span>
+            <span className={`${css.secondaryText} ${css.currentTime}`}>
+              {currentTime.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            </span>
             <span className={`${css.secondaryText}`}>Made with ❤️ in February 2025</span>
           </div>
           <div className={css.menu}>
