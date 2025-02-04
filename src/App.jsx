@@ -20,7 +20,6 @@ const App = () => {
         <Header />
         <Hero />
         <Skills />
-        <Work />
         <Portfolio />
         <Footer />
       </Router>

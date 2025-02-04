@@ -3,10 +3,17 @@ import './MouseFollower.scss'; // Import your styles
 
 const MouseFollower = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+
         // Check if the window width is greater than 768px
-        if (window.innerWidth > 768) {
+        if (!isMobile) {
             const handleMouseMove = (event) => {
                 setPosition({ x: event.clientX, y: event.clientY });
             };
@@ -17,7 +24,11 @@ const MouseFollower = () => {
                 window.removeEventListener('mousemove', handleMouseMove);
             };
         }
-    }, []);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [isMobile]);
 
     return (
         <div
@@ -25,6 +36,7 @@ const MouseFollower = () => {
             style={{
                 left: position.x,
                 top: position.y,
+                display: isMobile ? 'none' : 'block', // Hide on mobile
             }}
         />
     );

@@ -43,7 +43,6 @@ const Header = () => {
           <ul className={`flexCenter ${css.menu}`} ref={menuRef} style={getMenuStyles(menuOpened)}>
             <li><a href="#me">ME</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#work">Experience</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
 
             {/* Social Icons */}
