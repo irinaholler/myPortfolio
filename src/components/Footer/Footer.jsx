@@ -13,7 +13,14 @@ const Footer = () => {
       setCurrentTime(new Date());
     }, 1000);
 
-    return () => clearInterval(timer); // Cleanup on unmount
+    const storedPlayCount = localStorage.getItem('playCount');
+    if (storedPlayCount) {
+      setPlayCount(parseInt(storedPlayCount, 10));
+    }
+
+    return () => {
+      clearInterval(timer); // Cleanup on unmount
+    };
   }, []);
 
   const handleRadioChange = (radioSrc) => {
@@ -21,6 +28,14 @@ const Footer = () => {
     audio.pause();
     audio.src = radioSrc;
     audio.play();
+  };
+
+  const handlePlay = () => {
+    const audio = document.getElementById('radioPlayer');
+    audio.play();
+    const newPlayCount = playCount + 1;
+    setPlayCount(newPlayCount);
+    localStorage.setItem('playCount', newPlayCount); // Store updated play count
   };
 
   return (
@@ -66,11 +81,7 @@ const Footer = () => {
               Radio 80s80s
               <div className={css.controls} style={{ marginLeft: '10px' }}>
                 <button
-                  onClick={() => {
-                    const audio = document.getElementById('radioPlayer');
-                    audio.play();
-                    setPlayCount(playCount + 1);
-                  }}
+                  onClick={handlePlay}
                   className={css.playButton}
                 >
                   🎵 {/* Play icon */}
