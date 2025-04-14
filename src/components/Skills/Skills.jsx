@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { footerVariants, staggerChildren } from '../../utils/motion.js';
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaWordpress } from "react-icons/fa";
 import { SiExpress, SiAdobephotoshop, SiAdobeillustrator, SiElementor } from "react-icons/si";
+
+
 const skillIcons = {
   html: <FaHtml5 />,
   css: <FaCss3Alt />,

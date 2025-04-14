@@ -3,15 +3,8 @@ import { BiMenuAltRight } from "react-icons/bi";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import useOutsideAlerter from "../../hooks/useOutsideAlerter";
-import useHeaderShadow from "../../hooks/useHeaderShadow";
 import css from "./Header.module.scss";
-import { getMenuStyles } from "../../utils/motion";
-
-const menuVariants = {
-  hidden: { x: "100%", opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { type: "tween", duration: 0.4 } },
-};
+import useHeaderShadow from "../../hooks/useHeaderShadow";
 
 const Header = () => {
   const menuRef = useRef(null);
@@ -19,9 +12,16 @@ const Header = () => {
   const headerShadow = useHeaderShadow();
   const [headerColor, setHeaderColor] = useState("#278164");
 
-
-  // Handle clicking outside of sidebar on mobile
-  useOutsideAlerter({ menuRef, setMenuOpened });
+  // Close menu on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpened(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setHeaderColor("#278164");
@@ -36,31 +36,34 @@ const Header = () => {
         style={{ boxShadow: headerShadow, backgroundColor: headerColor }}
       >
         <div className={`innerWidth ${css.container} flexCenter`}>
-          <Link to="/" className={css.logo}>ИDE</Link>
+          <Link to="/" className={css.logo}>
+            ИDE
+          </Link>
 
-
-          {/* Navigation Menu */}
-          <ul className={`flexCenter ${css.menu}`} ref={menuRef} style={getMenuStyles(menuOpened)}>
+          <ul
+            className={`flexCenter ${css.menu} ${menuOpened ? css.show : ""}`}
+            ref={menuRef}
+          >
             <li><a href="#me">ME</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
-
-            {/* Social Icons */}
-            <li className={`flexCenter ${css.socialIcons} ${menuOpened ? css.visible : css.hidden}`}>
-              <a href="https://github.com/irinaholler" target="_blank" rel="irinaholler github">
+            <li className={css.socialIcons}>
+              <a href="https://github.com/irinaholler" target="_blank" rel="noopener noreferrer">
                 <FaGithub size={30} />
               </a>
-              <a href="https://www.linkedin.com/in/irinaniko/" target="_blank" rel="irinaholler linkedin">
+              <a href="https://www.linkedin.com/in/irinaniko/" target="_blank" rel="noopener noreferrer">
                 <FaLinkedin size={30} />
               </a>
-              <a href="https://www.instagram.com/myirde/" target="_blank" rel="irinaholler instagram">
+              <a href="https://www.instagram.com/myirde/" target="_blank" rel="noopener noreferrer">
                 <FaInstagram size={30} />
               </a>
             </li>
           </ul>
 
-          {/* Menu Icon for Small Screens */}
-          <div className={css.menuIcon} onClick={() => setMenuOpened(prev => !prev)}>
+          <div
+            className={css.menuIcon}
+            onClick={() => setMenuOpened((prev) => !prev)}
+          >
             <BiMenuAltRight size={30} />
           </div>
         </div>

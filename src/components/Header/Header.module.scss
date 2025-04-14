@@ -1,32 +1,26 @@
 @import "../../styles/contants.scss";
-
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@600&family=Orbitron:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
 
 .wrapper {
-  position: relative;
-  z-index: 99;
-  opacity: 1;
-  transform: none;
   position: sticky;
-  top: 0px;
+  top: 0;
+  z-index: 99;
   background-color: #278164;
   transition: all 300ms ease;
 
   .container {
-    position: relative;
     justify-content: space-between;
     font-weight: 500;
     color: antiquewhite;
 
     .logo {
       font-size: 2rem;
-      font-weight: bold;
       font-family: "Orbitron", sans-serif;
       color: antiquewhite;
       text-decoration: none;
+      text-transform: uppercase;
       letter-spacing: 2px;
       transition: transform 0.3s ease, color 0.3s ease-in-out;
-      text-transform: uppercase;
       cursor: crosshair;
 
       &:hover {
@@ -36,54 +30,47 @@
     }
 
     .menu {
-      display: flex; 
+      display: flex;
       gap: 2rem;
+      list-style: none;
       text-transform: uppercase;
       font-size: 1rem;
-      list-style: none;
-      cursor: pointer;
 
-      @media (max-width: $sm) {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        list-style: none;
-        gap: 1.5rem;
-        font-weight: 500;
-        right: 0;
-        top: 3rem;
-        height: calc(40vh - 6.3rem);
-        width: 30%;
-        min-width: 12rem;
-        background-color: #278164;
-        padding-top: 2rem;
-        padding: 0 2rem;
-        display: flex;
-        border-radius: 10px;
-        transition: all 200ms ease;
-        align-items: flex-start;
-        justify-content: flex-start;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      li {
-        a {
-          color: inherit;
-          text-decoration: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
+      li a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
 
         &:hover {
           color: orange;
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      // For mobile dropdown
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 3.5rem;
+        right: 1rem;
+        flex-direction: column;
+        background: #278164;
+        padding: 1.5rem;
+        border-radius: 8px;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+
+        &.show {
+          display: flex;
+          opacity: 1;
+          transform: translateY(0);
         }
       }
     }
 
-    /* Social Icons Styling */
     .socialIcons {
-      @media (max-width: 768px) { 
-        display: none; 
-      }
       display: flex;
       gap: 1rem;
 
@@ -96,22 +83,20 @@
           transform: scale(1.2);
         }
       }
-    }
 
-    @media (max-width: $sm) {
-      .socialIcons {
-        flex-direction: column;
-        gap: 0.5rem;
+      @media (max-width: 768px) {
+        display: none;
       }
     }
 
-    /* Menu Icon for Small Screens */
     .menuIcon {
+      display: none;
+      cursor: pointer;
+      color: white;
+
       @media (max-width: 768px) {
         display: block;
       }
-      display: none;
-      cursor: pointer;
     }
   }
 }

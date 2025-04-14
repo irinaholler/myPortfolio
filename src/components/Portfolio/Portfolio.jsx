@@ -7,6 +7,7 @@ const Portfolio = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ description: "", link: "" });
   const [modalStyle, setModalStyle] = useState({});
+  const [expandedProject, setExpandedProject] = useState(null);
 
   const openModal = (event, description, link) => {
     const projectElement = event.currentTarget; // Get the clicked project element
@@ -32,30 +33,52 @@ const Portfolio = () => {
     setModalStyle({}); // Reset modal style
   };
 
+  const toggleProjectInfo = (index, event) => {
+    event.stopPropagation(); // Prevent triggering the modal
+    setExpandedProject(expandedProject === index ? null : index);
+  };
+
   const projects = [
     {
       src: "./prj-mitAussicht.png",
-      description: "mitAussicht: WebSite / WordPress / Elementor",
+      title: "mitAussicht",
+      description: "WebSite / WordPress / Elementor",
+      details: "A modern real estate website showcasing properties with beautiful views. Built with WordPress and Elementor for easy content management.",
       link: "http://wohnen-mitaussicht.de",
     },
     {
       src: "./prj-Gries GmbH-WS.png",
-      description: "Gries GmbH: WebSite / WordPress / Elementor",
+      title: "Gries GmbH",
+      description: "WebSite / WordPress / Elementor",
+      details: "Corporate website for Gries GmbH featuring company services, portfolio, and contact information. Responsive design optimized for all devices.",
       link: "http://www.gries-gmbh.de",
     },
     {
+      src: "./prj-connectify.png",
+      title: "Connectify",
+      description: "MERN Fullstack Social Platform",
+      details: "A modern social platform built with the MERN stack (MongoDB, Express, React, Node.js), Tailwind CSS, and Vite. Features a beautiful purple-blue gradient design, user authentication, story sharing, writer connections, and an inspiring community space. Includes dark mode and responsive design.",
+      link: "https://echowords.onrender.com/welcome",
+    },
+    {
       src: "./prj-DCI.png",
-      description: "DCI Project / html / css",
+      title: "DCI Project",
+      description: "html / css",
+      details: "A coffee world themed website showcasing different coffee types and brewing methods. Built with pure HTML and CSS for clean, semantic markup.",
       link: "https://irinaholler.github.io/DCI-Projekt-Kaffee-Welt/",
     },
     {
       src: "./prj-Pokemon.png",
-      description: "DCI Project / html / css / JavaScript",
+      title: "Pokemon Project",
+      description: "html / css / JavaScript",
+      details: "Interactive Pokemon card game with dynamic content loading and user interactions. Features search, filtering, and detailed Pokemon information.",
       link: "https://irinaholler.github.io/Pokemon-Project/",
     },
     {
       src: "./prj-Memory-Card-Game.png",
-      description: "DCI Project / html / css / JavaScript",
+      title: "Memory Card Game",
+      description: "html / css / JavaScript",
+      details: "Classic memory card game with modern design and animations. Includes score tracking, timer, and difficulty levels for an engaging user experience.",
       link: "https://irinaholler.github.io/Memory-Card-Game/",
     },
   ];
@@ -85,14 +108,44 @@ const Portfolio = () => {
 
         <div className={`flexCenter ${css.showCase}`}>
           {projects.map((project, index) => (
-            <motion.img
+            <motion.div
               key={index}
               variants={fadeIn("up", "tween", 0.5 + index * 0.2, 0.6)}
-              src={project.src}
-              alt={project.description}
-              onClick={(event) => openModal(event, project.description, project.link)}
-              className={css.projectImage}
-            />
+              className={css.projectContainer}
+            >
+              <img
+                src={project.src}
+                alt={project.title}
+                onClick={(event) => openModal(event, project.description, project.link)}
+                className={css.projectImage}
+              />
+              <div
+                className={css.projectInfo}
+                style={{
+                  opacity: expandedProject === index ? 1 : 0,
+                  transform: expandedProject === index ? 'translateY(0)' : 'translateY(100%)',
+                  pointerEvents: expandedProject === index ? 'auto' : 'none'
+                }}
+              >
+                <h3>{project.title}</h3>
+                <p>{project.details}</p>
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={css.viewButton}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  View Project
+                </a>
+              </div>
+              <div
+                className={css.infoToggle}
+                onClick={(e) => toggleProjectInfo(index, e)}
+              >
+                {expandedProject === index ? '−' : '+'}
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

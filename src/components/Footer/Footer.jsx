@@ -6,20 +6,21 @@ import { motion } from 'framer-motion';
 const Footer = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentRadio, setCurrentRadio] = useState('');
-  const [playCount, setPlayCount] = useState(0);
+  const [playCount, setPlayCount] = useState(2);
+  const [uniqueListeners, setUniqueListeners] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    const storedPlayCount = localStorage.getItem('playCount');
-    if (storedPlayCount) {
-      setPlayCount(parseInt(storedPlayCount, 10));
+    const listeners = sessionStorage.getItem('uniqueListeners');
+    if (listeners) {
+      setUniqueListeners(parseInt(listeners, 10));
     }
 
     return () => {
-      clearInterval(timer); // Cleanup on unmount
+      clearInterval(timer);
     };
   }, []);
 
@@ -33,9 +34,13 @@ const Footer = () => {
   const handlePlay = () => {
     const audio = document.getElementById('radioPlayer');
     audio.play();
-    const newPlayCount = playCount + 1;
-    setPlayCount(newPlayCount);
-    localStorage.setItem('playCount', newPlayCount); // Store updated play count
+
+    if (!sessionStorage.getItem('hasListened')) {
+      const newCount = uniqueListeners + 1;
+      setUniqueListeners(newCount);
+      sessionStorage.setItem('uniqueListeners', newCount);
+      sessionStorage.setItem('hasListened', 'true');
+    }
   };
 
   return (
@@ -45,7 +50,6 @@ const Footer = () => {
       whileInView="show"
       viewport={{ once: false, amount: 0.25 }}
       className={`paddings ${css.wrapper}`}>
-
 
       <motion.div
         variants={footerVariants}
@@ -70,21 +74,15 @@ const Footer = () => {
           </div>
           <div className={css.menu}>
             <h2 className={css.title}>Shall We Enjoy the Music</h2>
-            <label className={css.radioLabel} style={{ display: 'flex', alignItems: 'center' }}>
-              <input
-                type="radio"
-                name="menu"
-                value="80s80s"
-                onChange={() => handleRadioChange('https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/')}
-                className={css.radioInput}
-              />
-              Radio 80s80s
-              <div className={css.controls} style={{ marginLeft: '10px' }}>
+            <div className={css.radioLabel}>
+              <span className={css.stationName}>Radio 80s80s</span>
+              <div className={css.controls}>
                 <button
                   onClick={handlePlay}
                   className={css.playButton}
+                  title="Play"
                 >
-                  🎵 {/* Play icon */}
+                  🎵
                 </button>
                 <button
                   onClick={() => {
@@ -92,13 +90,16 @@ const Footer = () => {
                     audio.pause();
                   }}
                   className={css.stopButton}
-                  style={{ fontSize: '0.8em' }}
+                  title="Stop"
                 >
-                  ⬛ {/* Stop icon */}
                 </button>
               </div>
-            </label>
-            <span className={`${css.secondaryText} ${css.playCount}`}>Play Count: {playCount} ;)</span>
+            </div>
+            <div className={css.playCount}>
+              <span className={css.countLabel}>Play Count</span>
+              <span className={css.count}>{playCount}</span>
+              <span className={css.userCount}>{uniqueListeners} music lovers</span>
+            </div>
             <audio id="radioPlayer" controls style={{ display: 'none' }}>
               <source src="https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/" type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -106,7 +107,7 @@ const Footer = () => {
           </div>
         </div>
       </motion.div>
-    </motion.section >
+    </motion.section>
   );
 };
 
