@@ -1,4 +1,4 @@
-@import '../../styles/contants.scss';
+@use "../../styles/contants.scss" as *;
 
 .wrapper {
   .container {
@@ -77,14 +77,18 @@
         .radioLabel {
           display: flex;
           align-items: center;
-          background: linear-gradient(145deg, rgba(39, 129, 100, 0.1), rgba(246, 188, 64, 0.1));
+          background: linear-gradient(
+            145deg,
+            rgba(39, 129, 100, 0.1),
+            rgba(246, 188, 64, 0.1)
+          );
           padding: 1rem;
           border-radius: 15px;
           position: relative;
           overflow: hidden;
           transition: all 0.3s ease;
           border: 1px solid rgba(39, 129, 100, 0.2);
-          
+
           &:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(39, 129, 100, 0.15);
@@ -92,13 +96,17 @@
           }
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(246, 188, 64, 0.1) 0%, transparent 70%);
+            background: radial-gradient(
+              circle,
+              rgba(246, 188, 64, 0.1) 0%,
+              transparent 70%
+            );
             transform: rotate(45deg);
             animation: shine 3s infinite linear;
             pointer-events: none;
@@ -163,9 +171,9 @@
   box-shadow: 0 4px 15px rgba(246, 188, 64, 0.3);
   font-size: 1rem;
   border: 2px solid transparent;
-  
+
   &::before {
-    content: '⏹';
+    content: "⏹";
     font-size: 1.2rem;
   }
 
@@ -182,7 +190,11 @@
 }
 
 .playCount {
-  background: linear-gradient(145deg, rgba(39, 129, 100, 0.05), rgba(246, 188, 64, 0.05));
+  background: linear-gradient(
+    145deg,
+    rgba(39, 129, 100, 0.05),
+    rgba(246, 188, 64, 0.05)
+  );
   padding: 1.2rem 1.5rem;
   border-radius: 20px;
   display: flex;
@@ -201,13 +213,17 @@
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(246, 188, 64, 0.1) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(246, 188, 64, 0.1) 0%,
+      transparent 70%
+    );
     transform: rotate(45deg);
     animation: shine 3s infinite linear;
     pointer-events: none;
@@ -223,7 +239,7 @@
     letter-spacing: 0.5px;
 
     &::before {
-      content: '🎼';
+      content: "🎼";
       font-size: 1.4rem;
       animation: float 3s infinite ease-in-out;
     }
@@ -242,7 +258,7 @@
     position: relative;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
@@ -273,7 +289,7 @@
     }
 
     &::before {
-      content: '🎵';
+      content: "🎵";
       font-size: 1.2rem;
       animation: bounce 2s infinite ease-in-out;
     }
@@ -281,7 +297,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -290,7 +307,8 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

@@ -1,18 +1,16 @@
-@import "./contants.scss";
+@use "./contants.scss" as *;
 
 .bg-primary {
-  background-color: #f6bc40;;
+  background-color: #f6bc40;
 }
 
 .innerWidth {
-  width: 100%; 
-  
+  width: 100%;
+
   @media (min-width: $xxl) {
     max-width: 1280px;
     margin: auto;
   }
-
-  width: 100%;
 }
 
 .paddings {

@@ -1,4 +1,4 @@
-@import "../../styles/contants.scss";
+@use "../../styles/contants.scss" as *;
 
 .wrapper {
   overflow: hidden;
@@ -17,7 +17,8 @@
       text-transform: uppercase;
       color: transparent;
       -webkit-background-clip: text; // Clip the background to the text
-      background-image: linear-gradient(transparent, transparent), linear-gradient(to right, #ffa500, #e7e7e7);
+      background-image: linear-gradient(transparent, transparent),
+        linear-gradient(to right, #ffa500, #e7e7e7);
       background-clip: text; // Clip the background to the text
       font-weight: 700;
     }
@@ -25,11 +26,11 @@
     .skillsContainer p {
       @media (max-width: $sm) {
         margin: 0;
-        font-size: .8rem;
+        font-size: 0.8rem;
       }
       margin-top: 4.5rem;
     }
-    
+
     p {
       line-height: 50px;
       @media (max-width: $sm) {
@@ -128,18 +129,38 @@
         margin: 0.5rem;
         color: antiquewhite;
         font-size: 0.8rem;
-        animation: scaleUp 0.5s ease-in-out; 
+        animation: scaleUp 0.5s ease-in-out;
       }
-      .html { background-color: #E34C26; }
-      .css { background-color: #663399; }
-      .javascript { background-color: #F0DB4F; }
-      .react { background-color: #61DBFB; }
-      .nodejs { background-color: #a612b4; } // Node.js color
-      .express { background-color: #000000; } // Express color
-      .photoshop { background-color: #0d78c4; } // Photoshop color
-      .illustrator { background-color: #FF9A00; } // Illustrator color
-      .wordpress { background-color: #21759B; } // WordPress color
-      .elementor { background-color: #0073AA; } 
+      .html {
+        background-color: #e34c26;
+      }
+      .css {
+        background-color: #663399;
+      }
+      .javascript {
+        background-color: #f0db4f;
+      }
+      .react {
+        background-color: #61dbfb;
+      }
+      .nodejs {
+        background-color: #a612b4;
+      } // Node.js color
+      .express {
+        background-color: #000000;
+      } // Express color
+      .photoshop {
+        background-color: #0d78c4;
+      } // Photoshop color
+      .illustrator {
+        background-color: #ff9a00;
+      } // Illustrator color
+      .wordpress {
+        background-color: #21759b;
+      } // WordPress color
+      .elementor {
+        background-color: #0073aa;
+      }
     }
   }
 }
@@ -208,19 +229,19 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 2rem;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .skillCard {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 150px; 
+  width: 150px;
   height: 60px;
   background: #1e1e1e;
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 10px;
-  font-size: .9rem;
+  font-size: 0.9rem;
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; // Added box-shadow transition
   cursor: pointer;
   animation: slideIn 1s ease;
@@ -235,9 +256,8 @@
 
 .icon {
   font-size: 2.5rem;
-  padding-right: .4rem;
+  padding-right: 0.4rem;
 }
-
 
 @keyframes slideIn {
   from {

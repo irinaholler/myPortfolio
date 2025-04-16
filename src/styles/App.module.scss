@@ -1,4 +1,4 @@
-@import "./contants.scss";
+@use "./contants.scss" as *;
 
 .container {
   overflow-x: clip;

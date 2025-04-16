@@ -1,4 +1,4 @@
-@import "../../styles/contants.scss";
+@use "../../styles/contants.scss" as *;
 
 .wrapper {
   overflow: hidden;
@@ -63,18 +63,17 @@
       transition: all 0.3s ease-in-out;
       box-shadow: 0 4px 15px rgba(255, 138, 0, 0.3);
       margin-top: 1.5rem;
-      
+
       &:hover {
         background: linear-gradient(120deg, #0d2f3f, #0d2f3f);
         box-shadow: 0 6px 20px rgba(218, 27, 96, 0.4);
         transform: translateY(-2px);
       }
-    
+
       &:active {
         transform: scale(0.95);
       }
     }
-    
 
     .lowerElements {
       @media (max-width: $sm), (max-width: $md) {

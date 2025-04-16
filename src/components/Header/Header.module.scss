@@ -1,5 +1,4 @@
-@import "../../styles/contants.scss";
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
+@use "../../styles/contants.scss" as *;
 
 .wrapper {
   position: sticky;
