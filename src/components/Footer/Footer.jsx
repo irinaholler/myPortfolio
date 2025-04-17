@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 const Footer = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentRadio, setCurrentRadio] = useState('');
-  const [playCount, setPlayCount] = useState(2);
   const [uniqueListeners, setUniqueListeners] = useState(0);
 
   useEffect(() => {
@@ -94,11 +93,6 @@ const Footer = () => {
                 >
                 </button>
               </div>
-            </div>
-            <div className={css.playCount}>
-              <span className={css.countLabel}>Play Count</span>
-              <span className={css.count}>{playCount}</span>
-              <span className={css.userCount}>{uniqueListeners} music lovers</span>
             </div>
             <audio id="radioPlayer" controls style={{ display: 'none' }}>
               <source src="https://streams.80s80s.de/100/mp3-128/streams.80s80s.de/" type="audio/mpeg" />

@@ -21,5 +21,15 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // Use the modern Sass API
+        sassOptions: {
+          outputStyle: 'expanded',
+        }
+      }
+    }
   }
 });
