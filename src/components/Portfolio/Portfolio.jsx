@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
 import css from "./Portfolio.module.scss";
 import { fadeIn, staggerChildren, textVariant } from "../../utils/motion.js";
+import { projects } from "../../utils/data";
 
 const Portfolio = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,51 +40,6 @@ const Portfolio = () => {
     setExpandedProject(expandedProject === index ? null : index);
   };
 
-  const projects = [
-    {
-      src: "./prj-mitAussicht.png",
-      title: "mitAussicht",
-      description: "WebSite / WordPress / Elementor",
-      details: "A modern real estate website showcasing properties with beautiful views. Built with WordPress and Elementor for easy content management.",
-      link: "http://wohnen-mitaussicht.de",
-    },
-    {
-      src: "./prj-Gries GmbH-WS.png",
-      title: "Gries GmbH",
-      description: "WebSite / WordPress / Elementor",
-      details: "Corporate website for Gries GmbH featuring company services, portfolio, and contact information. Responsive design optimized for all devices.",
-      link: "http://www.gries-gmbh.de",
-    },
-    {
-      src: "./prj-connectify.png",
-      title: "Connectify",
-      description: "MERN Fullstack Social Platform",
-      details: "A modern social platform built with the MERN stack (MongoDB, Express, React, Node.js), Tailwind CSS, and Vite. Features a beautiful purple-blue gradient design, user authentication, story sharing, writer connections, and an inspiring community space. Includes dark mode and responsive design.",
-      link: "https://echowords.onrender.com/welcome",
-    },
-    {
-      src: "./prj-DCI.png",
-      title: "DCI Project",
-      description: "html / css",
-      details: "A coffee world themed website showcasing different coffee types and brewing methods. Built with pure HTML and CSS for clean, semantic markup.",
-      link: "https://irinaholler.github.io/DCI-Projekt-Kaffee-Welt/",
-    },
-    {
-      src: "./prj-Pokemon.png",
-      title: "Pokemon Project",
-      description: "html / css / JavaScript",
-      details: "Interactive Pokemon card game with dynamic content loading and user interactions. Features search, filtering, and detailed Pokemon information.",
-      link: "https://irinaholler.github.io/Pokemon-Project/",
-    },
-    {
-      src: "./prj-Memory-Card-Game.png",
-      title: "Memory Card Game",
-      description: "html / css / JavaScript",
-      details: "Classic memory card game with modern design and animations. Includes score tracking, timer, and difficulty levels for an engaging user experience.",
-      link: "https://irinaholler.github.io/Memory-Card-Game/",
-    },
-  ];
-
   return (
     <motion.section
       variants={staggerChildren}
@@ -93,8 +50,14 @@ const Portfolio = () => {
     >
       <a className="anchor" id="portfolio"></a>
 
-      <div className={`innerWidth flexCenter ${css.container}`}>
-        <motion.div variants={textVariant(0.4)} className={`flexCenter ${css.heading}`}>
+      <motion.div
+        variants={staggerChildren}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: false, amount: 0.25 }}
+        className={`innerWidth flexCenter ${css.container}`}
+      >
+        <motion.div variants={textVariant(0.4)} className={css.heading}>
           <div className={css.expertiseContainer}>
             <h1 className={css.outlineText}>All Creative Works</h1>
             <h1 className={css.overlayText}>
@@ -102,8 +65,20 @@ const Portfolio = () => {
             </h1>
           </div>
 
-          <a href="https://github.com/irinaholler" target="_blank" rel="noopener noreferrer" className={css.secondaryText}>Explore More Works</a>
-
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={css.secondaryText}
+          >
+            <a
+              href="https://github.com/irinaholler"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={css.exploreLink}
+            >
+              Explore More Works <FaArrowRight className={css.arrowIcon} />
+            </a>
+          </motion.div>
         </motion.div>
 
         <div className={`flexCenter ${css.showCase}`}>
@@ -114,7 +89,7 @@ const Portfolio = () => {
               className={css.projectContainer}
             >
               <img
-                src={project.src}
+                src={project.img}
                 alt={project.title}
                 onClick={(event) => openModal(event, project.description, project.link)}
                 className={css.projectImage}
@@ -128,7 +103,7 @@ const Portfolio = () => {
                 }}
               >
                 <h3>{project.title}</h3>
-                <p>{project.details}</p>
+                <p>{project.description}</p>
                 <a
                   href={project.link}
                   target="_blank"
@@ -148,7 +123,7 @@ const Portfolio = () => {
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {isModalOpen && (
         <div

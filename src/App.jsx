@@ -24,7 +24,29 @@ const App = () => {
     if (listeners) {
       setMusicLovers(parseInt(listeners, 10));
     }
-  }, []);
+
+    // Get the play count from session storage
+    const plays = sessionStorage.getItem('playCount');
+    if (plays) {
+      setPlayCount(parseInt(plays, 10));
+    }
+
+    // Add event listener for the audio element
+    const audioElement = document.getElementById('radioPlayer');
+    if (audioElement) {
+      audioElement.addEventListener('play', () => {
+        const newPlayCount = playCount + 1;
+        setPlayCount(newPlayCount);
+        sessionStorage.setItem('playCount', newPlayCount);
+      });
+    }
+
+    return () => {
+      if (audioElement) {
+        audioElement.removeEventListener('play', () => { });
+      }
+    };
+  }, [playCount]);
 
   return (
     <div className={`bg-primary ${css.container}`}>

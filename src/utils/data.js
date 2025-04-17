@@ -126,3 +126,42 @@ export const sliderSettings = {
     },
   ],
 };
+
+export const projects = [
+  {
+    name: "Mit Aussicht",
+    description: "A beautiful website showcasing scenic views and locations with an immersive user experience.",
+    img: "./prj-mitAussicht.png",
+    link: "https://wohnen-mitaussicht.de"
+  },
+  {
+    name: "Gries GmbH Website",
+    description: "Corporate website with modern design and seamless user experience for Gries GmbH.",
+    img: "./prj-Gries GmbH-WS.png",
+    link: "https://gries-gmbh.de"
+  },
+  {
+    name: "Connectify",
+    description: "A modern social networking platform with real-time messaging and content sharing features.",
+    img: "./prj-connectify.png",
+    link: "https://echowords.onrender.com/welcome"
+  },
+  {
+    name: "Simple Music Player",
+    description: "An elegant music player application with a clean interface and essential playback features.",
+    img: "./Simple_Music.svg.png",
+    link: "https://simple-music-player.vercel.app"
+  },
+  {
+    name: "Memory Card Game",
+    description: "An interactive memory card game with smooth animations and engaging gameplay.",
+    img: "./prj-Memory-Card-Game.png",
+    link: "https://memory-card-game-ih.vercel.app"
+  },
+  {
+    name: "Pokemon Game",
+    description: "An interactive Pokemon game with engaging gameplay and beautiful graphics.",
+    img: "./prj-Pokemon.png",
+    link: "https://pokemon-game-ih.vercel.app"
+  }
+];

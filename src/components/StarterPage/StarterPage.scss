@@ -9,6 +9,12 @@
   overflow: hidden;
   position: relative;
   transition: transform 1s ease;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+
+  &.loaded {
+    opacity: 1;
+  }
 
   @media (max-width: 768px) {
     height: 70vh;
@@ -18,11 +24,22 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-15%, -20%); // slightly more to the right
-    text-align: center;
+    transform: translate(-15%, -50%);
+    text-align: left;
     z-index: 1;
-    animation: fadeInUp 1.5s ease-out;
     padding: 0 1rem;
+    width: 100%;
+    max-width: 800px;
+    transition: transform 0.3s ease-out;
+
+    @media (max-width: 1024px) {
+      transform: translate(-10%, -50%);
+    }
+
+    @media (max-width: 768px) {
+      transform: translate(-5%, -50%);
+      text-align: center;
+    }
 
     h1 {
       font-family: "Raleway", sans-serif;
@@ -32,6 +49,9 @@
       letter-spacing: 0.05rem;
       color: #278164;
       transition: transform 1.5s ease, opacity 1.5s ease;
+      opacity: 0;
+      animation: fadeInText 1.5s ease-out forwards;
+      animation-delay: 0.5s;
 
       @media (max-width: 1024px) {
         font-size: 1.6rem;
@@ -39,7 +59,6 @@
 
       @media (max-width: 768px) {
         font-size: 1.4rem;
-        transform: none;
       }
 
       @media (max-width: 640px) {
@@ -49,14 +68,23 @@
   }
 
   // Fade animation for text
-  @keyframes fadeInUp {
+  @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translate(-50%, -40%);
     }
     to {
       opacity: 1;
-      transform: translate(-50%, -50%);
+    }
+  }
+
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -67,33 +95,21 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 1.2s ease;
+    transition: transform 0.3s ease-out;
     z-index: 0;
-
-    @media (max-width: 768px) {
-      transform: scale(1);
-    }
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+    animation-delay: 0.3s;
+    transform-origin: center center;
   }
 
   &.zoom-in {
     .full-screen-image {
-      transform: scale(1.4);
-
-      @media (max-width: 768px) {
-        transform: scale(1.2);
-      }
-    }
-
-    h1 {
       transform: scale(1.8);
-
-      @media (max-width: 1024px) {
-        transform: scale(1.4);
-      }
-
-      @media (max-width: 768px) {
-        transform: scale(1.2);
-      }
+    }
+    
+    .title {
+      transform: translate(-15%, -50%) scale(1.8);
     }
   }
 
