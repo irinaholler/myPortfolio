@@ -1,24 +1,27 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema, model } = mongoose;
 
-const radioClickSchema = new Schema({
-    buttonId: {
-        type: String,
-        required: true
+const radioClickSchema = new Schema(
+    {
+        buttonId: {
+            type: String,
+            required: true,
+        },
+        clickedBy: {
+            type: String,
+            required: true,
+        },
+        timestamp: {
+            type: Date,
+            default: Date.now,
+        },
     },
-    clickedBy: {
-        type: String,
-        required: true
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now
+    {
+        timestamps: true,
     }
-}, {
-    timestamps: true
-});
+);
 
-const RadioClick = mongoose.model('RadioClick', radioClickSchema);
+const RadioClick = model('RadioClick', radioClickSchema);
 
-module.exports = RadioClick; 
+export default RadioClick;

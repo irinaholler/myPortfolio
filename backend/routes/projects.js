@@ -1,23 +1,24 @@
-const router = require('express').Router();
-let Project = require('../models/project.model');
-const auth = require('../middleware/auth');
+import express from 'express';
+import Project from '../models/project.model.js';
+
+const router = express.Router();
 
 // Get all projects
-router.route('/').get((req, res) => {
+router.get('/', (req, res) => {
     Project.find()
         .then(projects => res.json(projects))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // Get featured projects
-router.route('/featured').get((req, res) => {
+router.get('/featured', (req, res) => {
     Project.find({ featured: true })
         .then(projects => res.json(projects))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Add new project (admin only)
-router.route('/add').post(auth, (req, res) => {
+// Add new project (public now — be careful!)
+router.post('/add', (req, res) => {
     const { title, description, technologies, imageUrl, githubUrl, liveUrl, featured } = req.body;
 
     const newProject = new Project({
@@ -35,22 +36,22 @@ router.route('/add').post(auth, (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Get specific project
-router.route('/:id').get((req, res) => {
+// Get specific project by ID
+router.get('/:id', (req, res) => {
     Project.findById(req.params.id)
         .then(project => res.json(project))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Delete project (admin only)
-router.route('/:id').delete(auth, (req, res) => {
+// Delete project by ID (public)
+router.delete('/:id', (req, res) => {
     Project.findByIdAndDelete(req.params.id)
         .then(() => res.json('Project deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Update project (admin only)
-router.route('/update/:id').post(auth, (req, res) => {
+// Update project by ID (public)
+router.post('/update/:id', (req, res) => {
     Project.findById(req.params.id)
         .then(project => {
             project.title = req.body.title;
@@ -68,4 +69,4 @@ router.route('/update/:id').post(auth, (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-module.exports = router; 
+export default router;

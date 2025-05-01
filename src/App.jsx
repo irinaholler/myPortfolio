@@ -6,7 +6,6 @@ import Work from './components/Work/Work';
 import Portfolio from './components/Portfolio/Portfolio';
 import Footer from './components/Footer/Footer';
 import Feedback from './components/Feedback/Feedback';
-import AdminDashboard from './components/Admin/AdminDashboard';
 import PlayStats from './components/PlayStats/PlayStats';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MouseFollower from './components/MouseFollower';
@@ -19,40 +18,29 @@ const App = () => {
   const [musicLovers, setMusicLovers] = useState(0);
 
   useEffect(() => {
-    // Get the music lovers count from session storage
     const listeners = sessionStorage.getItem('uniqueListeners');
-    if (listeners) {
-      setMusicLovers(parseInt(listeners, 10));
-    }
+    if (listeners) setMusicLovers(parseInt(listeners, 10));
 
-    // Get the play count from session storage
     const plays = sessionStorage.getItem('playCount');
-    if (plays) {
-      setPlayCount(parseInt(plays, 10));
-    }
+    if (plays) setPlayCount(parseInt(plays, 10));
 
-    // Add event listener for the audio element
     const audioElement = document.getElementById('radioPlayer');
     if (audioElement) {
-      audioElement.addEventListener('play', () => {
+      const handlePlay = () => {
         const newPlayCount = playCount + 1;
         setPlayCount(newPlayCount);
         sessionStorage.setItem('playCount', newPlayCount);
-      });
-    }
+      };
+      audioElement.addEventListener('play', handlePlay);
 
-    return () => {
-      if (audioElement) {
-        audioElement.removeEventListener('play', () => { });
-      }
-    };
+      return () => audioElement.removeEventListener('play', handlePlay);
+    }
   }, [playCount]);
 
   return (
     <div className={`bg-primary ${css.container}`}>
       <Router basename="/myPortfolio">
         <Routes>
-          <Route path="/admin/*" element={<AdminDashboard />} />
           <Route path="/" element={
             <>
               <MouseFollower />
@@ -72,4 +60,4 @@ const App = () => {
   );
 };
 
-export default App
+export default App;

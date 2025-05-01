@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { fadeIn, staggerContainer, slideIn, getMenuStyles, headerVariants } from '../../utils/motion.js';
 import css from "./Hero.module.scss";
 import { motion } from "framer-motion";
-
+import CVViewer from "./CVViewer";
 
 const Hero = () => {
+  const [showCV, setShowCV] = useState(false);
+
   return (
     <section className={`paddings ${css.wrapper}`}>
       <motion.div
@@ -66,12 +68,42 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          <motion.div variants={fadeIn("left", "tween", 0.5, 1)} className={css.certificate}>
-            <img src="./certificate.png" alt="" />
+          <motion.div
+            variants={fadeIn("left", "tween", 0.5, 1)}
+            className={css.certificate}
+            onClick={() => setShowCV(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className={css.certificateIcon}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 4v16a1 1 0 001 1h14a1 1 0 001-1V4a1 1 0 00-1-1H5a1 1 0 00-1 1z" />
+                <line x1="7" y1="8" x2="17" y2="8" />
+                <line x1="7" y1="12" x2="17" y2="12" />
+                <line x1="7" y1="16" x2="13" y2="16" />
+                <circle cx="16" cy="16" r="2" />
+                <path d="M16 14l0.5-2" />
+                <path d="M16 14l-0.5-2" />
+                <path d="M16 18l0.5 2" />
+                <path d="M16 18l-0.5 2" />
+                <path d="M14 16l-2 0.5" />
+                <path d="M14 16l-2-0.5" />
+                <path d="M18 16l2 0.5" />
+                <path d="M18 16l2-0.5" />
+              </svg>
+            </div>
             <span>CERTIFIED</span>
-            <span>MEDIA DESIGNER</span>
+            <span>WEB DESIGNER</span>
           </motion.div>
         </div>
+
+        {showCV && <CVViewer onClose={() => setShowCV(false)} />}
       </motion.div>
     </section>
   );

@@ -1,7 +1,15 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
+import projectsRouter from './routes/projects.js';
+import contactRouter from './routes/contact.js';
+import radioClicksRouter from './routes/radioClicks.js';
+import feedbackRouter from './routes/feedback.js';
+
+
+dotenv.config();
 
 const app = express();
 
@@ -11,31 +19,21 @@ app.use(express.json());
 
 // MongoDB Connection
 const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio';
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+
+mongoose.connect(uri)
+    .then(() => console.log('✅ Connected to MongoDB Atlas'))
+    .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('MongoDB database connection established successfully');
 });
 
-// Routes
-const projectsRouter = require('./routes/projects');
-const contactRouter = require('./routes/contact');
-const adminRouter = require('./routes/admin');
-const radioClicksRouter = require('./routes/radioClicks');
-const feedbackRouter = require('./routes/feedback');
-
 app.use('/api/projects', projectsRouter);
 app.use('/api/contact', contactRouter);
-app.use('/api/admin', adminRouter);
 app.use('/api/radio-clicks', radioClicksRouter);
 app.use('/api/feedback', feedbackRouter);
 
 // Start server
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-}); 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

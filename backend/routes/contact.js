@@ -1,54 +1,66 @@
-const router = require('express').Router();
-let Contact = require('../models/contact.model');
-const auth = require('../middleware/auth');
+import express from 'express';
+import Contact from '../models/contact.model.js';
 
-// Submit contact form
-router.route('/submit').post((req, res) => {
-    const { name, email, message } = req.body;
+const router = express.Router();
 
-    const newContact = new Contact({
-        name,
-        email,
-        message
-    });
+// Submit contact form (public)
+router.post('/submit', async (req, res) => {
+    try {
+        const { name, email, message } = req.body;
 
-    newContact.save()
-        .then(() => res.json('Message sent successfully!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+        const newContact = new Contact({ name, email, message });
+        await newContact.save();
+
+        res.json('Message sent successfully!');
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// Get all messages (admin only)
-router.route('/').get(auth, (req, res) => {
-    Contact.find()
-        .sort({ createdAt: -1 })
-        .then(messages => res.json(messages))
-        .catch(err => res.status(400).json('Error: ' + err));
+// Get all messages (public – consider restricting later)
+router.get('/', async (req, res) => {
+    try {
+        const messages = await Contact.find().sort({ createdAt: -1 });
+        res.json(messages);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// Get specific message (admin only)
-router.route('/:id').get(auth, (req, res) => {
-    Contact.findById(req.params.id)
-        .then(message => res.json(message))
-        .catch(err => res.status(400).json('Error: ' + err));
+// Get specific message by ID (public)
+router.get('/:id', async (req, res) => {
+    try {
+        const message = await Contact.findById(req.params.id);
+        if (!message) return res.status(404).json({ error: 'Message not found' });
+        res.json(message);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// Update message status (admin only)
-router.route('/update/:id').post(auth, (req, res) => {
-    Contact.findById(req.params.id)
-        .then(message => {
-            message.status = req.body.status;
-            message.save()
-                .then(() => res.json('Message status updated!'))
-                .catch(err => res.status(400).json('Error: ' + err));
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
+// Update message status (optional – keep only if needed)
+router.post('/update/:id', async (req, res) => {
+    try {
+        const message = await Contact.findById(req.params.id);
+        if (!message) return res.status(404).json({ error: 'Message not found' });
+
+        message.status = req.body.status;
+        await message.save();
+
+        res.json('Message status updated!');
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// Delete message (admin only)
-router.route('/:id').delete(auth, (req, res) => {
-    Contact.findByIdAndDelete(req.params.id)
-        .then(() => res.json('Message deleted.'))
-        .catch(err => res.status(400).json('Error: ' + err));
+// Delete message (optional – keep only if necessary)
+router.delete('/:id', async (req, res) => {
+    try {
+        await Contact.findByIdAndDelete(req.params.id);
+        res.json('Message deleted.');
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-module.exports = router; 
+export default router;

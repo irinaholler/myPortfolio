@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const auth = async (req, res, next) => {
     try {
@@ -13,11 +13,11 @@ const auth = async (req, res, next) => {
             return res.status(401).json({ message: 'Token verification failed, authorization denied' });
         }
 
-        req.admin = verified;
+        req.user = verified;
         next();
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid' });
     }
 };
 
-module.exports = auth; 
+export default auth;

@@ -12,39 +12,30 @@ const FeedbackDashboard = () => {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeTab]);
 
     const fetchData = async () => {
         try {
             setLoading(true);
+            let response;
 
             if (activeTab === 'summary') {
-                const response = await axios.get('/api/feedback/summary', {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('adminToken')}`
-                    }
-                });
+                response = await axios.get('/api/feedback/summary');
                 setSummary(response.data);
             } else {
-                const response = await axios.get('/api/feedback', {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('adminToken')}`
-                    }
-                });
+                response = await axios.get('/api/feedback');
                 setFeedback(response.data);
             }
 
             setError(null);
         } catch (err) {
-            setError('Failed to fetch feedback data. Please check your authentication.');
-            console.error(err);
+            console.error('Error fetching feedback data:', err);
+            setError('Could not load feedback. Please try again later.');
         } finally {
             setLoading(false);
         }
     };
-
-    if (loading) return <div className="loading">Loading feedback data...</div>;
-    if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="feedback-dashboard">
@@ -65,7 +56,11 @@ const FeedbackDashboard = () => {
                 </button>
             </div>
 
-            {activeTab === 'summary' && summary && (
+            {loading ? (
+                <div className="loading">Loading feedback data...</div>
+            ) : error ? (
+                <div className="error">{error}</div>
+            ) : activeTab === 'summary' && summary ? (
                 <div className="summary-container">
                     <div className="summary-card">
                         <h3>Total Responses</h3>
@@ -92,9 +87,7 @@ const FeedbackDashboard = () => {
                         <div className="summary-value">{summary.avgOverall.toFixed(1)} / 5</div>
                     </div>
                 </div>
-            )}
-
-            {activeTab === 'details' && (
+            ) : (
                 <div className="details-container">
                     <table>
                         <thead>
@@ -120,7 +113,6 @@ const FeedbackDashboard = () => {
                             ))}
                         </tbody>
                     </table>
-
                     {feedback.length === 0 && (
                         <p className="no-data">No feedback data found.</p>
                     )}
@@ -130,4 +122,4 @@ const FeedbackDashboard = () => {
     );
 };
 
-export default FeedbackDashboard; 
+export default FeedbackDashboard;
