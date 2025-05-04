@@ -12,10 +12,9 @@ const Portfolio = () => {
   const [expandedProject, setExpandedProject] = useState(null);
 
   const openModal = (event, description, link) => {
-    const projectElement = event.currentTarget; // Get the clicked project element
-    const { top, left, width, height } = projectElement.getBoundingClientRect(); // Get position and size
+    const projectElement = event.currentTarget;
+    const { top, left, width, height } = projectElement.getBoundingClientRect();
 
-    // Update modal overlay style dynamically
     setModalStyle({
       position: "absolute",
       top: `${top + window.scrollY}px`,
@@ -24,7 +23,6 @@ const Portfolio = () => {
       height: `${height}px`,
     });
 
-    // Set modal content
     setModalContent({ description, link });
     setIsModalOpen(true);
   };
@@ -32,11 +30,11 @@ const Portfolio = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalContent({ description: "", link: "" });
-    setModalStyle({}); // Reset modal style
+    setModalStyle({});
   };
 
   const toggleProjectInfo = (index, event) => {
-    event.stopPropagation(); // Prevent triggering the modal
+    event.stopPropagation();
     setExpandedProject(expandedProject === index ? null : index);
   };
 
@@ -133,7 +131,7 @@ const Portfolio = () => {
         >
           <div
             className={css.modalContent}
-            onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <span className={css.closeButton} onClick={closeModal}>&times;</span>
             <p>{modalContent.description}</p>
