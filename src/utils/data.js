@@ -147,10 +147,11 @@ export const projects = [
     link: "https://echowords.onrender.com/welcome"
   },
   {
-    name: "Simple Music Player",
-    description: "An elegant music player application with a clean interface and essential playback features.",
-    img: "./Simple_Music.svg.png",
-    link: "https://simple-music-player.vercel.app"
+    name: "ChatFlow App",
+    description:
+      "A real-time chat application built with React, Node.js, Express and Socket.io. Features JWT-based auth, conversational UI, and live presence.",
+    img: "./prj-ChatFlow-App.png",
+    link: "https://youtu.be/eJ02u7vVLCI?si=pAz21_Kuvz0EHLqQ"
   },
   {
     name: "Memory Card Game",

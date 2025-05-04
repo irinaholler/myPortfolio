@@ -76,12 +76,15 @@
         max-width: 25.5rem;
         border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0px 21px 13px rgba(0, 0, 0, 0.13);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+        background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(39,129,100,0.08) 100%);
+        backdrop-filter: blur(8px);
+        border: 1px solid transparent;
+        cursor: pointer;
 
         &:hover {
           transform: scale(1.02);
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
       }
 
@@ -93,9 +96,11 @@
         max-width: 25.5rem;
         max-height: 18rem;
         object-fit: cover;
-        cursor: pointer;
         position: relative;
         overflow: hidden;
+        filter: brightness(1.08) saturate(1.2) blur(0.5px);
+        transform: scale(1.04) rotate(1deg);
+        box-shadow: 0 8px 32px 0 rgba(255, 165, 0, 0.15);
       }
 
       .projectInfo {
@@ -107,8 +112,9 @@
         color: white;
         z-index: 2;
         opacity: 0;
-        transform: translateY(100%);
-        transition: opacity 0.4s ease, transform 0.4s ease;
+        transform: scale(1.15) rotate(10deg);
+        box-shadow: 0 4px 24px rgba(39,129,100,0.12);
+        transition: background 0.3s, box-shadow 0.3s;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -175,7 +181,11 @@
         font-size: 16px;
         cursor: pointer;
         z-index: 3;
-        transition: background 0.3s ease;
+        transition: 
+        background 0.3s,
+        color 0.3s,
+        transform 0.3s,
+        box-shadow 0.3s;
 
         &:hover {
           background: rgba(39, 129, 100, 1);

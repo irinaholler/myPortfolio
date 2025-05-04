@@ -90,7 +90,7 @@ const Portfolio = () => {
             >
               <img
                 src={project.img}
-                alt={project.title}
+                alt={project.name}
                 onClick={(event) => openModal(event, project.description, project.link)}
                 className={css.projectImage}
               />
@@ -102,7 +102,7 @@ const Portfolio = () => {
                   pointerEvents: expandedProject === index ? 'auto' : 'none'
                 }}
               >
-                <h3>{project.title}</h3>
+                <h3>{project.name}</h3>
                 <p>{project.description}</p>
                 <a
                   href={project.link}
