@@ -141,8 +141,8 @@ export const projects = [
     link: "https://gries-gmbh.de"
   },
   {
-    name: "Connectify",
-    description: "A modern social networking platform with real-time messaging and content sharing features.",
+    name: "Connectify - A Blogging Platform",
+    description: "Connectify is where thoughts become posts, and posts spark conversations — a sleek social blog app with real-time messaging and expressive storytelling.",
     img: "./prj-connectify.png",
     link: "https://echowords.onrender.com/welcome"
   },
