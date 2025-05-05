@@ -144,7 +144,7 @@ export const projects = [
     name: "Connectify - A Blogging Platform",
     description: "Connectify is where thoughts become posts, and posts spark conversations — a sleek social blog app with real-time messaging and expressive storytelling.",
     img: "./prj-connectify.png",
-    link: "https://echowords.onrender.com/welcome"
+    link: "https://youtu.be/o9iHF65ouTE?si=OpsS-Rv1U5PFCbZU"
   },
   {
     name: "ChatFlow App",
