@@ -1,0 +1,116 @@
+@use "../../styles/contants.scss" as *;
+
+.wrapper {
+  .container {
+    flex-direction: column;
+    gap: 2rem;
+
+    .experiences {
+      @media (max-width: 768px) {
+        display: none;
+      }
+      padding-top: 4rem;
+      width: 100%;
+      flex-direction: column;
+      gap: 1.4rem;
+      position: relative;
+
+      .exp {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-between;
+        line-height: 40px;
+        align-items: flex-start;
+
+        > div {
+          flex: 1;
+        }
+
+        .role {
+          margin-left: 2rem;
+        }
+      }
+
+      .progressbar {
+        position: absolute;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        left: 45%;
+
+        .line {
+          position: absolute;
+          height: 92%;
+          width: 2px;
+          background-image: linear-gradient(
+            black 33%,
+            rgba(255, 255, 255, 0) 0%
+          );
+          background-position: right;
+          background-size: 2px 30px;
+          background-repeat: repeat-y;
+          left: 48%;
+          z-index: 1;
+          border-radius: 5px;
+        }
+
+        > div {
+          flex: 1;
+          z-index: 2;
+
+          .circle {
+            margin-top: 4rem;
+            border-radius: 50%;
+            background: black;
+            width: 1.2rem;
+            height: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.expertiseContainer {
+  position: relative;
+  text-align: left;
+  font-family: "Arial", sans-serif;
+  color: antiquewhite;
+  padding-right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.outlineText {
+  @media (max-width: $ss) {
+    font-size: 3rem;
+  }
+  font-size: 5rem;
+  font-weight: 700;
+  -webkit-text-stroke: 2px rgba(13, 48, 63, 0.6);
+  color: transparent;
+  position: relative;
+}
+
+.overlayText {
+  @media (max-width: $sm) {
+    padding-top: 1rem;
+    font-size: 1.2rem;
+  }
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0d2f3f;
+  position: absolute;
+  margin-left: 40%;
+  top: 95%;
+  transform: translateY(-50%);
+  padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: none;
+  }
+}

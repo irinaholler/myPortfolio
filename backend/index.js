@@ -34,6 +34,10 @@ app.use('/api/contact', contactRouter);
 app.use('/api/radio-clicks', radioClicksRouter);
 app.use('/api/feedback', feedbackRouter);
 
+app.use((req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

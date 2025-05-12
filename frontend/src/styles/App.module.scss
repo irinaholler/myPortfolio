@@ -1,0 +1,7 @@
+@use "./contants.scss" as *;
+
+.container {
+  overflow-x: clip;
+  position: relative;
+  color: $primary;
+}

@@ -1,0 +1,101 @@
+@use "../../styles/contants.scss" as *;
+
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: #278164;
+  transition: all 300ms ease;
+
+  .container {
+    justify-content: space-between;
+    font-weight: 500;
+    color: antiquewhite;
+
+    .logo {
+      font-size: 2rem;
+      font-family: "Orbitron", sans-serif;
+      color: antiquewhite;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: transform 0.3s ease, color 0.3s ease-in-out;
+      cursor: crosshair;
+
+      &:hover {
+        color: orange;
+        transform: scale(1.2);
+      }
+    }
+
+    .menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      text-transform: uppercase;
+      font-size: 1rem;
+
+      li a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+
+        &:hover {
+          color: orange;
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      // For mobile dropdown
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 3.5rem;
+        right: 1rem;
+        flex-direction: column;
+        background: #278164;
+        padding: 1.5rem;
+        border-radius: 8px;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+
+        &.show {
+          display: flex;
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+
+    .socialIcons {
+      display: flex;
+      gap: 1rem;
+
+      a {
+        color: white;
+        transition: transform 0.2s ease, color 0.3s ease-in-out;
+
+        &:hover {
+          color: #ff8a00;
+          transform: scale(1.2);
+        }
+      }
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+
+    .menuIcon {
+      display: none;
+      cursor: pointer;
+      color: white;
+
+      @media (max-width: 768px) {
+        display: block;
+      }
+    }
+  }
+}
