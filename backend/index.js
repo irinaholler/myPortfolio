@@ -14,7 +14,13 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://irini-niko.netlify.app'],
+    origin: function (origin, callback) {
+        // allow requests with no origin (like curl or mobile apps)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
