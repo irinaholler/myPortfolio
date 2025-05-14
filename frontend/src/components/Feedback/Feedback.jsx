@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API } from '../../utils/api';
 import './Feedback.scss';
 
 const Feedback = () => {
@@ -6,20 +7,20 @@ const Feedback = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        design: 5,
-        content: 5,
-        navigation: 5,
-        overall: 5,
+        design: null,
+        content: null,
+        navigation: null,
+        overall: null,
         comments: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
+        const { name, value, type } = e.target;
+        setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: type === 'radio' ? parseInt(value) : value
         }));
     };
 
@@ -28,8 +29,15 @@ const Feedback = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
 
+        if (!formData.design || !formData.content || !formData.navigation || !formData.overall) {
+            setSubmitStatus('error');
+            alert('Please rate all four categories before submitting.');
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
-            const response = await fetch('/api/feedback', {
+            const response = await fetch(`${API}/api/feedback/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,10 +50,10 @@ const Feedback = () => {
                 setFormData({
                     name: '',
                     email: '',
-                    design: 5,
-                    content: 5,
-                    navigation: 5,
-                    overall: 5,
+                    design: null,
+                    content: null,
+                    navigation: null,
+                    overall: null,
                     comments: ''
                 });
                 setTimeout(() => {
@@ -114,77 +122,30 @@ const Feedback = () => {
                                 />
                             </div>
 
-                            <div className="rating-group">
-                                <label>Design & Layout</label>
-                                <div className="rating-input">
-                                    {[1, 2, 3, 4, 5].map((value) => (
-                                        <label key={value} className="rating-label">
-                                            <input
-                                                type="radio"
-                                                name="design"
-                                                value={value}
-                                                checked={formData.design === value}
-                                                onChange={handleChange}
-                                            />
-                                            <span className="rating-star">★</span>
-                                        </label>
-                                    ))}
+                            {['design', 'content', 'navigation', 'overall'].map((field) => (
+                                <div className="rating-group" key={field}>
+                                    <label>{{
+                                        design: 'Design & Layout',
+                                        content: 'Content Quality',
+                                        navigation: 'Navigation & Usability',
+                                        overall: 'Overall Experience'
+                                    }[field]}</label>
+                                    <div className="rating-input">
+                                        {[1, 2, 3, 4, 5].map((value) => (
+                                            <label key={value} className="rating-label">
+                                                <input
+                                                    type="radio"
+                                                    name={field}
+                                                    value={value}
+                                                    checked={formData[field] === value}
+                                                    onChange={handleChange}
+                                                />
+                                                <span className="rating-star">★</span>
+                                            </label>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div className="rating-group">
-                                <label>Content Quality</label>
-                                <div className="rating-input">
-                                    {[1, 2, 3, 4, 5].map((value) => (
-                                        <label key={value} className="rating-label">
-                                            <input
-                                                type="radio"
-                                                name="content"
-                                                value={value}
-                                                checked={formData.content === value}
-                                                onChange={handleChange}
-                                            />
-                                            <span className="rating-star">★</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="rating-group">
-                                <label>Navigation & Usability</label>
-                                <div className="rating-input">
-                                    {[1, 2, 3, 4, 5].map((value) => (
-                                        <label key={value} className="rating-label">
-                                            <input
-                                                type="radio"
-                                                name="navigation"
-                                                value={value}
-                                                checked={formData.navigation === value}
-                                                onChange={handleChange}
-                                            />
-                                            <span className="rating-star">★</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="rating-group">
-                                <label>Overall Experience</label>
-                                <div className="rating-input">
-                                    {[1, 2, 3, 4, 5].map((value) => (
-                                        <label key={value} className="rating-label">
-                                            <input
-                                                type="radio"
-                                                name="overall"
-                                                value={value}
-                                                checked={formData.overall === value}
-                                                onChange={handleChange}
-                                            />
-                                            <span className="rating-star">★</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
+                            ))}
 
                             <div className="form-group">
                                 <label htmlFor="comments">Additional Comments</label>
@@ -225,4 +186,4 @@ const Feedback = () => {
     );
 };
 
-export default Feedback; 
+export default Feedback;

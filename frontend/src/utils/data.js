@@ -129,8 +129,8 @@ export const sliderSettings = {
 
 export const projects = [
   {
-    name: "Mit Aussicht",
-    description: "A beautiful website showcasing scenic views and locations with an immersive user experience.",
+    name: "mitAussicht",
+    description: "Built with WordPress and Elementor, supported by plugins for accessibility and performance — offering a glimpse into peaceful living with a view.",
     img: "./prj-mitAussicht.png",
     link: "https://wohnen-mitaussicht.de"
   },
@@ -155,14 +155,14 @@ export const projects = [
   },
   {
     name: "Memory Card Game",
-    description: "An interactive memory card game with smooth animations and engaging gameplay.",
+    description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
     img: "./prj-Memory-Card-Game.png",
-    link: "https://memory-card-game-ih.vercel.app"
+    link: "https://irinaholler.github.io/Memory-Card-Game/"
   },
   {
     name: "Pokemon Game",
     description: "An interactive Pokemon game with engaging gameplay and beautiful graphics.",
     img: "./prj-Pokemon.png",
-    link: "https://pokemon-game-ih.vercel.app"
+    link: "https://irinaholler.github.io/Pokemon-Project/"
   }
 ];

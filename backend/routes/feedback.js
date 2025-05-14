@@ -6,11 +6,23 @@ const router = express.Router();
 // Submit feedback (public)
 router.post('/submit', async (req, res) => {
     try {
-        const { design, content, navigation, overall, userIdentifier } = req.body;
+        const {
+            name,
+            email,
+            comments,
+            design,
+            content,
+            navigation,
+            overall,
+            userIdentifier
+        } = req.body;
 
         const identifier = userIdentifier || `user_${Math.random().toString(36).substring(2, 15)}`;
 
         const newFeedback = new Feedback({
+            name,
+            email,
+            comments,
             design,
             content,
             navigation,
@@ -19,6 +31,7 @@ router.post('/submit', async (req, res) => {
         });
 
         await newFeedback.save();
+
         res.json({
             message: 'Feedback submitted successfully!',
             userIdentifier: identifier
@@ -29,7 +42,7 @@ router.post('/submit', async (req, res) => {
     }
 });
 
-// Get all feedback (public)
+// Get all feedback
 router.get('/', async (req, res) => {
     try {
         const feedback = await Feedback.find().sort({ createdAt: -1 });
@@ -40,7 +53,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Get feedback summary (public)
+// Get feedback summary
 router.get('/summary', async (req, res) => {
     try {
         const summary = await Feedback.aggregate([

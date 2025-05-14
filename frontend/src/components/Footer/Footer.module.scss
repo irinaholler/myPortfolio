@@ -41,7 +41,7 @@
     }
 
     .right {
-      flex: 1;
+      flex: 2;
 
       .info {
         margin-bottom: 1rem;
@@ -224,5 +224,20 @@
   }
   100% {
     transform: rotate(45deg) translate(50%, 50%);
+  }
+}
+
+.primaryTextSmall {
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: 500;
+
+  a {
+    text-decoration: none;
+    color: #278164;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

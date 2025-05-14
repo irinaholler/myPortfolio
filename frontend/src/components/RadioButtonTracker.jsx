@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API } from '../src/utils/api';
 
 const RadioButtonTracker = ({ buttonId, children }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +17,7 @@ const RadioButtonTracker = ({ buttonId, children }) => {
                 localStorage.setItem('userIdentifier', userIdentifier);
             }
 
-            await axios.post('/api/radio-clicks/track', {
+            await axios.post(`${API}/api/radio-clicks/track`, {
                 buttonId,
                 clickedBy: userIdentifier
             });

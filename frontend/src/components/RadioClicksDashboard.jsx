@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { API } from '../src/utils/api';
 import '../styles/RadioClicksDashboard.scss';
 
 const RadioClicksDashboard = () => {
@@ -18,12 +19,12 @@ const RadioClicksDashboard = () => {
     const fetchClicks = async () => {
         try {
             setLoading(true);
-            let url = '/api/radio-clicks';
+            let url = `${API}/api/radio-clicks`;
 
             if (filter === 'button' && filterValue.trim()) {
-                url = `/api/radio-clicks/button/${filterValue}`;
+                url = `${API}/api/radio-clicks/button/${filterValue}`;
             } else if (filter === 'user' && filterValue.trim()) {
-                url = `/api/radio-clicks/user/${filterValue}`;
+                url = `${API}/api/radio-clicks/user/${filterValue}`;
             }
 
             const response = await axios.get(url);

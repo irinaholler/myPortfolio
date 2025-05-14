@@ -4,6 +4,15 @@ const { Schema, model } = mongoose;
 
 const feedbackSchema = new Schema(
     {
+        name: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        comments: {
+            type: String,
+        },
         design: {
             type: String,
             required: true,

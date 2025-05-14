@@ -11,12 +11,23 @@ import PlayStats from './components/PlayStats/PlayStats';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MouseFollower from './components/MouseFollower';
 import StarterPage from './components/StarterPage/StarterPage';
+import { API } from '../src/utils/api';
 
 import css from './styles/App.module.scss';
 
 const App = () => {
   const [playCount, setPlayCount] = useState(0);
   const [musicLovers, setMusicLovers] = useState(0);
+
+  const fetchListeners = async () => {
+    try {
+      const res = await axios.get(`${API}/api/radio-clicks/count-unique-users`);
+      console.log("🎧 Unique listeners data:", res.data);
+      setMusicLovers(res.data.totalUsers || 0);
+    } catch (err) {
+      console.error('Failed to fetch unique listener count:', err);
+    }
+  };
 
   // Load from sessionStorage initially
   useEffect(() => {
@@ -27,18 +38,11 @@ const App = () => {
     if (plays) setPlayCount(parseInt(plays, 10));
   }, []);
 
+  // Initial fetch and polling every 10s
   useEffect(() => {
-    const fetchListeners = async () => {
-      try {
-        const res = await axios.get('/api/radio-clicks/count-unique-users');
-        console.log("🎧 Unique listeners data:", res.data);
-        setMusicLovers(res.data.totalUsers || 0);
-      } catch (err) {
-        console.error('Failed to fetch unique listener count:', err);
-      }
-    };
-
     fetchListeners();
+    const interval = setInterval(fetchListeners, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   // Attach play event listener for counting plays
@@ -52,6 +56,9 @@ const App = () => {
         sessionStorage.setItem('playCount', updated);
         return updated;
       });
+
+      // Refresh listeners count on play
+      fetchListeners();
     };
 
     audioElement.addEventListener('play', handlePlay);
@@ -63,7 +70,7 @@ const App = () => {
 
   return (
     <div className={`bg-primary ${css.container}`}>
-      <Router basename="/myPortfolio">
+      <Router basename="/portfolio">
         <Routes>
           <Route path="/" element={
             <>

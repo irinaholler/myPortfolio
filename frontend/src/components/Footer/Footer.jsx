@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { footerVariants, staggerChildren } from '../../utils/motion.js'
+import { footerVariants, staggerChildren } from '../../utils/motion.js';
+import { API } from '../../utils/api';
+import PlayStats from '../PlayStats/PlayStats';
 import css from "./Footer.module.scss";
 import { motion } from 'framer-motion';
 
@@ -21,7 +23,6 @@ const Footer = () => {
     const audio = document.getElementById('radioPlayer');
     audio.play();
 
-    // Track unique listener
     if (!sessionStorage.getItem('hasListened')) {
       try {
         const userIdentifier = localStorage.getItem('userIdentifier') ||
@@ -31,7 +32,7 @@ const Footer = () => {
           localStorage.setItem('userIdentifier', userIdentifier);
         }
 
-        await axios.post('/api/radio-clicks/track', {
+        await axios.post(`${API}/api/radio-clicks/track`, {
           buttonId: 'radioPlayer',
           clickedBy: userIdentifier
         });
@@ -81,7 +82,7 @@ const Footer = () => {
             Let's create something <br />
             amazing together.
           </span>
-          <span className="primaryText">
+          <span className={css.primaryTextSmall} >
             Start by <a href="mailto:irina@myrin.de" style={{ textDecoration: 'none' }} > saying #hi</a>
           </span>
         </div>
@@ -124,6 +125,7 @@ const Footer = () => {
           </div>
         </div>
       </motion.div>
+
     </motion.section>
   );
 };

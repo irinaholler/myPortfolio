@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { API } from '../src/utils/api'; // Ensure this is correctly pointing to your API base URL
 import './FeedbackDashboard.scss';
 
 const FeedbackDashboard = () => {
@@ -21,10 +22,10 @@ const FeedbackDashboard = () => {
             let response;
 
             if (activeTab === 'summary') {
-                response = await axios.get('/api/feedback/summary');
+                response = await axios.get(`${API}/api/feedback/summary`);
                 setSummary(response.data);
             } else {
-                response = await axios.get('/api/feedback');
+                response = await axios.get(`${API}/api/feedback`);
                 setFeedback(response.data);
             }
 

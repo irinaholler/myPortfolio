@@ -17,7 +17,7 @@
   }
 
   @media (max-width: 768px) {
-    height: 70vh;
+    height: 65vh;
   }
 
   .title {
@@ -32,59 +32,47 @@
     max-width: 800px;
     transition: transform 0.3s ease-out;
 
-    @media (max-width: 1024px) {
-      transform: translate(-10%, -50%);
-    }
-
-    @media (max-width: 768px) {
-      transform: translate(-5%, -50%);
-      text-align: center;
-    }
-
     h1 {
       font-family: "Raleway", sans-serif;
       font-weight: 700;
       margin: 1rem 0;
-      font-size: 2.1rem;
-      letter-spacing: 0.05rem;
+      font-size: 2.2rem;
       color: #278164;
       transition: transform 1.5s ease, opacity 1.5s ease;
       opacity: 0;
       animation: fadeInText 1.5s ease-out forwards;
       animation-delay: 0.5s;
+    }
 
-      @media (max-width: 1024px) {
-        font-size: 1.6rem;
+    @media (max-width: 1024px) {
+      width: 90%;
+      max-width: 600px;
+      transform: translate(-10%, -50%);
+
+      h1 {
+        font-size: 1.8rem;
       }
+    }
 
-      @media (max-width: 768px) {
+    @media (max-width: 768px) {
+      width: 90%;
+      max-width: 600px;
+      transform: translate(-50%, -50%);
+      text-align: left;
+      top: 70%;
+      left: 30%;
+
+      h1 {
         font-size: 1.4rem;
-      }
-
-      @media (max-width: 640px) {
-        font-size: 1.2rem;
+        line-height: 1.3;
       }
     }
-  }
 
-  // Fade animation for text
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeInText {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.1rem;
+        padding: 0 0.5rem;
+      }
     }
   }
 
@@ -105,21 +93,39 @@
 
   &.zoom-in {
     .full-screen-image {
-      transform: scale(1.8);
+      transform: scale(1.6);
+
+      @media (max-width: 768px) {
+        transform: scale(1.2);
+      }
     }
-    
+
     .title {
-      transform: translate(-15%, -50%) scale(1.8);
+      transform: translate(-15%, -50%) scale(1.5);
+
+      @media (max-width: 768px) {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
     }
   }
 
-  // Optional Zoom-Out (not used in component now)
-  .zoom-out {
-    transform: scale(0.5);
-    opacity: 0;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
-    h1 {
-      padding-bottom: 1rem;
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 }
