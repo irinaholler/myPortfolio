@@ -18,9 +18,10 @@ const Feedback = () => {
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
+        const newValue = type === 'radio' ? parseInt(value) : value;
         setFormData((prev) => ({
             ...prev,
-            [name]: type === 'radio' ? parseInt(value) : value
+            [name]: newValue
         }));
     };
 
@@ -29,45 +30,42 @@ const Feedback = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
 
-        if (!formData.design || !formData.content || !formData.navigation || !formData.overall) {
-            setSubmitStatus('error');
-            alert('Please rate all four categories before submitting.');
-            setIsSubmitting(false);
-            return;
-        }
-
         try {
             const response = await fetch(`${API}/api/feedback/submit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    ...formData,
+                    userIdentifier: formData.email || `anon_${Math.random().toString(36).slice(2)}`
+                })
             });
 
-            if (response.ok) {
-                setSubmitStatus('success');
-                setFormData({
-                    name: '',
-                    email: '',
-                    design: null,
-                    content: null,
-                    navigation: null,
-                    overall: null,
-                    comments: ''
-                });
-                setTimeout(() => {
-                    setIsOpen(false);
-                    setSubmitStatus(null);
-                }, 2000);
-            } else {
-                setSubmitStatus('error');
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.details || data.error || 'Failed to submit feedback');
             }
+
+            setSubmitStatus('success');
+            setFormData({
+                name: '',
+                email: '',
+                design: null,
+                content: null,
+                navigation: null,
+                overall: null,
+                comments: ''
+            });
+
         } catch (error) {
+            // Do not show error message anymore
+            console.error('Feedback error:', error.message);
             setSubmitStatus('error');
-            console.error('Error submitting feedback:', error);
         } finally {
             setIsSubmitting(false);
+            setIsOpen(false); // Close form no matter what
         }
     };
 
@@ -159,17 +157,8 @@ const Feedback = () => {
                                 />
                             </div>
 
-                            {submitStatus === 'success' && (
-                                <div className="success-message">
-                                    Thank you for your feedback! 🙏
-                                </div>
-                            )}
-
-                            {submitStatus === 'error' && (
-                                <div className="error-message">
-                                    Oops! Something went wrong. Please try again.
-                                </div>
-                            )}
+                            {/* Removed error message */}
+                            {/* Removed success message (optional – re-add if you want confirmation text) */}
 
                             <button
                                 type="submit"

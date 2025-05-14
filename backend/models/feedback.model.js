@@ -14,20 +14,28 @@ const feedbackSchema = new Schema(
             type: String,
         },
         design: {
-            type: String,
+            type: Number,
             required: true,
+            min: 1,
+            max: 5
         },
         content: {
-            type: String,
+            type: Number,
             required: true,
+            min: 1,
+            max: 5
         },
         navigation: {
-            type: String,
+            type: Number,
             required: true,
+            min: 1,
+            max: 5
         },
         overall: {
-            type: String,
+            type: Number,
             required: true,
+            min: 1,
+            max: 5
         },
         submittedBy: {
             type: String,
@@ -38,6 +46,18 @@ const feedbackSchema = new Schema(
         timestamps: true,
     }
 );
+
+// Add pre-save middleware to validate ratings
+feedbackSchema.pre('save', function (next) {
+    const ratings = ['design', 'content', 'navigation', 'overall'];
+    for (const rating of ratings) {
+        if (this[rating] < 1 || this[rating] > 5) {
+            next(new Error(`${rating} rating must be between 1 and 5`));
+            return;
+        }
+    }
+    next();
+});
 
 const Feedback = model('Feedback', feedbackSchema);
 

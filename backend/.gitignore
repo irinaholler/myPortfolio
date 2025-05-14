@@ -1,21 +1,29 @@
+# Environment variables
+.env
+.env.*.local
+
 # Node.js
 node_modules/
-.env
 dist/
 build/
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# OS
+# OS / System files
 .DS_Store
 
-# IDEs
+# IDEs and editors
 .vscode/
 .idea/
 *.swp
 
-# Render deploy logs (just in case)
+# Coverage / testing
+coverage/
+.parcel-cache/
+
+# Render deploy config
 render.yaml
