@@ -12,13 +12,15 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = ['https://myrina.de', 'http://localhost:5173'];
 // CORS configuration
 app.use(cors({
     origin: function (origin, callback) {
-        // allow requests with no origin (like curl or mobile apps)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
-        return callback(new Error('Not allowed by CORS'));
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -43,7 +45,7 @@ mongoose.connect(uri)
     .then(() => console.log('✅ Connected to MongoDB Atlas'))
     .catch((err) => {
         console.error('❌ MongoDB connection error:', err);
-        process.exit(1); // Exit if we can't connect to the database
+        process.exit(1);
     });
 
 const connection = mongoose.connection;
