@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import { API } from '../src/utils/api'; // Ensure this is correctly pointing to your API base URL
+import { API } from '../src/utils/api';
 import './FeedbackDashboard.scss';
 
 const FeedbackDashboard = () => {
@@ -9,7 +9,7 @@ const FeedbackDashboard = () => {
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [activeTab, setActiveTab] = useState('summary'); // 'summary' or 'details'
+    const [activeTab, setActiveTab] = useState('summary');
 
     useEffect(() => {
         fetchData();

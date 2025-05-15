@@ -15,21 +15,66 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 9999;
+
+  &::before {
+    content: "Share your feedback";
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: calc(100% + 5px);
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: #2e9373;
+
+    &::before,
+    &::after {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   &.open {
     transform: rotate(180deg);
+    background: #2e9373;
   }
 
   .feedback-icon {
     font-size: 1.5rem;
-    color: #278164;
+    color: white;
   }
+}
+
+.feedback-content {
+  padding: 2rem;
+  position: relative;
 }
 
 .feedback-container {
@@ -53,11 +98,6 @@
       transform: translateX(0);
     }
   }
-}
-
-.feedback-content {
-  padding: 2rem;
-  position: relative;
 }
 
 .close-button {
@@ -227,5 +267,23 @@ h2 {
     .feedback-icon {
       font-size: 1.25rem;
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .feedback-content {
+    padding: 1rem;
+  }
+
+  .feedback-content h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 2rem;
+    word-break: break-word;
+  }
+
+  .feedback-description {
+    font-size: 0.85rem;
+    text-align: center;
   }
 }
