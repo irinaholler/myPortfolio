@@ -135,7 +135,7 @@ export const projects = [
     link: "https://wohnen-mitaussicht.de"
   },
   {
-    name: "Gries GmbH Website",
+    name: "Gries GmbH",
     description: "Corporate website with modern design and seamless user experience for Gries GmbH.",
     img: "./prj-Gries GmbH-WS.png",
     link: "https://gries-gmbh.de"

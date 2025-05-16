@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import css from "./Portfolio.module.scss";
 import { fadeIn, staggerChildren, textVariant } from "../../utils/motion.js";
 import { projects } from "../../utils/data.js";
@@ -79,44 +79,55 @@ const Portfolio = () => {
           </motion.div>
         </motion.div>
 
-        <div className={`flexCenter ${css.showCase}`}>
-          {projects.map((project, index) => (
+        <div className={css.showCase}>
+          {projects.map((project, i) => (
             <motion.div
-              key={index}
-              variants={fadeIn("up", "tween", 0.5 + index * 0.2, 0.6)}
+              key={i}
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.2 }}
+              viewport={{ once: true }}
               className={css.projectContainer}
             >
-              <img
-                src={project.img}
-                alt={project.name}
-                onClick={(event) => openModal(event, project.description, project.link)}
-                className={css.projectImage}
-              />
-              <div
-                className={css.projectInfo}
-                style={{
-                  opacity: expandedProject === index ? 1 : 0,
-                  transform: expandedProject === index ? 'translateY(0)' : 'translateY(100%)',
-                  pointerEvents: expandedProject === index ? 'auto' : 'none'
-                }}
-              >
-                <h3>{project.name}</h3>
+              <img src={project.img} alt={project.name} className={css.projectImage} />
+              <div className={css.projectInfo}>
+                <div className={css.projectHeader}>
+                  <h3>{project.name}</h3>
+                  {project.tags && (
+                    <div className={css.projectTags}>
+                      {project.tags.map((tag, index) => (
+                        <span key={index} className={css.tag}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <p>{project.description}</p>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={css.viewButton}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  View Project
-                </a>
-              </div>
-              <div
-                className={css.infoToggle}
-                onClick={(e) => toggleProjectInfo(index, e)}
-              >
-                {expandedProject === index ? '−' : '+'}
+                <div className={css.projectFooter}>
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={css.viewButton}
+                  >
+                    <span>View Project</span>
+                    <div className={css.buttonIcon}>
+                      <FaGithub />
+                    </div>
+                  </a>
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${css.viewButton} ${css.liveButton}`}
+                    >
+                      <span>Live Demo</span>
+                      <div className={css.buttonIcon}>
+                        <FaExternalLinkAlt />
+                      </div>
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

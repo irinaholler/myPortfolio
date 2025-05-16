@@ -1,85 +1,150 @@
 @use "./contants.scss" as *;
 
+// Base styles
 .bg-primary {
   background-color: #f6bc40;
 }
 
+// Container styles
 .innerWidth {
   width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
+
+  @media (min-width: $sm) {
+    padding: 0 2rem;
+  }
+
+  @media (min-width: $md) {
+    padding: 0 3rem;
+  }
+
+  @media (min-width: $lg) {
+    padding: 0 4rem;
+  }
+
+  @media (min-width: $xl) {
+    max-width: 1280px;
+    padding: 0 5rem;
+  }
 
   @media (min-width: $xxl) {
-    max-width: 1280px;
-    margin: auto;
+    max-width: 1440px;
   }
 }
 
+// Padding utilities
 .paddings {
+  padding: 1.5rem;
+
   @media (min-width: $sm) {
+    padding: 2rem;
+  }
+
+  @media (min-width: $md) {
+    padding: 2.5rem;
+  }
+
+  @media (min-width: $lg) {
+    padding: 3rem;
+  }
+
+  @media (min-width: $xl) {
     padding: 4rem;
   }
-
-  @media (min-width: $xl), (min-width: $md) {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
 }
 
 .xPaddings {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
   @media (min-width: $sm) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  @media (min-width: $md) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  @media (min-width: $lg) {
     padding-left: 4rem;
     padding-right: 4rem;
   }
 
-  padding-left: 1.5rem;
-  /* 24px */
-  padding-right: 1.5rem;
-  /* 24px */
+  @media (min-width: $xl) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
 }
 
 .yPaddings {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
   @media (min-width: $sm) {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: $md) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: $lg) {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
   }
 
   @media (min-width: $xl) {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
-
-  padding-top: 3rem;
-  padding-bottom: 3rem;
 }
 
 .topPaddings {
+  padding-top: 2rem;
+
   @media (min-width: $sm) {
-    padding-top: 4rem;
+    padding-top: 2.5rem;
+  }
+
+  @media (min-width: $md) {
+    padding-top: 3rem;
+  }
+
+  @media (min-width: $lg) {
+    padding-top: 3.5rem;
   }
 
   @media (min-width: $xl) {
-    padding-top: 2rem;
+    padding-top: 4rem;
   }
-
-  padding-top: 3rem;
 }
 
 .bottomPaddings {
+  padding-bottom: 2rem;
+
   @media (min-width: $sm) {
-    padding-bottom: 4rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: $md) {
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: $lg) {
+    padding-bottom: 3.5rem;
   }
 
   @media (min-width: $xl) {
-    padding-bottom: 2rem;
+    padding-bottom: 4rem;
   }
-
-  padding-bottom: 3rem;
 }
 
+// Flex utilities
 .flexCenter {
   display: flex;
   justify-content: center;
@@ -88,35 +153,108 @@
 
 .flexStart {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .flexEnd {
   display: flex;
-  justify-items: end;
+  justify-content: flex-end;
+  align-items: center;
 }
 
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+// Typography
 .primaryText {
-  @media (max-width: $sm) {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+
+  @media (min-width: $sm) {
     font-size: 2.5rem;
   }
-  font-size: 3rem;
-  font-weight: bold;
+
+  @media (min-width: $md) {
+    font-size: 3rem;
+  }
+
+  @media (min-width: $lg) {
+    font-size: 3.5rem;
+  }
 }
 
 .secondaryText {
-  @media (max-width: $sm) {
-    font-size: 1.1rem;
-    line-height: 40px;
-  }
-  line-height: 50px;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  line-height: 1.5;
   font-weight: 500;
+
+  @media (min-width: $sm) {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  @media (min-width: $md) {
+    font-size: 1.2rem;
+    line-height: 1.7;
+  }
+
+  @media (min-width: $lg) {
+    font-size: 1.3rem;
+    line-height: 1.8;
+  }
 }
+
+// Anchor for smooth scrolling
 .anchor {
   display: block;
   position: relative;
   top: -100px;
   visibility: hidden;
+  scroll-margin-top: 100px;
+}
+
+// Grid utilities
+.grid {
+  display: grid;
+  gap: 1rem;
+
+  @media (min-width: $sm) {
+    gap: 1.5rem;
+  }
+
+  @media (min-width: $md) {
+    gap: 2rem;
+  }
+}
+
+// Responsive images
+.responsive-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+// Responsive text alignment
+.text-center {
+  text-align: center;
+}
+
+@media (min-width: $md) {
+  .text-left-md {
+    text-align: left;
+  }
+  
+  .text-right-md {
+    text-align: right;
+  }
 }

@@ -2,10 +2,10 @@
 
 .feedback-toggle {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 3.5rem;
-  height: 3.5rem;
+  bottom: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   background: #278164;
   border: none;
@@ -16,6 +16,13 @@
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 9999;
+
+  @media (min-width: $md) {
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+  }
 
   &::before {
     content: "Share your feedback";
@@ -33,6 +40,10 @@
     visibility: hidden;
     transition: all 0.3s ease;
     pointer-events: none;
+
+    @media (max-width: $sm) {
+      display: none;
+    }
   }
 
   &::after {
@@ -47,6 +58,10 @@
     visibility: hidden;
     transition: all 0.3s ease;
     pointer-events: none;
+
+    @media (max-width: $sm) {
+      display: none;
+    }
   }
 
   &:hover {
@@ -67,8 +82,12 @@
   }
 
   .feedback-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: white;
+
+    @media (min-width: $md) {
+      font-size: 1.5rem;
+    }
   }
 }
 
@@ -122,7 +141,7 @@
 h2 {
   color: var(--color-primary);
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 .feedback-description {
