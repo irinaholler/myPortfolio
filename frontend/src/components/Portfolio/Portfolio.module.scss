@@ -10,7 +10,7 @@
 
     @media (min-width: $md) {
       gap: 2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
 
     .heading {
@@ -22,7 +22,7 @@
       gap: 1rem;
 
       @media (min-width: $md) {
-        margin: 2rem 0;
+        
       }
 
       > :nth-child(2) {
@@ -388,42 +388,16 @@ a {
 }
 
 .overlayText {
-  position: absolute;
   font-size: 2rem;
   font-weight: 900;
   color: #0d2f3f;
-  margin-left: 50%;
-  top: 30%;
-}
+  margin-left: -7%;
+  margin-top: 4%;
 
-.secondaryText {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: rgba(39, 129, 100, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  .arrowIcon {
-    transition: transform 0.3s ease;
-    font-size: 1rem;
-    color: #278164;
-  }
-
-  &:hover {
-    transform: scale(1.03) translateY(-2px);
-    background: rgba(39, 129, 100, 0.3);
-
-    .arrowIcon {
-      transform: translateX(5px) rotate(15deg);
-      color: #0d2f3f;
-    }
+  @media (max-width: 600px) {
+      font-size: 1.8rem;
+      margin-left: -50%;
+      margin-top: 5%;
   }
 }
 
@@ -460,22 +434,21 @@ a {
     font-size: 1.35rem;
     font-weight: 900;
     letter-spacing: 2px;
-    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-family: "Montserrat", "Arial", sans-serif;
     text-transform: uppercase;
-    box-shadow: 0 6px 32px 0 rgba(39, 129, 100, 0.10);
+    box-shadow: 0 6px 32px 0 rgba(39, 129, 100, 0.1);
     text-decoration: none;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: 
-      border-color 0.3s cubic-bezier(0.4,0,0.2,1),
-      color 0.3s cubic-bezier(0.4,0,0.2,1),
-      background 0.3s cubic-bezier(0.4,0,0.2,1),
-      box-shadow 0.3s cubic-bezier(0.4,0,0.2,1),
-      transform 0.2s cubic-bezier(0.4,0,0.2,1);
+    transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: -60%;
       top: 0;
@@ -484,7 +457,7 @@ a {
       background: linear-gradient(120deg, #27816433 0%, #f6bc40 100%);
       opacity: 0.15;
       transform: skewX(-20deg);
-      transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
+      transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 0;
     }
 
@@ -532,5 +505,364 @@ a {
       height: 2.1rem;
       font-size: 1.1rem;
     }
+  }
+}
+
+.secondaryText {
+  position: relative;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .accordionBox {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #278164;
+      box-shadow: 0 6px 16px rgba(39, 129, 100, 0.15);
+    }
+  }
+
+  .accordionHeader {
+    padding: 1.2rem 1.5rem;
+    background: #161b22;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #1c2128;
+
+      .githubIcon {
+        color: #278164;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .headerContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #c9d1d9;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .githubIcon {
+    font-size: 1.4rem;
+    color: #8b949e;
+    transition: all 0.3s ease;
+  }
+
+  .accordionIcon {
+    color: #8b949e;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .accordionContent {
+    background: #0d1117;
+    overflow: hidden;
+  }
+
+  .contentWrapper {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    background: #161b22;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+  }
+
+  .statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    background: rgba(39, 129, 100, 0.05);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(39, 129, 100, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+
+  .statNumber {
+    color: #278164;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .statLabel {
+    color: #8b949e;
+    font-size: 0.9rem;
+  }
+
+  p {
+    color: #8b949e;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+
+  .viewButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1.5rem;
+    background: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: #278164;
+      border-color: #278164;
+      transform: translateY(-2px);
+
+      .buttonIcon {
+        transform: translateX(4px);
+      }
+    }
+
+    .buttonIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .accordionHeader {
+      padding: 1rem;
+    }
+
+    .headerContent {
+      font-size: 1rem;
+    }
+
+    .contentWrapper {
+      padding: 1.2rem;
+    }
+
+    .statsGrid {
+      padding: 0.8rem;
+      gap: 0.8rem;
+    }
+
+    .statItem {
+      padding: 0.4rem;
+    }
+
+    .statNumber {
+      font-size: 1.2rem;
+    }
+
+    .viewButton {
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper {
+    padding: 1.5rem 0;
+  }
+
+  .container {
+    padding: 0 2rem;
+  }
+
+  .outlineText {
+    font-size: 3.5rem;
+  }
+
+  .overlayText {
+    font-size: 2.2rem;
+  }
+
+  .gear {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .outlineText {
+    font-size: 3rem;
+  }
+
+  .overlayText {
+    font-size: 2rem;
+  }
+
+  .gear {
+    font-size: 1.6rem;
+  }
+
+  .accordionHeader {
+    padding: 1rem 1.2rem;
+  }
+
+  .headerContent {
+    font-size: 0.95rem;
+  }
+
+  .contentWrapper {
+    padding: 1.2rem;
+  }
+
+  .statsGrid {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .statItem {
+    padding: 0.6rem 1rem;
+  }
+
+  .statNumber {
+    font-size: 1.2rem;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .outlineText {
+    font-size: 2.2rem;
+  }
+
+  .overlayText {
+    font-size: 1.5rem;
+    white-space: normal;
+    text-align: center;
+    width: 100%;
+  }
+
+  .gear {
+    font-size: 1.3rem;
+  }
+
+  .accordionHeader {
+    padding: 0.8rem 1rem;
+  }
+
+  .headerContent {
+    font-size: 0.9rem;
+    gap: 0.8rem;
+  }
+
+  .githubIcon {
+    font-size: 1.2rem;
+  }
+
+  .contentWrapper {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .statsGrid {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 0.8rem;
+  }
+
+  .statItem {
+    width: 100%;
+    max-width: none;
+    padding: 0.6rem;
+  }
+
+  .statNumber {
+    font-size: 1.1rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+
+  .viewButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .outlineText {
+    font-size: 1.8rem;
+  }
+
+  .overlayText {
+    font-size: 1.3rem;
+  }
+
+  .gear {
+    font-size: 1.1rem;
+  }
+
+  .accordionHeader {
+    padding: 0.7rem 0.8rem;
+  }
+
+  .headerContent {
+    font-size: 0.85rem;
+  }
+
+  .contentWrapper {
+    padding: 0.8rem;
+  }
+
+  .statNumber {
+    font-size: 1rem;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
   }
 }

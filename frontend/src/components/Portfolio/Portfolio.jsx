@@ -10,6 +10,7 @@ const Portfolio = () => {
   const [modalContent, setModalContent] = useState({ description: "", link: "" });
   const [modalStyle, setModalStyle] = useState({});
   const [expandedProject, setExpandedProject] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const openModal = (event, description, link) => {
     const projectElement = event.currentTarget;
@@ -57,25 +58,71 @@ const Portfolio = () => {
       >
         <motion.div variants={textVariant(0.4)} className={css.heading}>
           <div className={css.expertiseContainer}>
-            <h1 className={css.outlineText}>All Creative Works</h1>
+            <h1 className={css.outlineText}>Creative Works</h1>
             <h1 className={css.overlayText}>
               <span className={css.gear}>⚙</span> Projects
             </h1>
           </div>
 
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             className={css.secondaryText}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <a
-              href="https://github.com/irinaholler"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css.exploreLink}
-            >
-              Explore More Works <FaArrowRight className={css.arrowIcon} />
-            </a>
+            <div className={css.accordionBox}>
+              <div
+                className={css.accordionHeader}
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                <div className={css.headerContent}>
+                  <FaGithub className={css.githubIcon} />
+                  <span>Explore More Projects</span>
+                </div>
+                <motion.div
+                  className={css.accordionIcon}
+                  animate={{ rotate: isExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FaArrowRight />
+                </motion.div>
+              </div>
+
+              <motion.div
+                className={css.accordionContent}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{
+                  height: isExpanded ? "auto" : 0,
+                  opacity: isExpanded ? 1 : 0
+                }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <div className={css.contentWrapper}>
+                  <div className={css.statsGrid}>
+                    <div className={css.statItem}>
+                      <span className={css.statNumber}>15+</span>
+                      <span className={css.statLabel}>Projects</span>
+                    </div>
+                    <div className={css.statItem}>
+                      <span className={css.statNumber}>2+</span>
+                      <span className={css.statLabel}>Years Experience</span>
+                    </div>
+                  </div>
+                  <p>Check out my latest work and contributions</p>
+                  <a
+                    href="https://github.com/irinaholler"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={css.viewButton}
+                  >
+                    <span>View Profile</span>
+                    <div className={css.buttonIcon}>
+                      <FaGithub />
+                    </div>
+                  </a>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
         </motion.div>
 
