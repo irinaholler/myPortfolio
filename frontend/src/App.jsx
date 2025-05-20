@@ -24,6 +24,8 @@ const App = () => {
       const res = await axios.get(`${API}/api/radio-clicks/count-unique-users`);
       console.log("🎧 Unique listeners data:", res.data);
       setMusicLovers(res.data.totalUsers || 0);
+      // persist for next reload
+      sessionStorage.setItem('uniqueListeners', count);
     } catch (err) {
       console.error('Failed to fetch unique listener count:', err);
     }
@@ -50,7 +52,7 @@ const App = () => {
     const audioElement = document.getElementById('radioPlayer');
     if (!audioElement) return;
 
-    const handlePlay = () => {
+    const handlePlay = async () => {
       setPlayCount(prev => {
         const updated = prev + 1;
         sessionStorage.setItem('playCount', updated);

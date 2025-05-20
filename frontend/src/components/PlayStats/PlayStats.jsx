@@ -8,7 +8,10 @@ const PlayStats = ({ playCount, musicLovers }) => {
     useEffect(() => {
         // Trigger animation when component mounts
         setIsVisible(true);
-    }, []);
+        // optionally reset after a bit so future updates retrigger:
+        const t = setTimeout(() => setIsVisible(false), 800);
+        return () => clearTimeout(t);
+    }, [playCount, musicLovers]);
 
     return (
         <div className={`play-stats ${isVisible ? 'visible' : ''}`}>
