@@ -1,3 +1,5 @@
+// src/components/PlayStats/PlayStats.jsx
+
 import React, { useEffect, useState } from 'react';
 import './PlayStats.scss';
 import { FaHeart, FaPlay } from 'react-icons/fa';
@@ -6,12 +8,9 @@ const PlayStats = ({ playCount, musicLovers }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // Trigger animation when component mounts
+        // Only on mount: add the class so the slide-in (or fade-in) animation runs once
         setIsVisible(true);
-        // optionally reset after a bit so future updates retrigger:
-        const t = setTimeout(() => setIsVisible(false), 800);
-        return () => clearTimeout(t);
-    }, [playCount, musicLovers]);
+    }, []);
 
     return (
         <div className={`play-stats ${isVisible ? 'visible' : ''}`}>
@@ -20,10 +19,10 @@ const PlayStats = ({ playCount, musicLovers }) => {
                     <FaPlay />
                 </div>
                 <div className="stat-content">
-                    <div className="stat-value" data-value={playCount}>{playCount}</div>
+                    <div className="stat-value">{playCount}</div>
                     <div className="stat-label">Plays</div>
                 </div>
-                <div className="stat-decoration"></div>
+                <div className="stat-decoration" />
                 <div className="stat-particles">
                     <div className="particle">♪</div>
                     <div className="particle">♫</div>
@@ -36,10 +35,10 @@ const PlayStats = ({ playCount, musicLovers }) => {
                     <FaHeart />
                 </div>
                 <div className="stat-content">
-                    <div className="stat-value" data-value={musicLovers}>{musicLovers}</div>
+                    <div className="stat-value">{musicLovers}</div>
                     <div className="stat-label">Music Lovers</div>
                 </div>
-                <div className="stat-decoration"></div>
+                <div className="stat-decoration" />
                 <div className="stat-particles">
                     <div className="particle">♥</div>
                     <div className="particle">♡</div>
@@ -50,4 +49,4 @@ const PlayStats = ({ playCount, musicLovers }) => {
     );
 };
 
-export default PlayStats; 
+export default PlayStats;

@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './components/Header/Header';
@@ -11,7 +13,7 @@ import PlayStats from './components/PlayStats/PlayStats';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MouseFollower from './components/MouseFollower';
 import StarterPage from './components/StarterPage/StarterPage';
-import { API } from '../src/utils/api';
+import { API } from './utils/api';
 
 import css from './styles/App.module.scss';
 
@@ -22,71 +24,76 @@ const App = () => {
   const fetchListeners = async () => {
     try {
       const res = await axios.get(`${API}/api/radio-clicks/count-unique-users`);
-      console.log("🎧 Unique listeners data:", res.data);
-      setMusicLovers(res.data.totalUsers || 0);
-      // persist for next reload
+      const count = res.data.totalUsers || 0;
+      setMusicLovers(count);
       sessionStorage.setItem('uniqueListeners', count);
     } catch (err) {
       console.error('Failed to fetch unique listener count:', err);
     }
   };
 
-  // Load from sessionStorage initially
+  // Load cached values on mount
   useEffect(() => {
-    const listeners = sessionStorage.getItem('uniqueListeners');
-    if (listeners) setMusicLovers(parseInt(listeners, 10));
-
-    const plays = sessionStorage.getItem('playCount');
-    if (plays) setPlayCount(parseInt(plays, 10));
+    const cachedListeners = sessionStorage.getItem('uniqueListeners');
+    if (cachedListeners) {
+      setMusicLovers(+cachedListeners);
+    }
+    const cachedPlays = sessionStorage.getItem('playCount');
+    if (cachedPlays) {
+      setPlayCount(+cachedPlays);
+    }
   }, []);
 
-  // Initial fetch and polling every 10s
+  // Initial fetch + polling
   useEffect(() => {
     fetchListeners();
     const interval = setInterval(fetchListeners, 10000);
     return () => clearInterval(interval);
   }, []);
 
-  // Attach play event listener for counting plays
+  // Track plays and optimistically update both stats
   useEffect(() => {
-    const audioElement = document.getElementById('radioPlayer');
-    if (!audioElement) return;
+    const audio = document.getElementById('radioPlayer');
+    if (!audio) return;
 
     const handlePlay = async () => {
       setPlayCount(prev => {
-        const updated = prev + 1;
-        sessionStorage.setItem('playCount', updated);
-        return updated;
+        const next = prev + 1;
+        sessionStorage.setItem('playCount', next);
+        return next;
       });
-
-      // Refresh listeners count on play
-      fetchListeners();
+      setMusicLovers(prev => {
+        const next = prev + 1;
+        sessionStorage.setItem('uniqueListeners', next);
+        return next;
+      });
+      await fetchListeners();
     };
 
-    audioElement.addEventListener('play', handlePlay);
-
-    return () => {
-      audioElement.removeEventListener('play', handlePlay);
-    };
+    audio.addEventListener('play', handlePlay);
+    return () => audio.removeEventListener('play', handlePlay);
   }, []);
 
   return (
     <div className={`bg-primary ${css.container}`}>
       <Router basename="/portfolio">
         <Routes>
-          <Route path="/" element={
-            <>
-              <MouseFollower />
-              <StarterPage />
-              <Header />
-              <Hero />
-              <Skills />
-              <Portfolio />
-              <PlayStats playCount={playCount} musicLovers={musicLovers} />
-              <Feedback />
-              <Footer />
-            </>
-          } />
+          <Route
+            path="/"
+            element={
+              <>
+                <MouseFollower />
+                <StarterPage />
+                <Header />
+                <Hero />
+                <Skills />
+                <Portfolio />
+                <PlayStats playCount={playCount} musicLovers={musicLovers} />
+                <Feedback />
+                <Footer />
+              </>
+            }
+          />
         </Routes>
       </Router>
     </div>
