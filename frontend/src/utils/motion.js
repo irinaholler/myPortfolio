@@ -204,3 +204,18 @@ const handleScrollToSkills = () => {
     setMenuOpened(false); // Close the menu if it's open
   }
 };
+
+export const cardFlip = {
+  hidden: {
+    rotateY: 90,
+    opacity: 0,
+    scale: 0.9,
+    transition: { duration: 0.5, ease: "easeInOut" }
+  },
+  show: {
+    rotateY: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+};

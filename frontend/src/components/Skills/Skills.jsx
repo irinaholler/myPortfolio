@@ -1,10 +1,9 @@
-// src/components/Skills/Skills.jsx
 import React from "react";
 import { comments, sliderSettings } from "../../utils/data.js";
 import css from "./Skills.module.scss";
 import Slider from "react-slick";
 import { motion } from 'framer-motion';
-import { footerVariants, staggerChildren } from '../../utils/motion.js';
+import { footerVariants, staggerChildren, cardFlip } from '../../utils/motion.js';
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaWordpress } from "react-icons/fa";
 import { SiExpress, SiAdobephotoshop, SiAdobeillustrator, SiElementor } from "react-icons/si";
 
@@ -67,19 +66,31 @@ const Skills = () => {
 
         <div className={css.comments}>
           <Slider {...sliderSettings} className={css.slider}>
-            {comments.map((comment, i) => {
-              return (
-                <div className={`flexCenter ${css.comment}`} key={i}>
-                  <img src={comment.img} alt="" />
+            {comments.map((comment, i) => (
+              <motion.div
+                className={css.comment}
+                key={i}
+                variants={cardFlip}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.5 }}
+                style={comment.neon ? { borderColor: comment.neon } : {}}
+              >
+                <div className={css.cardLoupe}>
+                  <span className={css.cardLoupeContent}>
+                    {comment.icon ? comment.icon : comment.name.charAt(0)}
+                  </span>
+                </div>
+                <div className={css.cardContent}>
                   <p>{comment.comment}</p>
                   <div className={css.line}></div>
                   <div className={css.bio}>
                     <span>{comment.name}</span>
-                    <span>{comment.post}</span>
+                    <span className={css.title}>{comment.title}</span>
                   </div>
                 </div>
-              );
-            })}
+              </motion.div>
+            ))}
           </Slider>
         </div>
 

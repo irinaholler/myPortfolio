@@ -60,32 +60,25 @@ export const workExp = [
 
 export const comments = [
   {
-    name: "Digital Creativity",
-    post: "Creativity",
+    name: "Responsive Design",
+    title: "Seamless Experiences Anywhere",
     comment:
-      "Eye-catching Materials: Capturing attention and delivering your message. Storytelling Presentations: Bringing ideas to life. Digital to Print: Materials that leave a lasting impact.",
-    img: "./skill-1.png",
+      "I craft interfaces that adapt and shine on every screen—mobile, tablet, or desktop—so users always enjoy an intuitive journey.",
+    //img: "./skill-1.png",
   },
   {
-    name: "Attention to Details",
-    post: "Patience",
+    name: "UI/UX Empathy",
+    title: "Designing with People in Mind",
     comment:
-      "My keen eye for detail ensures every design element is polished and cohesive, delivering a seamless and engaging user experience.",
-    img: "./skill-2.png",
+      "Combining user research and visual polish, I build interfaces that feel natural, accessible, and bring delight to every interaction.",
+    //img: "./skill-2.png",
   },
   {
-    name: "Technology Poster",
-    post: "Design Tech",
+    name: "Full-Stack Craft",
+    title: "From Mongo to React",
     comment:
-      "Create animations, videos, GIFs, graphics, and other multimedia formats o communicate ideas and showcase products, services, or events.",
-    img: "./skill-3.png",
-  },
-  {
-    name: "Creative Problem-Solving",
-    post: "Innovative Solutions for Every Challenge",
-    comment:
-      "I thrive on finding unique and efficient ways to overcome obstacles. Whether it's optimizing workflows, designing user-friendly interfaces, or crafting digital experiences.",
-    img: "./skill-4.png",
+      "From MongoDB schemas to dynamic React components—end-to-end solutions that scale and delight.",
+    //img: "./skill-3.png",
   },
 ];
 
