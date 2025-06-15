@@ -153,9 +153,9 @@ export const projects = [
     link: "https://irinaholler.github.io/Memory-Card-Game/"
   },
   {
-    name: "Pokemon Game",
-    description: "An interactive Pokemon game with engaging gameplay and beautiful graphics.",
-    img: "./prj-Pokemon.png",
-    link: "https://irinaholler.github.io/Pokemon-Project/"
+    name: "Hangman Game",
+    description: "A sleek, interactive Hangman game with smooth animations and a modern design. Guess letters, reveal words, and enjoy a fun challenge.",
+    img: "./prj-hm.png",
+    link: "https://irinaholler.github.io/Hangman-Game/"
   }
 ];

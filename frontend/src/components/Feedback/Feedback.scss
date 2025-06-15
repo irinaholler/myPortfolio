@@ -1,4 +1,4 @@
-@use "../../styles/contants.scss" as *;
+@use "../../styles/constants.scss" as *;
 
 .feedback-toggle {
   position: fixed;
@@ -86,7 +86,7 @@
     color: white;
 
     @media (min-width: $md) {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
     }
   }
 }
@@ -116,8 +116,8 @@
     to {
       transform: translateX(0);
     }
+    }
   }
-}
 
 .close-button {
   position: absolute;

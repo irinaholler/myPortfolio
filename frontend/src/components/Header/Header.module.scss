@@ -1,4 +1,4 @@
-@use "../../styles/contants.scss" as *;
+@use "../../styles/constants.scss" as *;
 
 .wrapper {
   position: sticky;
@@ -48,7 +48,7 @@
 
       @media (min-width: $md) {
         gap: 2rem;
-        font-size: 1rem;
+      font-size: 1rem;
       }
 
       li a {
@@ -92,7 +92,7 @@
       gap: 0.75rem;
 
       @media (min-width: $md) {
-        gap: 1rem;
+      gap: 1rem;
       }
 
       a {

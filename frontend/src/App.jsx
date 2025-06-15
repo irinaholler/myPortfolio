@@ -13,6 +13,9 @@ import StarterPage from './components/StarterPage/StarterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { API } from './utils/api';
 import css from './styles/App.module.scss';
+import AiMasonryGallery from './components/AiMasonryGallery/AiMasonryGallery';
+import aiGalleryData from './data/aiGalleryData';
+import AiCarousel from "./components/AiCarousel/AiCarousel";
 
 const App = () => {
   const [playCount, setPlayCount] = useState(0);
@@ -91,6 +94,7 @@ const App = () => {
               <Hero />
               <Skills />
               <Portfolio />
+              <AiCarousel items={aiGalleryData} />
               <PlayStats playCount={playCount} musicLovers={musicLovers} />
               <Feedback />
               <Footer />

@@ -1,0 +1,120 @@
+@use "../../styles/constants.scss" as *;
+
+.carouselSection {
+  /* space above and below the deck */
+  padding-block: 2.5rem; /* 40 px top & bottom */
+  /* optional: match side-inset so nav arrows sit inside the band */
+  padding-inline: 1.5rem;
+}
+
+.deck {
+  width: 100%;
+  padding-block: 2rem;
+  --swiper-navigation-color: #ffffff;
+  --swiper-navigation-size: 33px;
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    right: 0.5rem; // tweak if arrow bleeds out
+    left: 0.5rem;
+    color: #fff;
+    backdrop-filter: blur(6px);
+    background: rgba(#0d2f3f, 0.25);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background 0.25s;
+
+    &:hover {
+      background: rgba(#0d2f3f, 0.45);
+    }
+    &::after {
+      font-size: 18px;
+      font-weight: 700;
+    }
+  }
+}
+
+.galleryHeader {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 2.25rem; /* extra breathing room */
+  padding-left: 1.75rem; /* space for accent bar */
+
+  /* accent bar */
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    width: 4px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #f6bc40 0%, #278164 100%);
+    animation: growBar 0.8s ease-out;
+  }
+
+  h2 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    background: linear-gradient(90deg, #f6bc40 0%, #278164 45%, #0d2f3f 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    color: transparent; /* show gradient only */
+    animation: slideGradient 3.5s ease-in-out infinite;
+  }
+
+  .sub {
+    margin: 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.3px;
+    color: #278164;
+    opacity: 0.85;
+    font-style: italic;
+    position: relative;
+    padding-left: 0.8rem;
+  }
+
+  /* bullet before subtitle */
+  .sub::before {
+    content: "★";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #f6bc40;
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+}
+
+/* animations ------------------------------------------------------*/
+@keyframes slideGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes growBar {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.slide {
+  width: 260px; /* <- any width you like */
+  flex-shrink: 0;
+  display: flex; // keeps height auto
+  justify-content: center;
+}
