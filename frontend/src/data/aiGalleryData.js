@@ -1,6 +1,16 @@
 const aiGalleryData = [
     {
         id: 1,
+        src: "./ai-images/Flux_Dev_When the Body Speaks.jpg",
+        "alt": "An ethereal young woman kneeling in a candlelit corridor, surrounded by rose petals, holding a glowing birdcage with a red rose inside. A raven perches nearby. The soft lighting and arched architecture evoke a melancholic Romantic Gothic mood.",
+        "prompt": "Romantic Gothic scene in a dim, candlelit stone corridor with tall arches and stained glass glowing faintly in the distance. A long-haired woman in a flowing pale pink and cream gown kneels on the stone floor, surrounded by scattered red rose petals. She cradles a golden birdcage emitting a soft light, with a red rose held gently between her fingers. A raven sits on a stone pedestal to her left. Deep focus, warm candle glow mixed with cool ambient shadows. Style: Leonardo AI, realistic, emotionally rich, high-res.",
+        "negativePrompt": "low-res, distorted anatomy, cluttered background, overexposed highlights, AI artifacts",
+        "seed": "auto",
+        "model": "Leonardo AI + SDXL 1.0",
+        "sampler": "DPM++ 2M Karras"
+    },
+    {
+        id: 2,
         src: "./ai-images/ChatGPT_coffee_01.png",
         alt: "Young woman at a sunlit street-side café holding Silvia Vanda’s novel “Dunkelfeuer – Ich finde dich”, with a second volume and a cappuccino on the table.",
         prompt: "Golden-hour outdoor café scene, pastel old-town street in soft focus, blooming cherry blossoms, elegant woman in a coral wrap dress sits with crossed legs; she lifts Silvia Vanda’s fantasy-romance novel “Dunkelfeuer – Ich finde dich” toward the camera. On the wrought-iron table: a marble-glazed cappuccino cup and the sequel “Dunkelfeuer – Du gehörst mir”. Warm cinematic lighting, shallow depth of field, 50 mm f1.8.",
@@ -10,7 +20,7 @@ const aiGalleryData = [
         sampler: "DPM++ 2M Karras"
     },
     {
-        id: 2,
+        id: 3,
         src: "./ai-images/ChatGPT_coffee_02.png",
         alt: "Café table with cappuccino latte art beside Silvia Vanda’s book “Dunkelfeuer – Ich finde dich”; warm sunset street blurred in the background.",
         prompt:
@@ -21,7 +31,7 @@ const aiGalleryData = [
         sampler: "DPM++ 2M Karras"
     },
     {
-        id: 3,
+        id: 4,
         src: "./ai-images/Flux_Dev_LinkinPark.jpg",
         alt: "Back-lit girl throwing up her arms in a sun-drenched bedroom, wearing a Linkin Park T-shirt; colorful confetti floats in the air.",
         prompt:
@@ -32,7 +42,7 @@ const aiGalleryData = [
         sampler: "Euler a"
     },
     {
-        id: 4,
+        id: 5,
         src: "./ai-images/ChatGPT_coffee_03.png",
         alt: "Red-haired woman quietly enjoying a cup of coffee on the beach at sunset; warm golden light plays across the waves.",
         prompt:
@@ -43,7 +53,7 @@ const aiGalleryData = [
         sampler: "Euler a"
     },
     {
-        id: 5,
+        id: 6,
         src: "./ai-images/ChatGPT_coffee_04.png",
         alt: "Fresh cappuccino with frothy crema in a ‘Cappuccino House’ mug beside a laptop screen full of code, morning bokeh light in the window.",
         prompt:
@@ -54,7 +64,7 @@ const aiGalleryData = [
         sampler: "Euler a"
     },
     {
-        id: 6,
+        id: 7,
         src: "./ai-images/ChatGPT_img_01.png",
         alt: "Cowgirl and biker-style man seated close together on hay; Silvia Vanda’s novel ‘Dunkelfeuer – Ich finde dich’ rests against her knee.",
         prompt:

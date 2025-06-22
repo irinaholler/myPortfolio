@@ -1,5 +1,3 @@
-// src/components/PlayStats/PlayStats.jsx
-
 import React, { useEffect, useState } from 'react';
 import './PlayStats.scss';
 import { FaHeart, FaPlay } from 'react-icons/fa';
