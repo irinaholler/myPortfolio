@@ -5,13 +5,13 @@ import '../styles/ExampleRadioButton.scss';
 const ExampleRadioButton = () => {
     const [selectedOption, setSelectedOption] = useState('');
 
-    const handleChange = (e) => {
-        setSelectedOption(e.target.value);
+    const onRadioChange = (optionId) => {
+        setSelectedOption(optionId);
     };
 
     return (
-        <div className="example-radio-group">
-            <h3>Select an option:</h3>
+        <fieldset className="example-radio-group">
+            <legend>Select an option:</legend>
 
             <RadioButtonTracker buttonId="option1">
                 <div className="radio-option">
@@ -21,7 +21,7 @@ const ExampleRadioButton = () => {
                         name="example"
                         value="option1"
                         checked={selectedOption === 'option1'}
-                        onChange={handleChange}
+                        onChange={() => onRadioChange('option1')}
                     />
                     <label htmlFor="option1">Option 1</label>
                 </div>
@@ -35,7 +35,7 @@ const ExampleRadioButton = () => {
                         name="example"
                         value="option2"
                         checked={selectedOption === 'option2'}
-                        onChange={handleChange}
+                        onChange={() => onRadioChange('option2')}
                     />
                     <label htmlFor="option2">Option 2</label>
                 </div>
@@ -49,15 +49,15 @@ const ExampleRadioButton = () => {
                         name="example"
                         value="option3"
                         checked={selectedOption === 'option3'}
-                        onChange={handleChange}
+                        onChange={() => onRadioChange('option3')}
                     />
                     <label htmlFor="option3">Option 3</label>
                 </div>
             </RadioButtonTracker>
 
             <p>Selected: {selectedOption || 'None'}</p>
-        </div>
+        </fieldset>
     );
 };
 
-export default ExampleRadioButton; 
+export default ExampleRadioButton;

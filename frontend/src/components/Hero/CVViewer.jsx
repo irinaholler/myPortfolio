@@ -1,35 +1,51 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import css from './CVViewer.module.scss';
+
+const modalVariants = {
+    hidden: { opacity: 0, scale: 0.7 },
+    visible: {
+        opacity: 1,
+        scale: [0.7, 1.05, 1], // start small → overshoot → settle
+        transition: {
+            duration: 0.6,
+            ease: 'easeInOut',
+        },
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.7,
+        transition: { duration: 0.3 },
+    },
+};
 
 const CVViewer = ({ onClose }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
 
-    return (
+    return createPortal(
         <motion.div
             className={css.overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             onClick={onClose}
         >
             <motion.div
                 className={css.content}
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.8 }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
             >
                 <button className={css.closeButton} onClick={onClose}>
                     ×
                 </button>
                 <div className={css.imageWrapper}>
                     {imageError ? (
-                        <div>Failed to load CV</div>
+                        <div className={css.errorMessage}>Failed to load CV</div>
                     ) : (
                         <img
-                            src="CV.png"
+                            src="Zertifikat_Holler, Irina_FbW WD 24-E04-1_de.jpg"
                             alt="Irina Holler CV"
                             className={css.cvImage}
                             style={{ opacity: imageLoaded ? 1 : 0 }}
@@ -39,8 +55,9 @@ const CVViewer = ({ onClose }) => {
                     )}
                 </div>
             </motion.div>
-        </motion.div>
+        </motion.div>,
+        document.body
     );
 };
 
-export default CVViewer; 
+export default CVViewer;
