@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import styles from "./AiCarousel.module.scss";
 
 import AiCard from "./AiCard.jsx";
-import Modal from "../AiMasonryGallery/Modal.jsx";   // ← reuse the same modal markup
+import Modal from "../AiMasonryGallery/Modal.jsx";
 
 export default function AiCarousel({ items = [] }) {
     const [active, setActive] = useState(null);        // modal state

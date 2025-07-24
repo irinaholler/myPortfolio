@@ -93,7 +93,7 @@ const Footer = () => {
             <span className={`${css.secondaryText} ${css.currentTime}`}>
               {currentTime.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </span>
-            <span className={`${css.secondaryText}`}>Made with ❤️ in February 2025</span>
+            <span className={`${css.secondaryText}`}>Made with ❤️ since February 2025</span>
           </div>
           <div className={css.menu}>
             <h2 className={css.title}>Shall We Enjoy the Music</h2>

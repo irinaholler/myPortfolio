@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../AiMasonryGallery/AiMasonryGallery.module.scss"; // reuse the CSS
+import styles from "../AiMasonryGallery/AiMasonryGallery.module.scss";
 
 export default function AiCard({ item, onClick }) {
     const shortPrompt =
