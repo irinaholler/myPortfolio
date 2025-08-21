@@ -122,6 +122,12 @@ export const sliderSettings = {
 
 export const projects = [
   {
+    name: "Our Playful Lab",
+    description: "A playful Flask web app with mini-generators (excuses, pet names, and more), blending Python with HTML & CSS for creative fun.",
+    img: "./prj-python.png",
+    link: "https://our-playful-lab-app.azurewebsites.net/"
+  },
+  {
     name: "mitAussicht",
     description: "Built with WordPress and Elementor, supported by plugins for accessibility and performance — offering a glimpse into peaceful living with a view.",
     img: "./prj-mitAussicht.png",
@@ -146,12 +152,12 @@ export const projects = [
     img: "./prj-ChatFlow-App.png",
     link: "https://youtu.be/eJ02u7vVLCI?si=pAz21_Kuvz0EHLqQ"
   },
-  {
-    name: "Memory Card Game",
-    description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
-    img: "./prj-Memory-Card-Game.png",
-    link: "https://irinaholler.github.io/Memory-Card-Game/"
-  },
+  //{
+  //  name: "Memory Card Game",
+  //  description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
+  //  img: "./prj-Memory-Card-Game.png",
+  //  link: "https://irinaholler.github.io/Memory-Card-Game/"
+  //},
   {
     name: "Hangman Game",
     description: "A sleek, interactive Hangman game with smooth animations and a modern design. Guess letters, reveal words, and enjoy a fun challenge.",
