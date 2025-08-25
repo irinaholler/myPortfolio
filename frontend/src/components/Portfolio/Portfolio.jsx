@@ -127,57 +127,60 @@ const Portfolio = () => {
         </motion.div>
 
         <div className={css.showCase}>
-          {projects.map((project, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 100 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.2 }}
-              viewport={{ once: true }}
-              className={css.projectContainer}
-            >
-              <img src={project.img} alt={project.name} className={css.projectImage} />
-              <div className={css.projectInfo}>
-                <div className={css.projectHeader}>
-                  <h3>{project.name}</h3>
-                  {project.tags && (
-                    <div className={css.projectTags}>
-                      {project.tags.map((tag, index) => (
-                        <span key={index} className={css.tag}>{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <p>{project.description}</p>
-                <div className={css.projectFooter}>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={css.viewButton}
-                  >
-                    <span>View Project</span>
-                    <div className={css.buttonIcon}>
-                      <FaGithub />
-                    </div>
-                  </a>
-                  {project.live && (
+          {projects.map((project, i) => {
+            const isGithub = project.link && project.link.includes("github.com");
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.2 }}
+                viewport={{ once: true }}
+                className={css.projectContainer}
+              >
+                <img src={project.img} alt={project.name} className={css.projectImage} />
+                <div className={css.projectInfo}>
+                  <div className={css.projectHeader}>
+                    <h3>{project.name}</h3>
+                    {project.tags && (
+                      <div className={css.projectTags}>
+                        {project.tags.map((tag, index) => (
+                          <span key={index} className={css.tag}>{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <p>{project.description}</p>
+                  <div className={css.projectFooter}>
                     <a
-                      href={project.live}
+                      href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${css.viewButton} ${css.liveButton}`}
+                      className={css.viewButton}
                     >
-                      <span>Live Demo</span>
+                      <span>{isGithub ? "Source" : "Project"}</span>
                       <div className={css.buttonIcon}>
-                        <FaExternalLinkAlt />
+                        {isGithub ? <FaGithub /> : <FaExternalLinkAlt />}
                       </div>
                     </a>
-                  )}
+                    {project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${css.viewButton} ${css.liveButton}`}
+                      >
+                        <span>Live Demo</span>
+                        <div className={css.buttonIcon}>
+                          <FaExternalLinkAlt />
+                        </div>
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </motion.div>
 

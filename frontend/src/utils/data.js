@@ -125,19 +125,41 @@ export const projects = [
     name: "Our Playful Lab",
     description: "A playful Flask web app with mini-generators (excuses, pet names, and more), blending Python with HTML & CSS for creative fun.",
     img: "./prj-python.png",
-    link: "https://our-playful-lab-app.azurewebsites.net/"
+    link: "https://github.com/irinaholler/Our-Playful-Lab",
+    live: "https://our-playful-lab-app.azurewebsites.net/",
+    tags: ["Flask", "Python", "Azure", "Java Script"],
+  },
+  {
+    name: "Voice‑to‑Text (Azure)",
+    description:
+      "From spoken word to written word — EchoScribe turns voice into text with the help of AI. Deployed on Azure for seamless performance and accessibility.",
+    img: "./prj-echoscribe-web.png",
+    link: "https://github.com/irinaholler/EchoScribe",
+    live: "https://echoscribe-web-3120.azurewebsites.net/",
+    tags: ["Flask", "Python", "Azure", "WhisperAI"],
+  },
+  {
+    name: "AI Image Generator",
+    description:
+      "Transform words into one-of-a-kind images. This AI image generator, hosted on Azure, makes creativity interactive and fun.",
+    img: "./prj-aiimg.png",
+    link: "https://github.com/irinaholler/Our-Playful-Lab",
+    live: "https://colabsite.z6.web.core.windows.net/",
+    tags: ["AI", "Flask", "Python", "HTML/CSS"],
   },
   {
     name: "mitAussicht",
-    description: "Built with WordPress and Elementor, supported by plugins for accessibility and performance — offering a glimpse into peaceful living with a view.",
+    description: "An elegant site, blending accessibility, performance, and elegant design, a digital home that mirrors the calm of living with a view.",
     img: "./prj-mitAussicht.png",
-    link: "https://wohnen-mitaussicht.de"
+    link: "https://wohnen-mitaussicht.de",
+    tags: ["WordPress", "Elementor"],
   },
   {
     name: "Gries GmbH",
     description: "Corporate website with modern design and seamless user experience for Gries GmbH.",
     img: "./prj-Gries GmbH-WS.png",
-    link: "https://gries-gmbh.de"
+    link: "https://gries-gmbh.de",
+    tags: ["WordPress", "Elementor"],
   },
   {
     name: "Connectify - A Blogging Platform",
@@ -152,12 +174,12 @@ export const projects = [
     img: "./prj-ChatFlow-App.png",
     link: "https://youtu.be/eJ02u7vVLCI?si=pAz21_Kuvz0EHLqQ"
   },
-  //{
-  //  name: "Memory Card Game",
-  //  description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
-  //  img: "./prj-Memory-Card-Game.png",
-  //  link: "https://irinaholler.github.io/Memory-Card-Game/"
-  //},
+  {
+    name: "Memory Card Game",
+    description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
+    img: "./prj-Memory-Card-Game.png",
+    link: "https://irinaholler.github.io/Memory-Card-Game/"
+  },
   {
     name: "Hangman Game",
     description: "A sleek, interactive Hangman game with smooth animations and a modern design. Guess letters, reveal words, and enjoy a fun challenge.",
