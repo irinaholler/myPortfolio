@@ -18,6 +18,14 @@ export default function AiCarousel({ items = [] }) {
                 <p className={styles.sub}>
                     Created with a variety of generative-AI tools.
                 </p>
+                <a
+                    href="https://promptfolio.azurewebsites.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.galleryLink}
+                >
+                    View Full AI Gallery →
+                </a>
             </header>
             <Swiper
                 modules={[Navigation, Mousewheel, Keyboard]}

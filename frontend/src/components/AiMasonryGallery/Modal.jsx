@@ -8,12 +8,20 @@ export default function Modal({ item, onClose }) {
                 className={styles.modalContent}
                 onClick={(e) => e.stopPropagation()}
             >
+                {/* Ornate corner decorations */}
+                <div className={`${styles.cornerOrnament} ${styles.cornerTopLeft}`}></div>
+                <div className={`${styles.cornerOrnament} ${styles.cornerTopRight}`}></div>
+                <div className={`${styles.cornerOrnament} ${styles.cornerBottomLeft}`}></div>
+                <div className={`${styles.cornerOrnament} ${styles.cornerBottomRight}`}></div>
+
                 <button className={styles.close} onClick={onClose}>
                     &times;
                 </button>
 
                 <div className={styles.modalBody}>
-                    <img src={item.src} alt={item.alt || item.prompt} />
+                    <div className={styles.imageContainer}>
+                        <img src={item.src} alt={item.alt || item.prompt} />
+                    </div>
 
                     <dl className={styles.meta}>
                         <dt>Prompt</dt><dd>{item.prompt}</dd>
