@@ -185,5 +185,24 @@ export const projects = [
     description: "A sleek, interactive Hangman game with smooth animations and a modern design. Guess letters, reveal words, and enjoy a fun challenge.",
     img: "./prj-hm.png",
     link: "https://irinaholler.github.io/Hangman-Game/"
+  },
+  {
+    name: "Story Cover Lab",
+    description:
+      "Eine einseitige Landingpage für mein Buchcover-Atelier: dunkle, klare, manchmal rockige Ästhetik mit Cover-Galerie.",
+    img: "./prj-story-cover-lab.png",
+    link: "https://github.com/irinaholler/story-cover-lab",
+    live: "https://myrina.de/story-cover-lab/",
+    tags: ["React", "css"],
+    isNewest: true,
+  },
+  {
+    name: "QuietCV",
+    description:
+      "Ein ruhiger, aufgeräumter CV-Builder in React: Live-Vorschau, klare Typografie, dezente Farbthemen und exportierbare Lebensläufe – damit der Inhalt spricht, nicht der Lärm um ihn herum.",
+    img: "./prj-quietcv.png",
+    link: "https://github.com/irinaholler/Quiet-CV",
+    live: "https://myrina.de/quietcv/",
+    tags: ["React", "css"]
   }
 ];

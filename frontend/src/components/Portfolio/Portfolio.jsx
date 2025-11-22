@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { FaArrowRight, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import css from "./Portfolio.module.scss";
@@ -11,6 +11,32 @@ const Portfolio = () => {
   const [modalStyle, setModalStyle] = useState({});
   const [expandedProject, setExpandedProject] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Shuffle function using Fisher-Yates algorithm
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Arrange projects: Project marked as newest fixed first, second project fixed, rest randomized
+  const arrangedProjects = useMemo(() => {
+    // Find the project marked as newest
+    const newestProject = projects.find(p => p.isNewest);
+    // Second project stays in second position
+    const secondProject = projects[1];
+    // Get all other projects (excluding newest and second)
+    const remainingProjects = projects.filter(
+      p => p !== newestProject && p !== secondProject
+    );
+    // Shuffle the remaining projects
+    const shuffledRemaining = shuffleArray(remainingProjects);
+    // Combine: newest first, second project second, then shuffled rest
+    return [newestProject, secondProject, ...shuffledRemaining].filter(Boolean);
+  }, []);
 
   const openModal = (event, description, link) => {
     const projectElement = event.currentTarget;
@@ -127,8 +153,9 @@ const Portfolio = () => {
         </motion.div>
 
         <div className={css.showCase}>
-          {projects.map((project, i) => {
+          {arrangedProjects.map((project, i) => {
             const isGithub = project.link && project.link.includes("github.com");
+            const isNewest = project.isNewest === true; // Check isNewest property
             return (
               <motion.div
                 key={i}
@@ -138,6 +165,12 @@ const Portfolio = () => {
                 viewport={{ once: true }}
                 className={css.projectContainer}
               >
+                {isNewest && (
+                  <div className={css.newBadge}>
+                    <span className={css.badgeText}>New</span>
+                    <span className={css.badgePulse}></span>
+                  </div>
+                )}
                 <img src={project.img} alt={project.name} className={css.projectImage} />
                 <div className={css.projectInfo}>
                   <div className={css.projectHeader}>
