@@ -30,8 +30,8 @@ export const projectExperience = [
 ];
 
 export const WhatDoIHelp = [
-  "I will help you with finging a solution and solve your problem, We use process design to create digital products. Besides that also help their business.",
-  "We use process design to create digital products. Besides that also help their business",
+  "I solve problems through design thinking and clean code. Whether it's a sleek web app or an AI automation workflow, I focus on creating solutions that actually work for real people.",
+  "My approach? Listen first, design second, build third. I believe the best products come from understanding the 'why' behind every feature.",
 ];
 
 export const workExp = [
@@ -60,24 +60,30 @@ export const workExp = [
 
 export const comments = [
   {
-    name: "Responsive Design",
-    title: "Seamless Experiences Anywhere",
+    name: "Design Systems",
+    title: "Building for Scale",
     comment:
-      "I craft interfaces that adapt and shine on every screen—mobile, tablet, or desktop—so users always enjoy an intuitive journey.",
+      "I create design systems that grow with your product. Every component is built with consistency, accessibility, and future-proofing in mind—so your team can ship faster without sacrificing quality.",
+    icon: "🎨",
+    color: "#00D4FF",
     //img: "./skill-1.png",
   },
   {
-    name: "UI/UX Empathy",
-    title: "Designing with People in Mind",
+    name: "Code & Automation",
+    title: "From Idea to Reality",
     comment:
-      "Combining user research and visual polish, I build interfaces that feel natural, accessible, and bring delight to every interaction.",
+      "Whether it's a React component or an AI workflow, I write code that's clean, maintainable, and actually solves problems. I automate the boring stuff so you can focus on what matters.",
+    icon: "⚡",
+    color: "#9D4EDD",
     //img: "./skill-2.png",
   },
   {
-    name: "Full-Stack Craft",
-    title: "From Mongo to React",
+    name: "User-Centered Thinking",
+    title: "People First, Always",
     comment:
-      "From MongoDB schemas to dynamic React components—end-to-end solutions that scale and delight.",
+      "I start every project by asking 'who is this for?' and 'what problem are we solving?' Then I design and build solutions that users actually want to use—not just what looks cool.",
+    icon: "💡",
+    color: "#f6bc40",
     //img: "./skill-3.png",
   },
 ];
@@ -132,7 +138,7 @@ export const projects = [
   {
     name: "Voice‑to‑Text (Azure)",
     description:
-      "From spoken word to written word — EchoScribe turns voice into text with the help of AI. Deployed on Azure for seamless performance and accessibility.",
+      "From spoken word to written word - EchoScribe turns voice into text with the help of AI. Deployed on Azure for seamless performance and accessibility.",
     img: "./prj-echoscribe-web.png",
     link: "https://github.com/irinaholler/EchoScribe",
     live: "https://echoscribe-web-3120.azurewebsites.net/",
@@ -163,7 +169,7 @@ export const projects = [
   },
   {
     name: "Connectify - A Blogging Platform",
-    description: "Connectify is where thoughts become posts, and posts spark conversations — a sleek social blog app with real-time messaging and expressive storytelling.",
+    description: "Connectify is where thoughts become posts, and posts spark conversations - a sleek social blog app with real-time messaging and expressive storytelling.",
     img: "./prj-connectify.png",
     link: "https://youtu.be/o9iHF65ouTE?si=OpsS-Rv1U5PFCbZU"
   },
@@ -173,18 +179,6 @@ export const projects = [
       "A real-time chat application built with React, Node.js, Express and Socket.io. Features JWT-based auth, conversational UI, and live presence.",
     img: "./prj-ChatFlow-App.png",
     link: "https://youtu.be/eJ02u7vVLCI?si=pAz21_Kuvz0EHLqQ"
-  },
-  {
-    name: "Memory Card Game",
-    description: "A memory card game built with JavaScript, HTML & CSS — featuring flip animations, dynamic album covers from the Last.fm API, and score tracking.",
-    img: "./prj-Memory-Card-Game.png",
-    link: "https://irinaholler.github.io/Memory-Card-Game/"
-  },
-  {
-    name: "Hangman Game",
-    description: "A sleek, interactive Hangman game with smooth animations and a modern design. Guess letters, reveal words, and enjoy a fun challenge.",
-    img: "./prj-hm.png",
-    link: "https://irinaholler.github.io/Hangman-Game/"
   },
   {
     name: "Story Cover Lab",
@@ -199,10 +193,47 @@ export const projects = [
   {
     name: "QuietCV",
     description:
-      "Ein ruhiger, aufgeräumter CV-Builder in React: Live-Vorschau, klare Typografie, dezente Farbthemen und exportierbare Lebensläufe – damit der Inhalt spricht, nicht der Lärm um ihn herum.",
+      "Ein ruhiger, aufgeräumter CV-Builder in React: Live-Vorschau, klare Typografie, dezente Farbthemen und exportierbare Lebensläufe - damit der Inhalt spricht, nicht der Lärm um ihn herum.",
     img: "./prj-quietcv.png",
     link: "https://github.com/irinaholler/Quiet-CV",
     live: "https://myrina.de/quietcv/",
     tags: ["React", "css"]
+  }
+];
+
+export const aiAutomationProjects = [
+  {
+    name: "Intelligent Lead Capture System",
+    description: "An AI-powered automation system that captures, processes, and organizes booking inquiries using LLM agents, vector databases, and no-code workflows. Seamlessly connects customer inquiries to Google Sheets with intelligent data extraction.",
+    category: "ai-automation",
+    technologies: ["LLM", "OpenAI", "n8n", "MCPs", "Pinecone", "Google Sheets"],
+    workflows: [
+      {
+        name: "Lead Capture Flow",
+        diagram: "./workflow-2-ai-agent.png",
+        description: "AI Agent processes booking inquiries and routes to Google Sheets"
+      },
+      {
+        name: "Document Processing",
+        diagram: "./workflow-1-document-pipeline.png",
+        description: "Automated document processing with Pinecone vector storage"
+      },
+      {
+        name: "Lead Capture Configuration",
+        diagram: "./workflow-3-lead-capture.png",
+        description: "Connecting booking leads to Google Sheets with AI intelligence"
+      }
+    ],
+    features: [
+      "Real-time lead processing",
+      "Intelligent data extraction",
+      "Automated Google Sheets integration",
+      "Vector-based document search",
+      "No-code workflow automation"
+    ],
+    isNewest: true,
+    badge: "AI Automation",
+    img: "./workflow-2-ai-agent.png",
+    caseStudy: "./case-study.html"
   }
 ];

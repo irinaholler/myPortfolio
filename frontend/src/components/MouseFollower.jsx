@@ -14,11 +14,18 @@ const MouseFollower = () => {
 
         // Check if the window width is greater than 768px
         if (!isMobile) {
+            let ticking = false;
             const handleMouseMove = (event) => {
-                setPosition({ x: event.clientX, y: event.clientY });
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        setPosition({ x: event.clientX, y: event.clientY });
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
             };
 
-            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
             return () => {
                 window.removeEventListener('mousemove', handleMouseMove);

@@ -6,56 +6,75 @@
   z-index: 99;
   background-color: #278164;
   transition: all 300ms ease;
-  height: 4rem;
+  height: 3.5rem;
+
+  @media (min-width: $md) {
+    height: 3.75rem;
+  }
 
   .container {
     justify-content: space-between;
     font-weight: 500;
     color: antiquewhite;
     height: 100%;
-    padding: 0 1rem;
+    padding: 0 0.85rem;
 
     @media (min-width: $md) {
-      padding: 0 2rem;
+      padding: 0 1.5rem;
     }
 
     .logo {
-      font-size: 1.5rem;
-      font-family: "Orbitron", sans-serif;
-      color: antiquewhite;
+      display: flex;
+      align-items: center;
       text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      transition: transform 0.3s ease, color 0.3s ease-in-out;
-      cursor: crosshair;
-
-      @media (min-width: $md) {
-        font-size: 2rem;
-      }
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      height: 100%;
 
       &:hover {
-        color: orange;
         transform: scale(1.1);
+      }
+    }
+
+    .logoImage {
+      height: 3rem;
+      width: auto;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      max-width: 180px;
+
+      @media (min-width: $md) {
+        height: 7rem;
+        max-width: 380px;
+      }
+
+      @media (min-width: $lg) {
+        height: 7.5rem;
+        max-width: 420px;
+      }
+
+      .logo:hover & {
+        transform: scale(1.05);
       }
     }
 
     .menu {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.25rem;
       list-style: none;
       text-transform: uppercase;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
 
       @media (min-width: $md) {
-        gap: 2rem;
-        font-size: 1rem;
+        gap: 1.75rem;
+        font-size: 0.95rem;
       }
 
       li a {
         color: inherit;
         text-decoration: none;
         border-bottom: 1px solid transparent;
-        padding: 0.5rem 0;
+        padding: 0.4rem 0;
 
         &:hover {
           color: orange;
@@ -66,7 +85,7 @@
       // For mobile dropdown
       @media (max-width: 768px) {
         position: absolute;
-        top: 4rem;
+        top: 3.5rem;
         right: 1rem;
         flex-direction: column;
         background: #278164;
@@ -89,19 +108,19 @@
 
     .socialIcons {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.6rem;
 
       @media (min-width: $md) {
-        gap: 1rem;
+        gap: 0.85rem;
       }
 
       a {
         color: white;
         transition: transform 0.2s ease, color 0.3s ease-in-out;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
 
         @media (min-width: $md) {
-          font-size: 1.4rem;
+          font-size: 1.25rem;
         }
 
         &:hover {
@@ -119,7 +138,7 @@
       display: none;
       cursor: pointer;
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
 
       @media (max-width: 768px) {
         display: block;

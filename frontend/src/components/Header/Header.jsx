@@ -37,7 +37,7 @@ const Header = () => {
       >
         <div className={`innerWidth ${css.container} flexCenter`}>
           <Link to="/" className={css.logo}>
-            ИDE
+            <img src="./IH_Logo.png" alt="IRAH Logo" className={css.logoImage} onError={(e) => { console.error('Logo failed to load. Tried:', e.target.src); }} />
           </Link>
 
           <ul
@@ -49,13 +49,13 @@ const Header = () => {
             <li><a href="#portfolio">Portfolio</a></li>
             <li className={css.socialIcons}>
               <a href="https://github.com/irinaholler" target="_blank" rel="noopener noreferrer">
-                <FaGithub size={30} />
+                <FaGithub size={24} />
               </a>
               <a href="https://www.linkedin.com/in/irinaniko/" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={30} />
+                <FaLinkedin size={24} />
               </a>
               <a href="https://www.instagram.com/myirde/" target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={30} />
+                <FaInstagram size={24} />
               </a>
             </li>
           </ul>
@@ -64,7 +64,7 @@ const Header = () => {
             className={css.menuIcon}
             onClick={() => setMenuOpened((prev) => !prev)}
           >
-            <BiMenuAltRight size={30} />
+            <BiMenuAltRight size={26} />
           </div>
         </div>
       </motion.div>

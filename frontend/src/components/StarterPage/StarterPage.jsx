@@ -12,18 +12,25 @@ const StarterPage = () => {
             setIsLoaded(true);
         }, 100);
 
+        let ticking = false;
         const handleScroll = () => {
-            const position = window.scrollY;
-            setScrollPosition(position);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const position = window.scrollY;
+                    setScrollPosition(position);
 
-            if (position > 0) {
-                setZoomed(true);
-            } else {
-                setZoomed(false);
+                    if (position > 0) {
+                        setZoomed(true);
+                    } else {
+                        setZoomed(false);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
             }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(timer);

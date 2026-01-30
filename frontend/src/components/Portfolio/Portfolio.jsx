@@ -68,21 +68,21 @@ const Portfolio = () => {
   return (
     <motion.section
       variants={staggerChildren}
-      initial="hidden"
+      initial="show"
       whileInView="show"
-      viewport={{ once: false, amount: 0.25 }}
+      viewport={{ once: true, amount: 0 }}
       className={`paddings ${css.wrapper}`}
     >
       <a className="anchor" id="portfolio"></a>
 
       <motion.div
         variants={staggerChildren}
-        initial="hidden"
+        initial="show"
         whileInView="show"
-        viewport={{ once: false, amount: 0.25 }}
+        viewport={{ once: true, amount: 0 }}
         className={`innerWidth flexCenter ${css.container}`}
       >
-        <motion.div variants={textVariant(0.4)} className={css.heading}>
+        <div className={css.heading}>
           <div className={css.expertiseContainer}>
             <h1 className={css.outlineText}>Creative Works</h1>
             <h1 className={css.overlayText}>
@@ -150,28 +150,29 @@ const Portfolio = () => {
               </motion.div>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
 
         <div className={css.showCase}>
-          {arrangedProjects.map((project, i) => {
+          {arrangedProjects && arrangedProjects.length > 0 ? arrangedProjects.map((project, i) => {
             const isGithub = project.link && project.link.includes("github.com");
             const isNewest = project.isNewest === true; // Check isNewest property
             return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-                viewport={{ once: true }}
-                className={css.projectContainer}
-              >
-                {isNewest && (
-                  <div className={css.newBadge}>
-                    <span className={css.badgeText}>New</span>
-                    <span className={css.badgePulse}></span>
-                  </div>
-                )}
-                <img src={project.img} alt={project.name} className={css.projectImage} />
+              <div key={i} className={css.projectContainer}>
+                <motion.div
+                  className={css.imageWrapper}
+                  initial={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, delay: i * 0.03 }}
+                  viewport={{ once: true, amount: 0 }}
+                >
+                  {isNewest && (
+                    <div className={css.newBadge}>
+                      <span className={css.badgeText}>New</span>
+                      <span className={css.badgePulse}></span>
+                    </div>
+                  )}
+                  <img src={project.img} alt={project.name} className={css.projectImage} />
+                </motion.div>
                 <div className={css.projectInfo}>
                   <div className={css.projectHeader}>
                     <h3>{project.name}</h3>
@@ -211,9 +212,9 @@ const Portfolio = () => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
-          })}
+          }) : <div>No projects found</div>}
         </div>
       </motion.div>
 

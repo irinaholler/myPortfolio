@@ -34,6 +34,11 @@ export default defineConfig({
     }
   },
   server: {
+    port: 5174,
+    hmr: {
+      port: 5174,
+      clientPort: 5174
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:8000',

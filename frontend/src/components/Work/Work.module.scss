@@ -6,14 +6,14 @@
     gap: 2rem;
 
     .experiences {
-      @media (max-width: 768px) {
-        display: none;
-      }
       padding-top: 4rem;
       width: 100%;
       flex-direction: column;
       gap: 1.4rem;
       position: relative;
+      @media (max-width: 768px) {
+        display: none;
+      }
 
       .exp {
         margin-top: 1rem;
@@ -84,21 +84,17 @@
 }
 
 .outlineText {
-  @media (max-width: $ss) {
-    font-size: 3rem;
-  }
   font-size: 5rem;
   font-weight: 700;
   -webkit-text-stroke: 2px rgba(13, 48, 63, 0.6);
   color: transparent;
   position: relative;
+  @media (max-width: $ss) {
+    font-size: 3rem;
+  }
 }
 
 .overlayText {
-  @media (max-width: $sm) {
-    padding-top: 1rem;
-    font-size: 1.2rem;
-  }
   font-size: 2rem;
   font-weight: 900;
   color: #0d2f3f;
@@ -107,6 +103,10 @@
   top: 95%;
   transform: translateY(-50%);
   padding: 0 10px;
+  @media (max-width: $sm) {
+    padding-top: 1rem;
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 768px) {

@@ -35,7 +35,6 @@ export default function AiCarousel({ items = [] }) {
                 navigation
                 mousewheel={{ forceToAxis: true }}
                 keyboard
-                preloadImages={false}
                 lazy={{ loadPrevNext: true }}
                 breakpoints={{
                     640: { spaceBetween: 28 },

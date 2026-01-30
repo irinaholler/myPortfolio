@@ -1,0 +1,2071 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="./IH_Logo.png" />
+    <title>AI Workflow Architecture — Irina Holler</title>
+    <meta name="description"
+        content="Interactive workflow visualization: Building an intelligent AI assistant for a restaurant with n8n, OpenAI, Pinecone, and Google Drive." />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg: #0a0a0f;
+            --bg-dark: #050508;
+            --surface: #111118;
+            --surface-elevated: #1a1a24;
+            --text: #ffffff;
+            --text-muted: #a0a0b0;
+            --text-faint: #606070;
+            --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.4);
+            --accent2: #7c3aed;
+            --accent2-glow: rgba(124, 58, 237, 0.3);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated grid background */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Terminal-style header */
+        .terminal-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: var(--error);
+        }
+
+        .dot.yellow {
+            background: var(--warning);
+        }
+
+        .dot.green {
+            background: var(--success);
+        }
+
+        .terminal-title {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* Language Toggle - Global Switch */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 16px;
+            padding: 6px 4px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--mono);
+            font-size: 11px;
+            position: relative;
+        }
+
+        .lang-toggle:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+        }
+
+        .lang-toggle::before {
+            content: "🌐";
+            margin-right: 4px;
+            font-size: 14px;
+        }
+
+        .lang-toggle span {
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            color: var(--text-faint);
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .lang-toggle span.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--text);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+        }
+
+        .lang-toggle span:not(.active):hover {
+            color: var(--text-muted);
+        }
+
+        /* Executive Summary - TL;DR Section */
+        .exec-summary {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 0 30px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .exec-summary::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(180deg, transparent 0%, var(--bg) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-faint);
+            font-size: 11px;
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            z-index: 10;
+            animation: bounce 2s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .scroll-hint::after {
+            content: "↓";
+            font-size: 24px;
+            color: var(--accent);
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
+        }
+
+        .exec-summary-card {
+            background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 20px 40px;
+            max-width: 780px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exec-summary-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px at 20% 30%, var(--accent-glow), transparent 50%),
+                radial-gradient(600px at 80% 70%, var(--accent2-glow), transparent 50%);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .exec-summary-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tldr-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        .exec-summary h2 {
+            font-size: clamp(34px, 4vw, 54px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .exec-summary-intro {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .exec-summary-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .exec-summary-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 3px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 18px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .exec-summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .exec-summary-list li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: 700;
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .exec-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .exec-tools-label {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-faint);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: 8px;
+        }
+
+        .exec-tool {
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* Hero block - 3D isometric style */
+        .hero-block {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .hero-block::after {
+            content: "";
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, transparent 0%, var(--bg) 60%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-inner {
+            transform-style: preserve-3d;
+            animation: float3d 6s ease-in-out infinite;
+        }
+
+        @keyframes float3d {
+
+            0%,
+            100% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+
+            50% {
+                transform: rotateY(2deg) rotateX(1deg);
+            }
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px 40px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px at 20% 30%, var(--accent-glow), transparent 50%),
+                radial-gradient(600px at 80% 70%, var(--accent2-glow), transparent 50%);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-badge::before {
+            content: "▶";
+            font-size: 10px;
+        }
+
+        h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text), var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--text-muted);
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        .tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .tech-pill {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-pill:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* Building blocks system */
+        .blocks-container {
+            margin: 30px 0;
+        }
+
+        .block {
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(50px) rotateX(10deg);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .block.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .block-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            box-shadow: 0 8px 24px var(--accent-glow);
+            flex-shrink: 0;
+        }
+
+        .block-title {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .block-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-left: 80px;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .block-content:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateX(8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .block-content::before {
+            content: "";
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .block-description {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .block-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .feature-tag {
+            padding: 12px 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        /* Image showcase blocks */
+        .image-block {
+            margin: 24px 0;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .image-block.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .image-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transition: all 0.4s ease;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .image-wrapper:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15), var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .image-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .image-wrapper:hover::before {
+            opacity: 1;
+        }
+
+        .image-wrapper::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .image-wrapper:hover::after {
+            opacity: 1;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .image-wrapper:hover img {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
+            border-top: 2px solid var(--border);
+            position: relative;
+        }
+
+        .image-caption::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .image-caption h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .image-caption p {
+            font-size: 17px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 900px;
+            margin-bottom: 12px;
+        }
+
+        /* Language transition */
+        [data-en],
+        [data-de] {
+            transition: opacity 0.3s ease;
+        }
+
+        .image-caption .flow-diagram {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            padding: 10px 18px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .image-caption .flow-diagram .arrow {
+            color: var(--text-faint);
+        }
+
+        /* Semantic labels - Why this matters / Design choice */
+        .semantic-label {
+            margin-top: 24px;
+            padding: 20px 24px;
+            border-radius: 12px;
+            border-left: 4px solid;
+            position: relative;
+        }
+
+        .semantic-label.why-matters {
+            background: rgba(16, 185, 129, 0.08);
+            border-left-color: var(--success);
+        }
+
+        .semantic-label.design-choice {
+            background: rgba(0, 212, 255, 0.08);
+            border-left-color: var(--accent);
+        }
+
+        .semantic-label-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-family: var(--mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        .semantic-label.why-matters .semantic-label-header {
+            color: var(--success);
+        }
+
+        .semantic-label.design-choice .semantic-label-header {
+            color: var(--accent);
+        }
+
+        .semantic-label-header::before {
+            content: "→";
+            font-size: 16px;
+        }
+
+        .semantic-label-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .semantic-label-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Workflow visualization - interactive timeline */
+        .workflow-timeline {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-line::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 0;
+            background: linear-gradient(180deg, var(--accent), var(--accent2));
+            transition: height 1s ease;
+        }
+
+        .timeline-line.active::after {
+            height: 100%;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+            padding-left: 80px;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 3px solid var(--border);
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-item.visible .timeline-dot {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .timeline-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-content:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .timeline-content h4 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .timeline-content p {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Chat preview - terminal style */
+        .chat-terminal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 24px 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-header {
+            background: var(--surface-elevated);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-faint);
+        }
+
+        .chat-dot.active {
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        .chat-body {
+            padding: 32px;
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .chat-line {
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: typeIn 0.5s ease forwards;
+        }
+
+        @keyframes typeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .chat-line.user {
+            color: var(--accent);
+        }
+
+        .chat-line.bot {
+            color: var(--text-muted);
+        }
+
+        .chat-line.prompt {
+            color: var(--success);
+        }
+
+        .chat-line.prompt::before {
+            content: "$ ";
+            color: var(--accent);
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .stat-card:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            margin: 24px 0;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metrics-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px at 20% 30%, rgba(0, 212, 255, 0.08), transparent 50%);
+            pointer-events: none;
+        }
+
+        .metrics-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .metrics-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .metrics-header h2 {
+            font-size: clamp(28px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .metrics-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .metrics-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-item {
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            border-left: 3px solid var(--success);
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-item strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .metric-item p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Limitations & Safeguards Section */
+        .limitations-section {
+            margin: 24px 0;
+            padding: 28px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            position: relative;
+        }
+
+        .limitations-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .limitations-header h2 {
+            font-size: clamp(28px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .limitations-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .limitations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .limitation-item {
+            padding: 24px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-left: 4px solid var(--warning);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .limitation-item:hover {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: var(--warning);
+            transform: translateX(4px);
+        }
+
+        .limitation-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .limitation-item h4::before {
+            content: "🛡️";
+            font-size: 18px;
+        }
+
+        .limitation-item p {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Future ideas - card stack */
+        .ideas-stack {
+            margin: 30px 0;
+        }
+
+        .idea-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .idea-card:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+            transform: translateX(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .idea-card::before {
+            content: "💡";
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .idea-card:hover::before {
+            opacity: 1;
+            left: -50px;
+        }
+
+        .idea-card h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .idea-card p {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* CTA section */
+        .cta-block {
+            background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px 28px;
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-block::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(600px at 50% 50%, var(--accent-glow), transparent 70%);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--text);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-elevated);
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 28px 0 20px;
+            color: var(--text-faint);
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .block-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+
+            .timeline-item {
+                padding-left: 60px;
+            }
+
+            .hero-card {
+                padding: 40px 24px;
+            }
+        }
+
+        /* Scroll progress indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            z-index: 9999;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-bg"></div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Terminal Header -->
+    <div class="terminal-header">
+        <div class="terminal-dots">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="terminal-title">n8n-workflow://12apostel-hannover.ai</div>
+        <div class="lang-toggle" id="langToggle">
+            <span class="lang-option" data-lang="en">EN</span>
+            <span class="lang-option" data-lang="de">DE</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Block -->
+        <div class="hero-block">
+            <div class="hero-inner">
+                <div class="hero-card">
+                    <div class="hero-content">
+                        <div class="hero-badge" data-en="Production System" data-de="Produktionssystem">Production
+                            System</div>
+                        <h1><span data-en="Building Blocks" data-de="Bausteine">Building Blocks</span><br><span
+                                data-en="of Intelligence" data-de="der Intelligenz">of Intelligence</span></h1>
+                        <p class="hero-subtitle"
+                            data-en="An inside look at how a real-world AI system is designed, grounded, and kept alive. This project explores the architecture behind a knowledge-driven AI assistant built for Restaurant 12 Apostel-Hannover."
+                            data-de="Ein Einblick, wie ein KI-System in der Praxis entwickelt, fundiert und am Leben gehalten wird. Dieses Projekt untersucht die Architektur eines wissensbasierten KI-Assistenten, der für das Restaurant 12 Apostel-Hannover entwickelt wurde.">
+                            An inside look at how a real-world AI system is designed, grounded, and kept alive. This
+                            project explores the architecture behind a knowledge-driven AI assistant built for
+                            Restaurant 12 Apostel-Hannover.
+                        </p>
+                        <p class="exec-summary-intro" style="margin-top: 24px;"
+                            data-en="What this system does - quietly and reliably:"
+                            data-de="Was dieses System leistet - leise und zuverlässig:">What this system does - quietly
+                            and
+                            reliably:</p>
+                        <ul class="exec-summary-list">
+                            <li data-en="stays in sync with Google Drive automatically"
+                                data-de="bleibt automatisch mit Google Drive synchronisiert">stays in sync with Google
+                                Drive automatically</li>
+                            <li data-en="answers only from verified documents (RAG)"
+                                data-de="antwortet nur aus verifizierten Dokumenten (RAG)">answers only from verified
+                                documents (RAG)</li>
+                            <li data-en="captures booking leads without human intervention"
+                                data-de="erfasst Buchungsanfragen ohne menschliches Eingreifen">captures booking leads
+                                without human intervention</li>
+                            <li data-en="runs live on a WordPress website"
+                                data-de="läuft live auf einer WordPress-Website">runs live on a WordPress website</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-hint">Scroll</div>
+        </div>
+
+        <!-- Building Blocks System -->
+        <div class="blocks-container">
+            <div class="block" data-block="1">
+                <div class="block-header">
+                    <div class="block-number">01</div>
+                    <h2 class="block-title" data-en="The Foundation" data-de="Das Fundament">The Foundation</h2>
+                </div>
+                <div class="block-content">
+                    <p class="block-description"
+                        data-en="The restaurant's knowledge lives where it always has: Google Drive. Menus, event details, policies — everything staff already manages. When they update a document, the AI simply notices. No special tools, no technical steps. Just work as usual, and the system stays current."
+                        data-de="Das Wissen des Restaurants lebt dort, wo es schon immer war: Google Drive. Speisekarten, Veranstaltungsdetails, Richtlinien — alles, was das Personal bereits verwaltet. Wenn sie ein Dokument aktualisieren, bemerkt die KI es einfach. Keine speziellen Tools, keine technischen Schritte. Einfach wie gewohnt arbeiten, und das System bleibt aktuell.">
+                        The restaurant's knowledge lives where it always has: Google Drive. Menus, event details,
+                        policies —
+                        everything staff already manages. When they update a document, the AI simply notices. No special
+                        tools,
+                        no technical steps. Just work as usual, and the system stays current.
+                    </p>
+                    <div class="block-features">
+                        <div class="feature-tag" data-en="📁 Google Drive Trigger" data-de="📁 Google Drive Trigger">📁
+                            Google Drive Trigger</div>
+                        <div class="feature-tag" data-en="🔄 Auto-sync" data-de="🔄 Auto-Sync">🔄 Auto-sync</div>
+                        <div class="feature-tag" data-en="👥 Non-technical updates"
+                            data-de="👥 Nicht-technische Updates">👥 Non-technical updates</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Block 1: Document Processing Pipeline -->
+            <div class="image-block" data-image="1">
+                <div class="image-wrapper">
+                    <img src="workflow-1-document-pipeline.png" alt="Document Processing Workflow" />
+                    <div class="image-caption">
+                        <h3 data-en="Document Processing Pipeline" data-de="Dokumenten-Verarbeitungspipeline">Document
+                            Processing Pipeline</h3>
+                        <p data-en="When documents are updated in Google Drive, the workflow automatically downloads, processes, and embeds them into Pinecone Vector Store. This ensures the AI system always has access to the latest restaurant information without manual intervention."
+                            data-de="Wenn Dokumente in Google Drive aktualisiert werden, lädt der Workflow sie automatisch herunter, verarbeitet sie und bettet sie in den Pinecone Vector Store ein. Dies stellt sicher, dass das KI-System immer Zugriff auf die neuesten Restaurantinformationen hat, ohne manuelles Eingreifen.">
+                            When documents are updated in Google Drive, the workflow automatically downloads, processes,
+                            and embeds them into Pinecone Vector Store. This ensures the AI system always has access to
+                            the latest restaurant information without manual intervention.</p>
+                        <div class="flow-diagram">
+                            <span data-en="Google Drive" data-de="Google Drive">Google Drive</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Download" data-de="Download">Download</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Embeddings" data-de="Embeddings">Embeddings</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Pinecone" data-de="Pinecone">Pinecone</span>
+                        </div>
+                        <div class="semantic-label why-matters">
+                            <div class="semantic-label-header" data-en="Why this matters"
+                                data-de="Warum das wichtig ist">Why this matters</div>
+                            <div class="semantic-label-content"
+                                data-en="Content updates require zero redeployments. Non-technical staff control the AI's knowledge safely. This reframes automation as organizational leverage, not plumbing."
+                                data-de="Content-Updates erfordern keine Neudeployments. Nicht-technisches Personal kontrolliert das Wissen der KI sicher. Dies stellt Automatisierung als organisatorischen Hebel dar, nicht als technische Infrastruktur.">
+                                <strong>Content updates require zero redeployments.</strong> Non-technical staff control
+                                the AI's knowledge safely. This reframes automation as organizational leverage, not
+                                plumbing.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block" data-block="2">
+                <div class="block-header">
+                    <div class="block-number">02</div>
+                    <h2 class="block-title" data-en="Knowledge Embedding" data-de="Wissens-Einbettung">Knowledge
+                        Embedding</h2>
+                </div>
+                <div class="block-content">
+                    <p class="block-description"
+                        data-en="The system learns to understand meaning, not just match words. When someone asks about &quot;evening celebrations&quot; or &quot;dinner parties,&quot; it recognizes they're asking about events. This understanding lets the AI answer naturally, even when questions are worded differently than the source documents."
+                        data-de="Das System lernt, Bedeutung zu verstehen, nicht nur Wörter zu finden. Wenn jemand nach &quot;Abendfeiern&quot; oder &quot;Dinner-Partys&quot; fragt, erkennt es, dass es um Veranstaltungen geht. Dieses Verständnis ermöglicht es der KI, natürlich zu antworten, auch wenn Fragen anders formuliert sind als die Quelldokumente.">
+                        The system learns to understand meaning, not just match words. When someone asks about "evening
+                        celebrations" or "dinner parties," it recognizes they're asking about events. This understanding
+                        lets the AI answer naturally, even when questions are worded differently than the source
+                        documents.
+                    </p>
+                    <div class="block-features">
+                        <div class="feature-tag" data-en="🧠 OpenAI Embeddings" data-de="🧠 OpenAI Embeddings">🧠 OpenAI
+                            Embeddings</div>
+                        <div class="feature-tag" data-en="📊 Vector Storage" data-de="📊 Vektorspeicher">📊 Vector
+                            Storage</div>
+                        <div class="feature-tag" data-en="🔍 Semantic Search" data-de="🔍 Semantische Suche">🔍 Semantic
+                            Search</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block" data-block="3">
+                <div class="block-header">
+                    <div class="block-number">03</div>
+                    <h2 class="block-title" data-en="Vector Intelligence" data-de="Vektor-Intelligenz">Vector
+                        Intelligence</h2>
+                </div>
+                <div class="block-content">
+                    <p class="block-description"
+                        data-en="This is where the system remembers everything it knows. When a question arrives, it searches through all the restaurant's information to find what's most relevant. Like a well-organized library, it knows exactly where to look — and finds the answer instantly."
+                        data-de="Hier erinnert sich das System an alles, was es weiß. Wenn eine Frage eintrifft, durchsucht es alle Informationen des Restaurants, um das Relevante zu finden. Wie eine gut organisierte Bibliothek weiß es genau, wo es suchen muss, und findet die Antwort sofort.">
+                        This is where the system remembers everything it knows. When a question arrives, it searches
+                        through all the restaurant's information to find what's most relevant. Like a well-organized
+                        library, it knows exactly where to look, and finds the answer instantly.
+                    </p>
+                    <div class="block-features">
+                        <div class="feature-tag" data-en="⚡ Fast Retrieval" data-de="⚡ Schnelles Abrufen">⚡ Fast
+                            Retrieval</div>
+                        <div class="feature-tag" data-en="🎯 Context-Aware" data-de="🎯 Kontextbewusst">🎯 Context-Aware
+                        </div>
+                        <div class="feature-tag" data-en="📚 Scalable Knowledge" data-de="📚 Skalierbares Wissen">📚
+                            Scalable Knowledge</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Block 2: Main AI Agent Workflow -->
+            <div class="image-block" data-image="2">
+                <div class="image-wrapper">
+                    <img src="workflow-2-ai-agent.png" alt="AI Agent Main Workflow" />
+                    <div class="image-caption">
+                        <h3 data-en="AI Agent Workflow Architecture" data-de="KI-Agent Workflow-Architektur">AI Agent
+                            Workflow Architecture</h3>
+                        <p data-en="The complete n8n workflow showing the AI Agent integration. Chat messages trigger the agent, which uses OpenAI Chat Model with Simple Memory for context retention. The system retrieves information from Pinecone and automatically captures leads in Google Sheets when booking intent is detected."
+                            data-de="Der vollständige n8n-Workflow zeigt die KI-Agent-Integration. Chat-Nachrichten lösen den Agenten aus, der OpenAIs Chat-Modell mit Simple Memory für Kontextspeicherung verwendet. Das System ruft Informationen aus Pinecone ab und erfasst automatisch Leads in Google Sheets, wenn Buchungsabsicht erkannt wird.">
+                            The complete n8n workflow showing the AI Agent integration. Chat messages trigger the agent,
+                            which uses OpenAI Chat Model with Simple Memory for context retention. The system retrieves
+                            information from Pinecone and automatically captures leads in Google Sheets when booking
+                            intent is detected.</p>
+                        <div class="flow-diagram">
+                            <span data-en="Chat Message" data-de="Chat-Nachricht">Chat Message</span>
+                            <span class="arrow">→</span>
+                            <span data-en="AI Agent" data-de="KI-Agent">AI Agent</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Memory" data-de="Speicher">Memory</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Tools" data-de="Tools">Tools</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Response" data-de="Antwort">Response</span>
+                        </div>
+                        <div class="semantic-label design-choice">
+                            <div class="semantic-label-header" data-en="Design choice" data-de="Design-Entscheidung">
+                                Design choice</div>
+                            <div class="semantic-label-content"
+                                data-en="Retrieval happens before generation to prevent hallucinations in business-critical answers."
+                                data-de="Das Abrufen erfolgt vor der Generierung, um Halluzinationen in geschäftskritischen Antworten zu verhindern.">
+                                Retrieval happens before generation to prevent hallucinations in business-critical
+                                answers.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block" data-block="4">
+                <div class="block-header">
+                    <div class="block-number">04</div>
+                    <h2 class="block-title" data-en="Conversational Intelligence" data-de="Konversations-Intelligenz">
+                        Conversational Intelligence</h2>
+                </div>
+                <div class="block-content">
+                    <p class="block-description"
+                        data-en="The AI Agent combines OpenAI's language model with retrieved context to provide accurate, grounded answers. It maintains conversation memory and can seamlessly switch between German and English based on user preference."
+                        data-de="Der KI-Agent kombiniert OpenAIs Sprachmodell mit abgerufenen Kontexten, um genaue, fundierte Antworten zu liefern. Er behält das Gesprächsgedächtnis bei und kann nahtlos zwischen Deutsch und Englisch basierend auf der Benutzereinstellung wechseln.">
+                        The AI Agent combines OpenAI's language model with retrieved context to provide accurate,
+                        grounded answers. It maintains conversation memory and can seamlessly switch between German
+                        and English based on user preference.
+                    </p>
+                    <div class="block-features">
+                        <div class="feature-tag" data-en="🌍 Multilingual" data-de="🌍 Mehrsprachig">🌍 Multilingual
+                        </div>
+                        <div class="feature-tag" data-en="💬 Natural Conversation" data-de="💬 Natürliche Konversation">
+                            💬 Natural Conversation</div>
+                        <div class="feature-tag" data-en="🧠 Context Memory" data-de="🧠 Kontextspeicher">🧠 Context
+                            Memory</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block" data-block="5">
+                <div class="block-header">
+                    <div class="block-number">05</div>
+                    <h2 class="block-title" data-en="Lead Capture Automation" data-de="Lead-Erfassung Automatisierung">
+                        Lead Capture Automation</h2>
+                </div>
+                <div class="block-content">
+                    <p class="block-description"
+                        data-en="When customers express booking intent or provide contact information, the system automatically extracts and stores their details in Google Sheets. Restaurant staff receives structured data for seamless follow-up."
+                        data-de="Wenn Kunden Buchungsabsichten äußern oder Kontaktinformationen angeben, extrahiert und speichert das System ihre Daten automatisch in Google Sheets. Das Restaurantpersonal erhält strukturierte Daten für nahtlose Nachbearbeitung.">
+                        When customers express booking intent or provide contact information, the system
+                        automatically
+                        extracts and stores their details in Google Sheets. Restaurant staff receives structured
+                        data
+                        for seamless follow-up.
+                    </p>
+                    <div class="block-features">
+                        <div class="feature-tag" data-en="📝 Auto-extraction" data-de="📝 Auto-Extraktion">📝
+                            Auto-extraction</div>
+                        <div class="feature-tag" data-en="📊 Structured Data" data-de="📊 Strukturierte Daten">📊
+                            Structured Data</div>
+                        <div class="feature-tag" data-en="⚡ Real-time Sync" data-de="⚡ Echtzeit-Sync">⚡ Real-time Sync
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Block 3: Google Sheets Lead Capture Configuration -->
+            <div class="image-block" data-image="3">
+                <div class="image-wrapper">
+                    <img src="workflow-3-lead-capture.png" alt="Google Sheets Lead Capture" />
+                    <div class="image-caption">
+                        <h3 data-en="Lead Capture Configuration" data-de="Lead-Erfassung Konfiguration">Lead Capture
+                            Configuration</h3>
+                        <p data-en="The n8n workflow configuration for Google Sheets lead capture. When the AI Agent detects booking intent or contact information in the conversation, it automatically maps and appends the data (name, phone, email) to the &quot;12Apostel-Hannover Leads&quot; spreadsheet for restaurant staff to follow up."
+                            data-de="Die n8n-Workflow-Konfiguration für die Google Sheets Lead-Erfassung. Wenn der KI-Agent Buchungsabsicht oder Kontaktinformationen im Gespräch erkennt, mappt und fügt er die Daten (Name, Telefon, E-Mail) automatisch zur &quot;12Apostel-Hannover Leads&quot;-Tabelle hinzu, damit das Restaurantpersonal nachbearbeiten kann.">
+                            The n8n workflow configuration for Google Sheets lead capture. When the AI Agent detects
+                            booking intent or contact information in the conversation, it automatically maps and
+                            appends the data (name, phone, email) to the "12Apostel-Hannover Leads" spreadsheet for
+                            restaurant staff to follow up.</p>
+                        <div class="flow-diagram">
+                            <span data-en="Booking Intent" data-de="Buchungsabsicht">Booking Intent</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Data Extraction" data-de="Datenextraktion">Data Extraction</span>
+                            <span class="arrow">→</span>
+                            <span data-en="Google Sheets" data-de="Google Sheets">Google Sheets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Timeline -->
+        <div class="workflow-timeline">
+            <div class="timeline-line" id="timelineLine"></div>
+
+            <div class="timeline-item" data-timeline="1">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Document Update Detected" data-de="Dokumentaktualisierung erkannt">Document Update
+                        Detected</h4>
+                    <p data-en="Google Drive trigger fires when restaurant staff updates a menu, event information, or policy document."
+                        data-de="Der Google Drive-Trigger wird ausgelöst, wenn das Restaurantpersonal eine Speisekarte, Veranstaltungsinformationen oder ein Richtliniendokument aktualisiert.">
+                        Google Drive trigger fires when restaurant staff updates a menu, event information, or policy
+                        document.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="2">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Content Processing" data-de="Inhaltsverarbeitung">Content Processing</h4>
+                    <p data-en="Document is downloaded and parsed into semantic chunks optimized for retrieval and understanding."
+                        data-de="Das Dokument wird heruntergeladen und in semantische Chunks zerlegt, die für Abruf und Verständnis optimiert sind.">
+                        Document is downloaded and parsed into semantic chunks optimized for retrieval and
+                        understanding.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="3">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Vector Embedding" data-de="Vektor-Einbettung">Vector Embedding</h4>
+                    <p data-en="OpenAI Embeddings API converts text chunks into high-dimensional vectors that capture meaning."
+                        data-de="Die OpenAI Embeddings API konvertiert Textchunks in hochdimensionale Vektoren, die Bedeutung erfassen.">
+                        OpenAI Embeddings API converts text chunks into high-dimensional vectors that capture meaning.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="4">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Knowledge Storage" data-de="Wissensspeicherung">Knowledge Storage</h4>
+                    <p data-en="Vectors are stored in Pinecone, enabling fast similarity search across all restaurant knowledge."
+                        data-de="Vektoren werden in Pinecone gespeichert, was eine schnelle Ähnlichkeitssuche über das gesamte Restaurantwissen ermöglicht.">
+                        Vectors are stored in Pinecone, enabling fast similarity search across all restaurant knowledge.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="5">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="User Question Arrives" data-de="Benutzerfrage eintrifft">User Question Arrives</h4>
+                    <p data-en="Customer asks a question through the chat interface, triggering the AI Agent workflow."
+                        data-de="Der Kunde stellt eine Frage über die Chat-Oberfläche und löst damit den KI-Agent-Workflow aus.">
+                        Customer asks a question through the chat interface, triggering the AI Agent workflow.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="6">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Context Retrieval" data-de="Kontextabruf">Context Retrieval</h4>
+                    <p data-en="Pinecone searches for relevant information based on the question's semantic meaning."
+                        data-de="Pinecone sucht nach relevanten Informationen basierend auf der semantischen Bedeutung der Frage.">
+                        Pinecone searches for relevant information based on the question's semantic meaning.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="7">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="AI Response Generation" data-de="KI-Antwortgenerierung">AI Response Generation</h4>
+                    <p data-en="OpenAI Chat Model generates a response using retrieved context, maintaining conversation memory."
+                        data-de="Das OpenAI Chat-Modell generiert eine Antwort unter Verwendung des abgerufenen Kontexts und behält das Gesprächsgedächtnis bei.">
+                        OpenAI Chat Model generates a response using retrieved context, maintaining conversation memory.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-timeline="8">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4 data-en="Lead Capture (if applicable)" data-de="Lead-Erfassung (falls zutreffend)">Lead Capture
+                        (if applicable)</h4>
+                    <p data-en="If booking intent is detected, contact information is automatically saved to Google Sheets."
+                        data-de="Wenn eine Buchungsabsicht erkannt wird, werden Kontaktinformationen automatisch in Google Sheets gespeichert.">
+                        If booking intent is detected, contact information is automatically saved to Google Sheets.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Preview -->
+        <div class="chat-terminal">
+            <div class="chat-header">
+                <div class="chat-dot active"></div>
+                <div class="chat-dot"></div>
+                <div class="chat-dot"></div>
+                <span
+                    style="margin-left: 12px; font-family: var(--mono); font-size: 12px; color: var(--text-muted);">chat://12apostel-hannover.de</span>
+            </div>
+            <div class="chat-body">
+                <div class="chat-line bot" style="animation-delay: 0.5s;"
+                    data-en="Bot: Great to have you here. How can we help you?"
+                    data-de="Bot: Schön, dass Sie da sind. Wie können wir Ihnen weiterhelfen?">Bot: Schön, dass Sie da
+                    sind. Wie können wir Ihnen weiterhelfen?</div>
+                <div class="chat-line user" style="animation-delay: 1s;"
+                    data-en="User: I would like to book a business event."
+                    data-de="User: Ich möchte ein Business Event buchen.">User: Ich möchte ein Business Event buchen.
+                </div>
+                <div class="chat-line bot" style="animation-delay: 1.5s;"
+                    data-en="Bot: We'd be happy to help you book a business event! Our restaurant is perfect for individually planned corporate events. We offer private rooms or the Apostelhalle for larger events."
+                    data-de="Bot: Gerne helfen wir Ihnen bei der Buchung eines Business Events! Unser Restaurant eignet sich perfekt für individuell geplante Firmenveranstaltungen. Wir bieten private Räume oder die Apostelhalle für größere Events.">
+                    Bot: Gerne helfen wir Ihnen bei der Buchung
+                    eines Business Events! Unser Restaurant eignet sich perfekt für individuell geplante
+                    Firmenveranstaltungen. Wir bieten private Räume oder die Apostelhalle für größere Events.</div>
+                <div class="chat-line user" style="animation-delay: 2s;"
+                    data-en="User: Roi Ma, my phone is 017215327623, roi@gmail.de"
+                    data-de="User: Roi Ma, mein tel. ist 017215327623, roi@gmail.de">User: Roi Ma, mein tel. ist
+                    017215327623,
+                    roi@gmail.de</div>
+                <div class="chat-line bot" style="animation-delay: 2.5s;"
+                    data-en="Bot: Thank you, Roi Ma! I've noted your contact details. A staff member will get in touch with you."
+                    data-de="Bot: Vielen Dank, Roi Ma! Ich habe Ihre Kontaktdaten notiert. Ein Mitarbeiter wird sich mit Ihnen in Verbindung setzen.">
+                    Bot: Vielen Dank, Roi Ma! Ich habe Ihre
+                    Kontaktdaten notiert. Ein Mitarbeiter wird sich mit Ihnen in Verbindung setzen.</div>
+                <div class="chat-line prompt" style="animation-delay: 3s;" data-en="[Lead captured in Google Sheets]"
+                    data-de="[Lead in Google Sheets erfasst]">[Lead captured in Google Sheets]</div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label" data-en="Availability" data-de="Verfügbarkeit">Availability</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label" data-en="Languages" data-de="Sprachen">Languages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label" data-en="Auto-sync" data-de="Auto-Sync">Auto-sync</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <div class="stat-label" data-en="Scalable" data-de="Skalierbar">Scalable</div>
+            </div>
+        </div>
+
+        <!-- Metrics Section -->
+        <section class="metrics-section">
+            <div class="metrics-content">
+                <div class="metrics-header">
+                    <h2 data-en="Impact & Results" data-de="Auswirkungen & Ergebnisse">Impact & Results</h2>
+                    <p data-en="Systems are judged by impact, not elegance"
+                        data-de="Systeme werden nach ihrer Wirkung beurteilt, nicht nach Eleganz">Systems are judged by
+                        impact, not elegance</p>
+                </div>
+                <div class="metrics-list">
+                    <div class="metric-item">
+                        <strong data-en="Reduced manual event inquiries"
+                            data-de="Reduzierte manuelle Veranstaltungsanfragen">Reduced manual event inquiries</strong>
+                        <p data-en="The AI assistant handles routine questions automatically, freeing staff to focus on high-value interactions and event planning."
+                            data-de="Der KI-Assistent bearbeitet Routinefragen automatisch und ermöglicht es dem Personal, sich auf wertvolle Interaktionen und Eventplanung zu konzentrieren.">
+                            The AI assistant handles routine questions automatically, freeing staff to focus on
+                            high-value interactions and event planning.</p>
+                    </div>
+                    <div class="metric-item">
+                        <strong data-en="Always-on availability outside opening hours"
+                            data-de="Immer verfügbar außerhalb der Öffnungszeiten">Always-on availability outside
+                            opening hours</strong>
+                        <p data-en="Customers can get answers and submit booking inquiries 24/7, even when the restaurant is closed."
+                            data-de="Kunden können rund um die Uhr Antworten erhalten und Buchungsanfragen einreichen, auch wenn das Restaurant geschlossen ist.">
+                            Customers can get answers and submit booking inquiries 24/7, even when the restaurant is
+                            closed.</p>
+                    </div>
+                    <div class="metric-item">
+                        <strong data-en="Staff no longer updates AI manually"
+                            data-de="Personal aktualisiert KI nicht mehr manuell">Staff no longer updates AI
+                            manually</strong>
+                        <p data-en="Content updates happen automatically through Google Drive. No technical knowledge or redeployments required."
+                            data-de="Content-Updates erfolgen automatisch über Google Drive. Kein technisches Wissen oder Neudeployments erforderlich.">
+                            Content updates happen automatically through Google Drive. No technical knowledge or
+                            redeployments required.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Known Limitations & Safeguards -->
+        <section class="limitations-section">
+            <div class="limitations-header">
+                <h2 data-en="Known Limitations & Safeguards" data-de="Bekannte Einschränkungen & Sicherheitsmaßnahmen">
+                    Known Limitations & Safeguards</h2>
+                <p data-en="Realistic boundaries and responsible design choices"
+                    data-de="Realistische Grenzen und verantwortungsvolle Design-Entscheidungen">Realistic boundaries
+                    and responsible design choices</p>
+            </div>
+            <div class="limitations-grid">
+                <div class="limitation-item">
+                    <h4 data-en="No answers outside indexed documents"
+                        data-de="Keine Antworten außerhalb indizierter Dokumente">No answers outside indexed documents
+                    </h4>
+                    <p data-en="The AI system only responds using information from verified restaurant documents stored in Pinecone. This prevents hallucination and ensures accuracy, but means it cannot answer questions about topics not in the knowledge base."
+                        data-de="Das KI-System antwortet nur mit Informationen aus verifizierten Restaurantdokumenten, die in Pinecone gespeichert sind. Dies verhindert Halluzinationen und gewährleistet Genauigkeit, bedeutet aber, dass es keine Fragen zu Themen beantworten kann, die nicht in der Wissensbasis enthalten sind.">
+                        The AI system only responds using information from verified restaurant documents stored in
+                        Pinecone. This prevents hallucination and ensures accuracy, but means it cannot answer questions
+                        about topics not in the knowledge base.</p>
+                </div>
+                <div class="limitation-item">
+                    <h4 data-en="Ambiguous questions trigger clarification"
+                        data-de="Mehrdeutige Fragen lösen Klärung aus">Ambiguous questions trigger clarification</h4>
+                    <p data-en="When a question is unclear or could have multiple interpretations, the system asks for clarification rather than guessing. This maintains quality but may require an extra interaction."
+                        data-de="Wenn eine Frage unklar ist oder mehrere Interpretationen haben könnte, fragt das System nach Klärung, anstatt zu raten. Dies gewährleistet Qualität, kann aber eine zusätzliche Interaktion erfordern.">
+                        When a question is unclear or could have multiple interpretations, the system asks for
+                        clarification rather than guessing. This maintains quality but may require an extra interaction.
+                    </p>
+                </div>
+                <div class="limitation-item">
+                    <h4 data-en="Lead capture only activates on explicit intent"
+                        data-de="Lead-Erfassung nur bei expliziter Absicht">Lead capture only activates on explicit
+                        intent</h4>
+                    <p data-en="Contact information is only captured when the system detects clear booking intent. Casual mentions of names or emails in conversation are not stored, protecting user privacy."
+                        data-de="Kontaktinformationen werden nur erfasst, wenn das System eine klare Buchungsabsicht erkennt. Gelegentliche Erwähnungen von Namen oder E-Mails im Gespräch werden nicht gespeichert, um die Privatsphäre der Benutzer zu schützen.">
+                        Contact information is only captured when the system detects clear booking intent. Casual
+                        mentions of names or emails in conversation are not stored, protecting user privacy.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Ideas -->
+        <div class="ideas-stack">
+            <h2 style="font-size: 36px; font-weight: 700; margin-bottom: 24px; text-align: center;"
+                data-en="Future Enhancement Ideas" data-de="Zukünftige Verbesserungsideen">Future Enhancement
+                Ideas</h2>
+
+            <div class="idea-card">
+                <h4>📅 <span data-en="Calendar Integration" data-de="Kalender-Integration">Calendar Integration</span>
+                </h4>
+                <p data-en="Connect to Google Calendar for real-time availability checking and direct booking through chat."
+                    data-de="Verbindung mit Google Calendar für Echtzeit-Verfügbarkeitsprüfung und direkte Buchung über Chat.">
+                    Connect to Google Calendar for real-time availability checking and direct booking through chat.</p>
+            </div>
+
+            <div class="idea-card">
+                <h4>🍷 <span data-en="AI Menu Recommendations" data-de="KI-Menüempfehlungen">AI Menu
+                        Recommendations</span></h4>
+                <p data-en="Personalized dish and wine pairings based on customer preferences and dietary restrictions."
+                    data-de="Personalisierte Gerichts- und Weinempfehlungen basierend auf Kundenpräferenzen und diätetischen Einschränkungen.">
+                    Personalized dish and wine pairings based on customer preferences and dietary restrictions.</p>
+            </div>
+
+            <div class="idea-card">
+                <h4>📸 <span data-en="Visual Menu Display" data-de="Visuelle Menüanzeige">Visual Menu Display</span>
+                </h4>
+                <p data-en="AI-generated images of dishes to make the menu more engaging and appetizing."
+                    data-de="KI-generierte Bilder von Gerichten, um das Menü ansprechender und appetitlicher zu gestalten.">
+                    AI-generated images of dishes to make the menu more engaging and appetizing.</p>
+            </div>
+
+            <div class="idea-card">
+                <h4>⭐ <span data-en="Automated Review Collection" data-de="Automatisierte Bewertungssammlung">Automated
+                        Review Collection</span></h4>
+                <p data-en="Post-event feedback system to help the restaurant continuously improve service quality."
+                    data-de="Feedback-System nach Veranstaltungen, um dem Restaurant zu helfen, die Servicequalität kontinuierlich zu verbessern.">
+                    Post-event feedback system to help the restaurant continuously improve service quality.</p>
+            </div>
+
+            <div class="idea-card">
+                <h4>🔔 <span data-en="Smart Reservation Reminders"
+                        data-de="Intelligente Reservierungserinnerungen">Smart Reservation Reminders</span></h4>
+                <p data-en="Automated follow-up messages to reduce no-shows and improve customer experience."
+                    data-de="Automatisierte Nachfolgenachrichten, um No-Shows zu reduzieren und das Kundenerlebnis zu verbessern.">
+                    Automated follow-up messages to reduce no-shows and improve customer experience.</p>
+            </div>
+
+            <div class="idea-card">
+                <h4>📊 <span data-en="Analytics Dashboard" data-de="Analytics-Dashboard">Analytics Dashboard</span></h4>
+                <p data-en="Track common questions, popular items, and booking patterns to inform business decisions."
+                    data-de="Verfolgen Sie häufige Fragen, beliebte Artikel und Buchungsmuster, um Geschäftsentscheidungen zu treffen.">
+                    Track common questions, popular items, and booking patterns to inform business decisions.</p>
+            </div>
+        </div>
+
+        <!-- CTA Block -->
+        <div class="cta-block">
+            <div class="cta-content">
+                <h2 class="cta-title" data-en="Explore the Live System" data-de="Erkunden Sie das Live-System">Explore
+                    the Live System</h2>
+                <p style="font-size: 18px; color: var(--text-muted); margin-top: 16px;"
+                    data-en="Currently hosted on my domain, soon to be embedded directly into the Restaurant 12 Apostel-Hannover website."
+                    data-de="Derzeit auf meiner Domain gehostet, wird bald direkt in die Website des Restaurants 12 Apostel-Hannover eingebettet.">
+                    Currently hosted on my domain, soon to be embedded directly into the Restaurant 12 Apostel-Hannover
+                    website.
+                </p>
+                <div class="cta-buttons">
+                    <a href="https://www.12apostel-hannover.de" target="_blank" rel="noopener" class="btn btn-primary">
+                        <span data-en="Visit Restaurant" data-de="Restaurant besuchen">Visit Restaurant</span>
+                    </a>
+                    <a href="https://n8n.myrina.de/" target="_blank" rel="noopener" class="btn btn-secondary">
+                        <span data-en="View n8n Instance" data-de="n8n-Instanz ansehen">View n8n Instance</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p data-en="© 2026 · AI Workflow Architecture · Restaurant 12 Apostel Hannover"
+            data-de="© 2026 · KI-Workflow-Architektur · Restaurant 12 Apostel Hannover">© 2026 · AI Workflow
+            Architecture · Restaurant 12 Apostel Hannover</p>
+        <p style="margin-top: 8px; font-size: 12px;" data-en="Built with n8n, OpenAI, Pinecone, and Google Drive"
+            data-de="Erstellt mit n8n, OpenAI, Pinecone und Google Drive">Built with n8n, OpenAI, Pinecone, and Google
+            Drive</p>
+    </footer>
+
+    <script>
+        // Throttle function for performance
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        // Use requestAnimationFrame for smooth animations
+        let scrollRaf = null;
+        function requestScrollUpdate(callback) {
+            if (scrollRaf) return;
+            scrollRaf = requestAnimationFrame(() => {
+                callback();
+                scrollRaf = null;
+            });
+        }
+
+        // Scroll progress indicator (throttled)
+        const scrollProgress = document.getElementById('scrollProgress');
+        if (scrollProgress) {
+            const updateScrollProgress = throttle(() => {
+                requestScrollUpdate(() => {
+                    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                    scrollProgress.style.transform = `scaleX(${Math.min(scrollPercent / 100, 1)})`;
+                });
+            }, 16); // ~60fps
+            
+            window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        }
+
+        // Intersection Observer for animations (optimized)
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Unobserve after animation to improve performance
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements (deferred for performance)
+        requestAnimationFrame(() => {
+            document.querySelectorAll('.block, .image-block, .timeline-item').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Timeline line animation (optimized)
+        const timelineLine = document.getElementById('timelineLine');
+        if (timelineLine) {
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        timelineObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            timelineObserver.observe(timelineLine);
+        }
+
+        // Chat typing animation
+        const chatLines = document.querySelectorAll('.chat-line');
+        chatLines.forEach((line, index) => {
+            line.style.animationDelay = `${index * 0.5}s`;
+        });
+
+        // Parallax effect for hero (throttled and optimized)
+        const heroInner = document.querySelector('.hero-inner');
+        if (heroInner) {
+            const updateParallax = throttle(() => {
+                requestScrollUpdate(() => {
+                    const scrolled = window.pageYOffset;
+                    const rate = Math.min(scrolled * 0.3, 200); // Limit max transform
+                    heroInner.style.transform = `translateY(${rate}px) rotateY(${rate * 0.01}deg)`;
+                });
+            }, 16); // ~60fps
+            
+            window.addEventListener('scroll', updateParallax, { passive: true });
+        }
+
+        // Language Toggle System
+        let currentLang = localStorage.getItem('preferredLang') || (navigator.language.startsWith('de') ? 'de' : 'en');
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferredLang', lang);
+
+            // Update toggle buttons
+            document.querySelectorAll('.lang-option').forEach(option => {
+                if (option.dataset.lang === lang) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+
+            // Update all elements with data-en and data-de attributes (optimized)
+            // Use a document fragment to batch DOM updates
+            const elements = document.querySelectorAll('[data-en][data-de]');
+            const fragment = document.createDocumentFragment();
+            
+            elements.forEach(element => {
+                const text = element.getAttribute(`data-${lang}`);
+                if (text) {
+                    // For elements with nested spans (like h1), handle separately
+                    if (element.tagName === 'H1' && element.querySelector('span')) {
+                        // Don't replace h1, handle spans individually
+                        return;
+                    }
+
+                    // For elements with HTML entities or special characters, use innerHTML
+                    if (text.includes('&quot;') || text.includes('<')) {
+                        element.innerHTML = text;
+                    } else {
+                        element.textContent = text;
+                    }
+                }
+            });
+
+            // Handle nested spans in h1 separately
+            document.querySelectorAll('h1 span[data-en][data-de]').forEach(span => {
+                const text = span.getAttribute(`data-${lang}`);
+                if (text) span.textContent = text;
+            });
+
+            // Handle elements with nested content (like buttons with spans)
+            document.querySelectorAll('a span[data-en][data-de], button span[data-en][data-de]').forEach(span => {
+                const text = span.getAttribute(`data-${lang}`);
+                if (text) span.textContent = text;
+            });
+        }
+
+        // Initialize language on page load
+        function initLanguage() {
+            setLanguage(currentLang);
+        }
+
+        // Run immediately if DOM is ready, otherwise wait
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLanguage);
+        } else {
+            initLanguage();
+        }
+
+        // Global language toggle - click anywhere on toggle to switch
+        const langToggle = document.getElementById('langToggle');
+        if (langToggle) {
+            langToggle.addEventListener('click', (e) => {
+                if (e.target.classList.contains('lang-option')) {
+                    const newLang = e.target.dataset.lang;
+                    if (newLang !== currentLang) {
+                        setLanguage(newLang);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

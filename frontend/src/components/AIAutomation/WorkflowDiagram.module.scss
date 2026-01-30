@@ -1,0 +1,207 @@
+@use "../../styles/constants.scss" as *;
+
+.workflowContainer {
+  width: 100%;
+  padding: 1.5rem;
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+
+  @media (min-width: $md) {
+    padding: 2rem;
+  }
+}
+
+.workflowTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00D4FF;
+  margin: 0 0 1.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (min-width: $md) {
+    font-size: 1.3rem;
+  }
+
+  &::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, #00D4FF 0%, #9D4EDD 100%);
+    border-radius: 2px;
+  }
+}
+
+.workflowsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.workflowItem {
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+    transform: translateX(4px);
+  }
+}
+
+.workflowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: rgba(0, 212, 255, 0.1);
+  }
+}
+
+.workflowName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.5px;
+
+  @media (min-width: $md) {
+    font-size: 1.1rem;
+  }
+}
+
+.expandIcon {
+  color: #00D4FF;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.workflowContent {
+  overflow: hidden;
+}
+
+.diagramWrapper {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 0.5rem;
+
+  &:hover .imageOverlay {
+    opacity: 1;
+  }
+}
+
+.workflowImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+  display: block;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+}
+
+.viewFullText {
+  color: #00D4FF;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.workflowDescription {
+  padding: 1rem 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  border-top: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.connectionLine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00D4FF, transparent);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  transform-origin: left;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 212, 255, 0.05);
+  border: 2px dashed rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  gap: 0.5rem;
+
+  @media (min-width: $md) {
+    min-height: 300px;
+  }
+}
+
+.placeholderIcon {
+  font-size: 3rem;
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+.placeholderText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00D4FF;
+  margin-top: 0.5rem;
+}
+
+.placeholderSubtext {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.25rem;
+}
+
+.placeholderHint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 0.5rem;
+  font-style: italic;
+}

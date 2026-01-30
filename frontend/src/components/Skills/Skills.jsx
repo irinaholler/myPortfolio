@@ -1,9 +1,8 @@
 import React from "react";
-import { comments, sliderSettings } from "../../utils/data.js";
+import { comments } from "../../utils/data.js";
 import css from "./Skills.module.scss";
-import Slider from "react-slick";
 import { motion } from 'framer-motion';
-import { footerVariants, staggerChildren, cardFlip } from '../../utils/motion.js';
+import { footerVariants, staggerChildren } from '../../utils/motion.js';
 import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaWordpress } from "react-icons/fa";
 import { SiExpress, SiAdobephotoshop, SiAdobeillustrator, SiElementor } from "react-icons/si";
 
@@ -64,34 +63,26 @@ const Skills = () => {
           </div>
         </div>
 
-        <div className={css.comments}>
-          <Slider {...sliderSettings} className={css.slider}>
-            {comments.map((comment, i) => (
-              <motion.div
-                className={css.comment}
-                key={i}
-                variants={cardFlip}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.5 }}
-                style={comment.neon ? { borderColor: comment.neon } : {}}
-              >
-                <div className={css.cardLoupe}>
-                  <span className={css.cardLoupeContent}>
-                    {comment.icon ? comment.icon : comment.name.charAt(0)}
-                  </span>
-                </div>
-                <div className={css.cardContent}>
-                  <p>{comment.comment}</p>
-                  <div className={css.line}></div>
-                  <div className={css.bio}>
-                    <span>{comment.name}</span>
-                    <span className={css.title}>{comment.title}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </Slider>
+        <div className={css.expertiseGrid}>
+          {comments.map((comment, i) => (
+            <motion.div
+              className={css.expertiseCard}
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              style={{ '--accent-color': comment.color || '#00D4FF' }}
+            >
+              <div className={css.cardIcon}>{comment.icon || '✨'}</div>
+              <div className={css.cardHeader}>
+                <h3 className={css.cardName}>{comment.name}</h3>
+                <span className={css.cardSubtitle}>{comment.title}</span>
+              </div>
+              <p className={css.cardDescription}>{comment.comment}</p>
+              <div className={css.cardAccent}></div>
+            </motion.div>
+          ))}
         </div>
 
       </motion.div>

@@ -5,6 +5,7 @@ import Hero from './components/Hero/Hero';
 import Skills from './components/Skills/Skills';
 import Work from './components/Work/Work';
 import Portfolio from './components/Portfolio/Portfolio';
+import AIAutomation from './components/AIAutomation/AIAutomation';
 import PlayStats from './components/PlayStats/PlayStats';
 import Feedback from './components/Feedback/Feedback';
 import Footer from './components/Footer/Footer';
@@ -29,7 +30,25 @@ const App = () => {
       setMusicLovers(total);
       sessionStorage.setItem('uniqueListeners', total);
     } catch (err) {
-      console.error('Failed to fetch unique listener count:', err);
+      // Silently fail in development for network/CORS/API errors
+      if (import.meta.env.DEV) {
+        const isNetworkError = 
+          err.code === 'ERR_NETWORK' || 
+          err.code === 'ERR_FAILED' ||
+          err.message?.includes('CORS') ||
+          err.message?.includes('Network Error') ||
+          err.message?.includes('Failed to fetch') ||
+          (err.response?.status >= 500) ||
+          !err.response;
+        
+        if (isNetworkError) {
+          return; // Don't log network/CORS errors in development
+        }
+      }
+      // Only log errors in production or non-network errors
+      if (!import.meta.env.DEV || (err.response && err.response.status < 500)) {
+        console.error('Failed to fetch unique listener count:', err);
+      }
     }
   }, []);
 
@@ -39,10 +58,12 @@ const App = () => {
     setMusicLovers(Number(sessionStorage.getItem('uniqueListeners')) || 0);
   }, []);
 
-  // polling every 10s
+  // polling every 30s (reduced frequency to prevent crashes)
   useEffect(() => {
     fetchListeners();
-    const id = setInterval(fetchListeners, 10000);
+    const id = setInterval(() => {
+      fetchListeners();
+    }, 30000); // Increased from 10s to 30s
     return () => clearInterval(id);
   }, [fetchListeners]);
 
@@ -71,7 +92,27 @@ const App = () => {
     axios.post(`${API}/api/radio-clicks/track`, {
       buttonId: 'radioPlayer',
       clickedBy: userId
-    }).catch(err => console.error('track error', err));
+    }).catch(err => {
+      // Silently fail in development for network/CORS/API errors
+      if (import.meta.env.DEV) {
+        const isNetworkError = 
+          err.code === 'ERR_NETWORK' || 
+          err.code === 'ERR_FAILED' ||
+          err.message?.includes('CORS') ||
+          err.message?.includes('Network Error') ||
+          err.message?.includes('Failed to fetch') ||
+          (err.response?.status >= 500) ||
+          !err.response;
+        
+        if (isNetworkError) {
+          return; // Don't log network/CORS errors in development
+        }
+      }
+      // Only log errors in production or non-network errors
+      if (!import.meta.env.DEV || (err.response && err.response.status < 500)) {
+        console.error('track error', err);
+      }
+    });
   }, []);
 
   // attach to the <audio id="radioPlayer"/>
@@ -94,6 +135,7 @@ const App = () => {
               <Hero />
               <Skills />
               <Portfolio />
+              <AIAutomation />
               <AiCarousel items={aiGalleryData} />
               <PlayStats playCount={playCount} musicLovers={musicLovers} />
               <Feedback />

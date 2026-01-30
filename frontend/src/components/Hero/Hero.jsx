@@ -43,11 +43,16 @@ const Hero = () => {
 
           <motion.span className="secondaryText" variants={fadeIn("left", "tween", 0.4, 1)}>
             <div className={css.secondaryText}>
-              Hello World!
+              Hey there! 👋
               <br />
-              I'm Irina, a web developer, who thrives
+              I'm Irina — a designer-developer hybrid who's obsessed
               <br />
-              on crafting ideas into vibrant digital realities.
+              with turning complex problems into elegant, user-friendly solutions.
+              <br />
+              <br />
+              From pixel-perfect designs to AI-powered automations,
+              <br />
+              I bridge the gap between creativity and code.
             </div>
           </motion.span>
         </div>
