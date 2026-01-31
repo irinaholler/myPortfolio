@@ -458,7 +458,7 @@
             font-size: clamp(18px, 2.5vw, 24px);
             color: var(--text-muted);
             max-width: 700px;
-            line-height: 1.5;
+            line-height: 1.3;
         }
 
         .tech-pills {
@@ -1897,7 +1897,7 @@
         // Throttle function for performance
         function throttle(func, limit) {
             let inThrottle;
-            return function() {
+            return function () {
                 const args = arguments;
                 const context = this;
                 if (!inThrottle) {
@@ -1927,7 +1927,7 @@
                     scrollProgress.style.transform = `scaleX(${Math.min(scrollPercent / 100, 1)})`;
                 });
             }, 16); // ~60fps
-            
+
             window.addEventListener('scroll', updateScrollProgress, { passive: true });
         }
 
@@ -1965,7 +1965,7 @@
                     }
                 });
             }, { threshold: 0.5 });
-            
+
             timelineObserver.observe(timelineLine);
         }
 
@@ -1985,7 +1985,7 @@
                     heroInner.style.transform = `translateY(${rate}px) rotateY(${rate * 0.01}deg)`;
                 });
             }, 16); // ~60fps
-            
+
             window.addEventListener('scroll', updateParallax, { passive: true });
         }
 
@@ -2009,7 +2009,7 @@
             // Use a document fragment to batch DOM updates
             const elements = document.querySelectorAll('[data-en][data-de]');
             const fragment = document.createDocumentFragment();
-            
+
             elements.forEach(element => {
                 const text = element.getAttribute(`data-${lang}`);
                 if (text) {
@@ -2065,6 +2065,609 @@
                 }
             });
         }
+    </script>
+
+    <!-- n8n Chat Widget -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <style id="apostel-chat-styles">
+        /* Custom styling for n8n chat widget - 12 Apostel Hannover theme */
+        /* Calm, elegant colors matching the restaurant logo and website - eye-friendly */
+        :root {
+            --apostel-gold: #c9a961;
+            --apostel-gold-light: #d4b87a;
+            --apostel-gold-dark: #b8944f;
+            --apostel-dark-brown: #2a1f18;
+            --apostel-brown: #3d2e24;
+            --apostel-brown-dark: #2a1f18;
+            --apostel-cream: #f5f1e8;
+            --apostel-white: #ffffff;
+            --apostel-text-dark: #2a1f18;
+            --apostel-warm-brown: #4a3a2f;
+        }
+
+        /* Elegant serif font family matching the restaurant website */
+        [data-n8n-chat],
+        [data-n8n-chat] * {
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+        }
+
+        /* Restaurant logo styling - matching website branding */
+        .n8n-chat-header-logo {
+            width: 100px !important;
+            height: 100px !important;
+            border-radius: 8px !important;
+            object-fit: contain !important;
+            margin-right: 1.25rem !important;
+            border: 1px solid var(--apostel-gold) !important;
+            padding: 4px !important;
+            background: rgba(26, 15, 10, 0.8) !important;
+            display: inline-block !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Elegant chat button - refined design */
+        [data-n8n-chat] button,
+        .n8n-chat-widget button,
+        button[aria-label*="chat"],
+        button[aria-label*="Chat"],
+        button[type="button"][class*="chat"] {
+            background: var(--apostel-gold) !important;
+            border-radius: 50% !important;
+            box-shadow: 0 8px 24px rgba(201, 169, 97, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            border: 3px solid #1a0f0a !important;
+            width: 64px !important;
+            height: 64px !important;
+        }
+
+        [data-n8n-chat] button:hover,
+        .n8n-chat-widget button:hover,
+        button[aria-label*="chat"]:hover,
+        button[aria-label*="Chat"]:hover,
+        button[type="button"][class*="chat"]:hover {
+            transform: scale(1.08) translateY(-2px) !important;
+            box-shadow: 0 12px 32px rgba(201, 169, 97, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            background: var(--apostel-gold-light) !important;
+        }
+
+        /* Chat window design - elegant and refined */
+        [data-n8n-chat]>div,
+        .n8n-chat-window,
+        .n8n-chat-container,
+        [class*="chat-window"],
+        [class*="ChatWindow"],
+        [class*="chat-container"] {
+            border-radius: 20px !important;
+            box-shadow:
+                0 24px 80px rgba(0, 0, 0, 0.8),
+                0 0 0 3px var(--apostel-gold),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            border: 3px solid var(--apostel-gold) !important;
+            backdrop-filter: blur(20px) !important;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+            background: linear-gradient(145deg, #2a1f18 0%, #3d2e24 50%, #2a1f18 100%) !important;
+            overflow: hidden !important;
+        }
+
+        /* Chat header with elegant dark brown and gold */
+        [data-n8n-chat] header,
+        [data-n8n-chat] [class*="header"],
+        .n8n-chat-header {
+            background: linear-gradient(135deg, #2a1f18 0%, #3d2e24 100%) !important;
+            border-bottom: 2px solid var(--apostel-gold) !important;
+            color: #f5f5f0 !important;
+            padding: 0.8rem 1rem !important;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+        }
+
+        /* Style the title "Willkommen!" - gold color matching logo */
+        [data-n8n-chat] h1,
+        [data-n8n-chat] h2,
+        [data-n8n-chat] [class*="title"],
+        [data-n8n-chat] header h1,
+        [data-n8n-chat] header h2,
+        [data-n8n-chat] header [class*="title"],
+        [data-n8n-chat] header h1 *,
+        [data-n8n-chat] header h2 *,
+        [data-n8n-chat] header [class*="title"] * {
+            color: #c9a961 !important;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+            font-weight: 600 !important;
+            font-size: 1.85rem !important;
+            letter-spacing: 0.8px !important;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(201, 169, 97, 0.25) !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            -webkit-text-fill-color: #c9a961 !important;
+            text-transform: none !important;
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        /* Ensure all text inside title elements is gold */
+        [data-n8n-chat] header h1 span,
+        [data-n8n-chat] header h2 span,
+        [data-n8n-chat] header [class*="title"] span,
+        [data-n8n-chat] header [class*="title"] p {
+            color: #c9a961 !important;
+            -webkit-text-fill-color: #c9a961 !important;
+        }
+
+        /* Style subtitle - minimal spacing from title */
+        [data-n8n-chat] [class*="subtitle"],
+        [data-n8n-chat] header [class*="subtitle"],
+        [data-n8n-chat] header p {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+            font-size: 0.95rem !important;
+            line-height: 1.3 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* Minimal margin-bottom on title to bring subtitle closer */
+        [data-n8n-chat] header h1,
+        [data-n8n-chat] header h2,
+        [data-n8n-chat] header [class*="title"] {
+            margin-bottom: 0 !important;
+        }
+
+        /* New elegant message bubble design */
+        [data-n8n-chat] [class*="message"],
+        [data-n8n-chat] [class*="Message"],
+        [data-n8n-chat] [class*="bubble"] {
+            border-radius: 16px !important;
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+            padding: 0.75rem 1rem !important;
+            margin: 0.75rem 0 !important;
+            line-height: 1.5 !important;
+            box-shadow: none !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Bot/assistant message bubbles - dark background with white text and single discrete gold border */
+        /* LOCATION: Lines 2188-2204 - Main bot message bubble styling */
+        [data-n8n-chat] [class*="bot"],
+        [data-n8n-chat] [class*="assistant"],
+        [data-n8n-chat] [class*="ai"],
+        [data-n8n-chat] [class*="Bot"],
+        [data-n8n-chat] [class*="Assistant"],
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"]) {
+            background: #3d2e24 !important;
+            background-color: #3d2e24 !important;
+            border: 1px solid rgba(201, 169, 97, 0.3) !important;
+            color: #f5f5f0 !important;
+            font-weight: 400 !important;
+            opacity: 1 !important;
+            z-index: 1 !important;
+            position: relative !important;
+            padding: 0.75rem !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        /* LOCATION: Lines 2209-2220 - Text elements inside bot messages (white text, no borders) */
+        [data-n8n-chat] [class*="bot"] *,
+        [data-n8n-chat] [class*="assistant"] *,
+        [data-n8n-chat] [class*="ai"] *,
+        [data-n8n-chat] [class*="Bot"] *,
+        [data-n8n-chat] [class*="Assistant"] *,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"]) * {
+            color: #f5f5f0 !important;
+            opacity: 1 !important;
+            z-index: 2 !important;
+            position: relative !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        /* Remove any overlay pseudo-elements from bot messages */
+        [data-n8n-chat] [class*="bot"]::before,
+        [data-n8n-chat] [class*="bot"]::after,
+        [data-n8n-chat] [class*="assistant"]::before,
+        [data-n8n-chat] [class*="assistant"]::after,
+        [data-n8n-chat] [class*="ai"]::before,
+        [data-n8n-chat] [class*="ai"]::after,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"])::before,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"])::after {
+            display: none !important;
+            opacity: 0 !important;
+            z-index: -1 !important;
+        }
+
+        /* User message bubbles - elegant gold design */
+        [data-n8n-chat] [class*="user"],
+        [data-n8n-chat] [class*="User"],
+        [data-n8n-chat] [class*="sent"],
+        [data-n8n-chat] [class*="outgoing"],
+        [data-n8n-chat] div[style*="background"][style*="rgb"],
+        [data-n8n-chat] div[style*="background-color"],
+        [data-n8n-chat] *[style*="rgb(0,"],
+        [data-n8n-chat] *[style*="rgb(20,"],
+        [data-n8n-chat] *[style*="rgb(16,"],
+        [data-n8n-chat] *[style*="teal"],
+        [data-n8n-chat] *[style*="green"],
+        [data-n8n-chat] *[style*="cyan"] {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.2) 0%, rgba(184, 148, 79, 0.2) 100%) !important;
+            background-color: rgba(201, 169, 97, 0.2) !important;
+            border: 2px solid var(--apostel-gold) !important;
+            border-color: var(--apostel-gold) !important;
+            color: #f5f5f0 !important;
+            box-shadow: 0 4px 16px rgba(201, 169, 97, 0.25) !important;
+        }
+
+        /* Override any teal/cyan/green colors globally in chat */
+        [data-n8n-chat] * {
+            --primary-color: #c9a961 !important;
+            --accent-color: #c9a961 !important;
+        }
+
+        /* LOCATION: Lines 2260-2275 - Specific text elements (p, span, div) inside bot messages - white text */
+        [data-n8n-chat] [class*="bot"] p,
+        [data-n8n-chat] [class*="bot"] span,
+        [data-n8n-chat] [class*="bot"] div,
+        [data-n8n-chat] [class*="assistant"] p,
+        [data-n8n-chat] [class*="assistant"] span,
+        [data-n8n-chat] [class*="assistant"] div,
+        [data-n8n-chat] [class*="ai"] p,
+        [data-n8n-chat] [class*="ai"] span,
+        [data-n8n-chat] [class*="ai"] div,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"]) p,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"]) span,
+        [data-n8n-chat] [class*="message"]:not([class*="user"]):not([class*="sent"]):not([class*="outgoing"]) div {
+            color: #f5f5f0 !important;
+            opacity: 1 !important;
+            filter: none !important;
+            backdrop-filter: none !important;
+            text-shadow: none !important;
+            z-index: 10 !important;
+            position: relative !important;
+        }
+
+        /* Force override any element with teal/green background colors */
+        [data-n8n-chat] *[style*="rgb(0,"],
+        [data-n8n-chat] *[style*="rgb(20,"],
+        [data-n8n-chat] *[style*="rgb(16,"],
+        [data-n8n-chat] *[style*="rgb(13,"],
+        [data-n8n-chat] *[style*="rgb(5,"],
+        [data-n8n-chat] button,
+        [data-n8n-chat] [role="button"] {
+            background: linear-gradient(135deg, rgba(201, 169, 97, 0.3) 0%, rgba(184, 148, 79, 0.3) 100%) !important;
+            background-color: rgba(201, 169, 97, 0.3) !important;
+            border-color: rgba(201, 169, 97, 0.5) !important;
+        }
+
+        /* Override CSS custom properties that might be set by n8n */
+        [data-n8n-chat] {
+            --n8n-color-primary: #c9a961 !important;
+            --n8n-color-accent: #c9a961 !important;
+            --color-primary: #c9a961 !important;
+            --color-accent: #c9a961 !important;
+        }
+
+        /* Elegant message area background */
+        [data-n8n-chat] [role="log"],
+        [data-n8n-chat] [class*="messages"],
+        [data-n8n-chat] [class*="content"],
+        [data-n8n-chat] [class*="chat-body"] {
+            background: linear-gradient(180deg, rgba(245, 241, 232, 0.08) 0%, rgba(245, 241, 232, 0.03) 100%) !important;
+            padding: 0.2rem !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+        }
+
+        /* Remove padding from any parent containers that might constrain the form */
+        [data-n8n-chat] [class*="content"]>form,
+        [data-n8n-chat] [class*="body"]>form,
+        [data-n8n-chat] [class*="main"]>form,
+        [data-n8n-chat] [class*="container"]>form {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* Input container - white background with gold borders like image - full width */
+        /* Chat input footer – keep bottom style, fix width */
+        [data-n8n-chat] [class*="input-container"],
+        [data-n8n-chat] [class*="footer"],
+        [data-n8n-chat] form {
+            background: #f8f7f4 !important;
+            border: none !important;
+            border-bottom: 1px solid var(--apostel-gold) !important;
+            border-right: 1px solid var(--apostel-gold) !important;
+
+            padding: 0.2rem 0 !important;
+            padding-bottom: 0.03rem !important;
+
+            border-radius: 0 0 12px 0 !important;
+
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.2rem !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+        }
+
+        /* ⭐ THIS IS THE KEY FIX */
+        [data-n8n-chat] form> :not(button) {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Keep send button compact */
+        [data-n8n-chat] form>button,
+        [data-n8n-chat] form button[type="submit"] {
+            flex: 0 0 auto !important;
+        }
+
+        /* Input field - elegant with thin golden border, full width and smaller bottom */
+        /* Text input – full width */
+        [data-n8n-chat] input,
+        [data-n8n-chat] textarea,
+        [data-n8n-chat] input[type="text"] {
+            background: transparent !important;
+            border: 0.5px solid rgba(201, 169, 97, 0.25) !important;
+            color: var(--apostel-text-dark) !important;
+
+            padding: 1rem 0.5rem !important;
+            padding-bottom: 0.15rem !important;
+
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', 'Book Antiqua', serif !important;
+            font-size: 1rem !important;
+
+            flex: 1 1 auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+
+            box-sizing: border-box !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        [data-n8n-chat] input::placeholder,
+        [data-n8n-chat] textarea::placeholder {
+            color: rgba(26, 26, 26, 0.4) !important;
+            opacity: 1 !important;
+        }
+
+        [data-n8n-chat] input:focus,
+        [data-n8n-chat] textarea:focus,
+        [data-n8n-chat] [class*="input"]:focus {
+            background: transparent !important;
+            border: 0.5px solid rgba(201, 169, 97, 0.4) !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Remove any wrapper borders around input */
+        [data-n8n-chat] [class*="input-wrapper"],
+        [data-n8n-chat] [class*="input-group"],
+        [data-n8n-chat] [class*="form-group"],
+        [data-n8n-chat] [class*="controls"],
+        [data-n8n-chat] [class*="input-controls"] {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Minimize chat-inputs-controls - remove padding but keep send button visible */
+        [data-n8n-chat] [class*="chat-inputs-controls"] {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: auto !important;
+            min-width: 0 !important;
+            max-width: fit-content !important;
+            flex: 0 0 auto !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0 !important;
+        }
+
+        /* Ensure send button inside chat-inputs-controls is visible */
+        [data-n8n-chat] [class*="chat-inputs-controls"] button,
+        [data-n8n-chat] [class*="chat-inputs-controls"] [class*="send"] {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        /* Send button - elegant gold design */
+        [data-n8n-chat] button[type="submit"],
+        [data-n8n-chat] [class*="send"],
+        [data-n8n-chat] button[aria-label*="send"],
+        [data-n8n-chat] button:not([aria-label*="chat"]) {
+            background: #c9a961 !important;
+            background-color: #c9a961 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 0 0 12px 0 !important;
+            padding: 0.35rem 0.5rem !important;
+            font-weight: 500 !important;
+            min-width: 40px !important;
+            max-width: 44px !important;
+            width: auto !important;
+            height: auto !important;
+            box-shadow: 0 2px 8px rgba(201, 169, 97, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            transition: all 0.25s ease !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+        }
+
+        /* Style SVG icons inside send button to be white */
+        [data-n8n-chat] button[type="submit"] svg,
+        [data-n8n-chat] [class*="send"] svg,
+        [data-n8n-chat] button[aria-label*="send"] svg,
+        [data-n8n-chat] button:not([aria-label*="chat"]) svg {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+            color: #ffffff !important;
+        }
+
+        /* Style SVG paths inside send button */
+        [data-n8n-chat] button[type="submit"] svg path,
+        [data-n8n-chat] [class*="send"] svg path,
+        [data-n8n-chat] button[aria-label*="send"] svg path,
+        [data-n8n-chat] button:not([aria-label*="chat"]) svg path {
+            fill: #ffffff !important;
+            stroke: #ffffff !important;
+        }
+
+        [data-n8n-chat] button[type="submit"]:hover,
+        [data-n8n-chat] [class*="send"]:hover,
+        [data-n8n-chat] button[aria-label*="send"]:hover,
+        [data-n8n-chat] button:not([aria-label*="chat"]):hover {
+            background: #d4b87a !important;
+            background-color: #d4b87a !important;
+            box-shadow: 0 3px 12px rgba(201, 169, 97, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        /* Logo in chat header - matching restaurant branding - much bigger */
+        .n8n-chat-header-logo {
+            width: 90px !important;
+            height: 90px !important;
+            border-radius: 8px !important;
+            object-fit: contain !important;
+            margin-right: 1.25rem !important;
+            border: 2px solid var(--apostel-gold) !important;
+            padding: 6px !important;
+            background: rgba(26, 15, 10, 0.8) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Logo in chat header - will be added via custom CSS after widget loads */
+        .n8n-chat-header::before {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-image: url('https://www.12apostel-hannover.de/wp-content/uploads/2021/01/12-Apostel-Logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 0.75rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <!-- n8n Chat Widget -->
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        createChat({
+            webhookUrl: 'https://n8n.myrina.de/webhook/f21a1ad6-9ced-42a5-877f-a358c4bf6e95/chat',
+            defaultLanguage: 'de',
+            initialMessages: [
+                'Herzlich willkommen',
+                'Hallo! Ich bin Ari, der digitale Assistent von 12 Apostel Hannover. Wie kann ich Ihnen helfen?'
+            ],
+            i18n: {
+                de: {
+                    title: 'Willkommen!',
+                    subtitle: "Schön, dass Sie da sind. Wir begleiten Sie gern.",
+                    footer: '',
+                    getStarted: 'Neues Gespräch beginnen',
+                    inputPlaceholder: 'Ihre Nachricht ...',
+                },
+            },
+        });
+
+        // Apply custom styling to n8n widget after it loads
+        function applyCustomStyles() {
+            const chatWidget = document.querySelector('[data-n8n-chat]') ||
+                document.querySelector('[class*="n8n-chat"]') ||
+                document.querySelector('[id*="chat"]');
+
+            if (!chatWidget) return false;
+
+            // Add restaurant logo to header - matching website branding
+            const headers = chatWidget.querySelectorAll('header, [class*="header"]');
+            headers.forEach(header => {
+                if (!header.querySelector('.n8n-chat-header-logo')) {
+                    const logo = document.createElement('img');
+                    logo.src = './12-Apostel-Logo.png';
+                    logo.alt = 'XII Apostel Hannover';
+                    logo.className = 'n8n-chat-header-logo';
+                    logo.style.cssText = 'width: 90px; height: 90px; border-radius: 8px; object-fit: contain; margin-right: 1.25rem; border: 2px solid #c9a961; padding: 6px; background: rgba(42, 31, 24, 0.85); display: inline-block; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);';
+                    header.insertBefore(logo, header.firstChild);
+                }
+
+                // Ensure "Willkommen!" title is gold and remove margin
+                const titles = header.querySelectorAll('h1, h2, [class*="title"]');
+                titles.forEach(title => {
+                    title.style.setProperty('color', '#c9a961', 'important');
+                    title.style.setProperty('-webkit-text-fill-color', '#c9a961', 'important');
+                    title.style.setProperty('margin-bottom', '0', 'important');
+                    title.style.setProperty('margin-top', '0', 'important');
+                    const titleText = title.textContent;
+                    if (titleText && titleText.includes('Willkommen')) {
+                        title.style.setProperty('color', '#c9a961', 'important');
+                        title.style.setProperty('-webkit-text-fill-color', '#c9a961', 'important');
+                        title.style.setProperty('margin-bottom', '0', 'important');
+                    }
+                    // Also style any nested elements
+                    const nestedElements = title.querySelectorAll('*');
+                    nestedElements.forEach(el => {
+                        el.style.setProperty('color', '#c9a961', 'important');
+                        el.style.setProperty('-webkit-text-fill-color', '#c9a961', 'important');
+                    });
+                });
+
+                // Style send button to be elegant gold
+                const sendButtons = chatWidget.querySelectorAll('button[type="submit"], button[aria-label*="send"], [class*="send"]');
+                sendButtons.forEach(button => {
+                    button.style.setProperty('background', '#c9a961', 'important');
+                    button.style.setProperty('background-color', '#c9a961', 'important');
+                    button.style.setProperty('color', '#ffffff', 'important');
+                    button.style.setProperty('border', 'none', 'important');
+                    button.style.setProperty('border-radius', '0 0 12px 0', 'important');
+                    // Style SVG icons inside button
+                    const svgs = button.querySelectorAll('svg');
+                    svgs.forEach(svg => {
+                        svg.style.setProperty('fill', '#ffffff', 'important');
+                        svg.style.setProperty('stroke', '#ffffff', 'important');
+                        svg.style.setProperty('color', '#ffffff', 'important');
+                        const paths = svg.querySelectorAll('path');
+                        paths.forEach(path => {
+                            path.style.setProperty('fill', '#ffffff', 'important');
+                            path.style.setProperty('stroke', '#ffffff', 'important');
+                        });
+                    });
+                });
+            });
+
+            return true;
+        }
+
+        // Try to apply styles after widget loads
+        setTimeout(() => applyCustomStyles(), 1000);
+        setTimeout(() => applyCustomStyles(), 2000);
+
+        // Watch for widget to be added
+        const chatObserver = new MutationObserver(() => {
+            if (applyCustomStyles()) {
+                chatObserver.disconnect();
+            }
+        });
+        chatObserver.observe(document.body, { childList: true, subtree: true });
     </script>
 </body>
 
