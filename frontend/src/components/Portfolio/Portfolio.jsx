@@ -84,10 +84,10 @@ const Portfolio = () => {
       >
         <div className={css.heading}>
           <div className={css.expertiseContainer}>
-            <h1 className={css.outlineText}>Creative Works</h1>
-            <h1 className={css.overlayText}>
+            <h2 className={css.outlineText}>Creative Works</h2>
+            <h2 className={css.overlayText}>
               <span className={css.gear}>⚙</span> Projects
-            </h1>
+            </h2>
           </div>
 
           <motion.div

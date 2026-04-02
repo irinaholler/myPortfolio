@@ -18,10 +18,10 @@ const Work = () => {
         {/* heading */}
 
         <div className={css.expertiseContainer}>
-          <h1 className={css.outlineText}>My Work Experience</h1>
-          <h1 className={css.overlayText}>
+          <h2 className={css.outlineText}>My Work Experience</h2>
+          <h2 className={css.overlayText}>
             <span className={css.gear}>⚙</span> Spotlight
-          </h1>
+          </h2>
         </div>
 
         <div className={`flexCenter ${css.experiences}`}>

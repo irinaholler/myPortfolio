@@ -44,10 +44,10 @@ const AIAutomation = () => {
             <div className={`innerWidth flexCenter ${css.container}`}>
                 <div className={css.heading}>
                     <div className={css.expertiseContainer}>
-                        <h1 className={css.outlineText}>AI Automation</h1>
-                        <h1 className={css.overlayText}>
+                        <h2 className={css.outlineText}>AI Automation</h2>
+                        <h2 className={css.overlayText}>
                             <span className={css.gear}>⚡</span> Intelligent Workflows
-                        </h1>
+                        </h2>
                     </div>
                 </div>
 

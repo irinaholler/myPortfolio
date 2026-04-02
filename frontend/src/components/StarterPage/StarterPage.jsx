@@ -61,8 +61,8 @@ const StarterPage = () => {
                     transition: 'transform 0.3s ease-out'
                 }}
             >
-                <h1>GLAD TO HAVE YOU HERE!</h1>
-                <h1>IRINA HOLLER | DESIGN. DEVELOP. INSPIRE.</h1>
+                <h1>Irina Holler | Creative Developer, Designer & AI Builder</h1>
+                <p>DESIGN. DEVELOP. INSPIRE.</p>
             </div>
         </div>
     );

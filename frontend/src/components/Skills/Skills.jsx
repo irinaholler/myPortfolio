@@ -38,10 +38,10 @@ const Skills = () => {
         <div className={`yPaddings ${css.skillsContainer}`}>
           <div className={css.skills}>
             <div className={css.expertiseContainer}>
-              <h1 className={css.outlineText}>Skillset</h1>
-              <h1 className={css.overlayText}>
+              <h2 className={css.outlineText}>Skillset</h2>
+              <h2 className={css.overlayText}>
                 <span className={css.gear}>⚙</span> Spotlight
-              </h1>
+              </h2>
             </div>
             <p>
               Showcasing the tools and tech behind my creativity.

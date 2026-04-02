@@ -99,6 +99,33 @@
             backdrop-filter: blur(20px);
         }
 
+        /* Header logo link */
+        .header-logo-link {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+            transition: all 0.3s ease;
+            opacity: 0.85;
+            filter: grayscale(20%);
+        }
+
+        .header-logo-link:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: translateY(-1px);
+        }
+
+        .header-logo {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+
+        .header-logo-link:hover .header-logo {
+            filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.3));
+        }
+
         .terminal-dots {
             display: flex;
             gap: 8px;
@@ -127,6 +154,8 @@
             font-size: 13px;
             color: var(--text-muted);
             margin-left: auto;
+            flex: 1;
+            text-align: center;
         }
 
         /* Language Toggle - Global Switch */
@@ -360,6 +389,7 @@
 
         /* Hero block - 3D isometric style */
         .hero-block {
+            padding-top: 60px;
             margin-top: 30px;
             margin-bottom: 20px;
             perspective: 1000px;
@@ -1245,11 +1275,134 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 28px 0 20px;
+            padding: 40px 20px 30px;
             color: var(--text-faint);
             font-size: 14px;
             border-top: 1px solid var(--border);
-            margin-top: 30px;
+            margin-top: 60px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo-link {
+            display: inline-block;
+            transition: all 0.3s ease;
+            opacity: 0.85;
+            filter: grayscale(20%);
+        }
+
+        .footer-logo-link:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: translateY(-2px);
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+
+        .footer-logo-link:hover .footer-logo {
+            filter: drop-shadow(0 4px 12px rgba(0, 212, 255, 0.3));
+        }
+
+        .footer-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .footer-text p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 768px) {
+            footer {
+                padding: 32px 16px 24px;
+            }
+
+            .footer-logo {
+                height: 40px;
+            }
+
+            .footer-content {
+                gap: 20px;
+            }
+        }
+
+        /* Responsive header - mobile friendly */
+        @media (max-width: 768px) {
+            .terminal-header {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+
+            .terminal-dots {
+                gap: 6px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .header-logo-link {
+                margin-left: 8px;
+            }
+
+            .header-logo {
+                height: 28px;
+            }
+
+            .terminal-title {
+                font-size: 11px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 120px;
+            }
+
+            .lang-toggle {
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .terminal-header {
+                padding: 6px 8px;
+                gap: 6px;
+            }
+
+            .header-logo {
+                height: 24px;
+            }
+
+            .terminal-title {
+                font-size: 10px;
+                max-width: 80px;
+            }
+
+            .footer-logo {
+                height: 35px;
+            }
+
+            .footer-content {
+                gap: 16px;
+            }
         }
 
         /* Responsive */
@@ -1269,6 +1422,10 @@
 
             .hero-card {
                 padding: 40px 24px;
+            }
+
+            .hero-block {
+                padding-top: 50px;
             }
         }
 
@@ -1297,6 +1454,9 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
+        <a href="https://www.myrina.de/portfolio/" target="_blank" rel="noopener noreferrer" class="header-logo-link">
+            <img src="./IH_Logo.png" alt="Irina Holler Portfolio" class="header-logo" />
+        </a>
         <div class="terminal-title">n8n-workflow://12apostel-hannover.ai</div>
         <div class="lang-toggle" id="langToggle">
             <span class="lang-option" data-lang="en">EN</span>
@@ -1885,12 +2045,22 @@
     </div>
 
     <footer>
-        <p data-en="© 2026 · AI Workflow Architecture · Restaurant 12 Apostel Hannover"
-            data-de="© 2026 · KI-Workflow-Architektur · Restaurant 12 Apostel Hannover">© 2026 · AI Workflow
-            Architecture · Restaurant 12 Apostel Hannover</p>
-        <p style="margin-top: 8px; font-size: 12px;" data-en="Built with n8n, OpenAI, Pinecone, and Google Drive"
-            data-de="Erstellt mit n8n, OpenAI, Pinecone und Google Drive">Built with n8n, OpenAI, Pinecone, and Google
-            Drive</p>
+        <div class="footer-content">
+            <a href="https://www.myrina.de/portfolio/" target="_blank" rel="noopener noreferrer"
+                class="footer-logo-link">
+                <img src="./IH_Logo.png" alt="Irina Holler Portfolio" class="footer-logo" />
+            </a>
+            <div class="footer-text">
+                <p data-en="© 2026 · AI Workflow Architecture · Restaurant 12 Apostel Hannover"
+                    data-de="© 2026 · KI-Workflow-Architektur · Restaurant 12 Apostel Hannover">© 2026 · AI Workflow
+                    Architecture · Restaurant 12 Apostel Hannover</p>
+                <p style="margin-top: 8px; font-size: 12px;"
+                    data-en="Built with n8n, OpenAI, Pinecone, and Google Drive"
+                    data-de="Erstellt mit n8n, OpenAI, Pinecone und Google Drive">Built with n8n, OpenAI, Pinecone, and
+                    Google
+                    Drive</p>
+            </div>
+        </div>
     </footer>
 
     <script>
